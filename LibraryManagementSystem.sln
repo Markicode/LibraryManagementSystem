@@ -3,11 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryUserApplication", "LibraryManagementSystem\LibraryUserApplication.csproj", "{6037B205-7579-4B84-893D-70C0EE971CE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryUserApplication", "LibraryManagementSystem\LibraryUserApplication.csproj", "{6037B205-7579-4B84-893D-70C0EE971CE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryEmployeeApplication", "LibraryEmployeeApplication\LibraryEmployeeApplication.csproj", "{96B41C65-33B8-4B58-8322-8E1E22954629}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryEmployeeApplication", "LibraryEmployeeApplication\LibraryEmployeeApplication.csproj", "{96B41C65-33B8-4B58-8322-8E1E22954629}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryModels", "LibraryModels\LibraryModels.csproj", "{3CC8217C-E6CE-4B1E-A0B7-B073C74BA181}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryModels", "LibraryModels\LibraryModels.csproj", "{3CC8217C-E6CE-4B1E-A0B7-B073C74BA181}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project Diagrams", "Project Diagrams", "{E237FFBA-C005-43A0-A11B-96D8425D7C45}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Shared\LMS_Package_Diagram.vsdx = ..\..\..\Shared\LMS_Package_Diagram.vsdx
+		..\..\..\Shared\LMS_UseCase_Diagram.vsdx = ..\..\..\Shared\LMS_UseCase_Diagram.vsdx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
