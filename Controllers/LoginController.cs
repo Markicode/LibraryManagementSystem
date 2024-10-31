@@ -1,4 +1,5 @@
 ﻿using LibraryDatabase;
+using LibraryModels;
 using MySqlX.XDevAPI;
 using MySql.Data;
 using MySql.Data.MySqlClient;
@@ -7,33 +8,36 @@ namespace Controllers
 {
     public class LoginController
     {
-        private DbConnection DbConn;
+        private Book book;
 
         public LoginController() 
         {
-            DbConn = new DbConnection("localhost", "test", "mark", "FakePassword");
+            book = new Book();
         }
 
         public string ReadFromDatabase()
         {
             string output = "";
+            List<object> results = book.Read();
 
-            if (DbConn.Open())
+            if (results.Count > 0)
             {
-                string query = "SELECT * FROM user";
-                var cmd = new MySqlCommand(query, DbConn.connection);
-                var reader = cmd.ExecuteReader();
-                
-                while (reader.Read())
+                foreach (var result in results)
                 {
-                    output += reader.GetInt32(0).ToString();
-                    output += reader.GetString(1);
-                    output += reader.GetString(2);
+                    List<object> row = result as List<object>;
+                    foreach (var item in row)
+                    {
+                        output += item.ToString();
+                    }
                 }
             }
             return output;
         }
-        
+
+        public void AddToDatabase()
+        {
+            book.Add();
+        }
         
     }
 }

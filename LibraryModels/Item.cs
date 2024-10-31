@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LibraryModels
 {
-    internal class Item
+    public abstract class Item : Model
     {
+
     }
 }
