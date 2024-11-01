@@ -3,22 +3,23 @@ using LibraryModels;
 using MySqlX.XDevAPI;
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Bcpg;
 
 namespace Controllers
 {
     public class LoginController
     {
-        private Book book;
+        private User user;
 
         public LoginController() 
         {
-            book = new Book();
+            this.user = new User("mark@test.nl", "12345678");
         }
 
         public string ReadFromDatabase()
         {
             string output = "";
-            List<object> results = book.Read();
+            List<object> results = user.GetAllEntries();
 
             if (results.Count > 0)
             {
@@ -34,9 +35,10 @@ namespace Controllers
             return output;
         }
 
-        public void AddToDatabase()
+        public void AddUserToDatabase(string email, string password)
         {
-            book.Add();
+            User newUser = new User(email, password);
+            user.Add(newUser);
         }
         
     }
