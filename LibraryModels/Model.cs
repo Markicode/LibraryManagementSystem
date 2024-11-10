@@ -11,7 +11,7 @@ namespace LibraryModels
 {
     public abstract class Model
     {
-        protected DbConn? dbConn;
+        protected DbConn dbConn;
         public abstract string tableName { get; set; }
         public abstract string[] attributes { get; set; }
 
@@ -37,6 +37,7 @@ namespace LibraryModels
             statement += ") VALUES (";
             foreach (string attribute in attributes)
             {
+                // TODO: Implement possibilty of empty attributes.
                 statement += "\"" + model[attribute].ToString() + "\", ";
             }
             statement = statement.Remove(statement.Length - 2);

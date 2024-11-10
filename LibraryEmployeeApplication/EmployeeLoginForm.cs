@@ -4,27 +4,40 @@ namespace LibraryEmployeeApplication
 {
     public partial class EmployeeLoginForm : Form
     {
-        private LoginController loginController;
+        private AuthController authController;
 
         public EmployeeLoginForm()
         {
             InitializeComponent();
-            loginController = new LoginController();
+            authController = new AuthController();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            label1.Text = "";
-            label1.Text = loginController.ReadFromDatabase();
-        }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void CheckButton_Click(object sender, EventArgs e)
         {
-            if(textBox1.Text != "" && textBox2.Text != "")
+            switch (authController.AuthenticateUser(textBox1.Text, textBox2.Text))
             {
-                loginController.AddUserToDatabase(textBox1.Text, textBox2.Text);
+                case AuthController.AuthenticationResult.Success:
+                    textBox1.BackColor = Color.Green;
+                    textBox2.BackColor = Color.Green;
+                    break;
+                case AuthController.AuthenticationResult.Failed:
+                    textBox1.BackColor = Color.Red;
+                    textBox2.BackColor = Color.Red;
+                    break;
+                case AuthController.AuthenticationResult.NotFound:
+                    textBox1.BackColor = Color.Yellow;
+                    textBox2.BackColor = Color.Yellow;
+                    break;
             }
-            
+        }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Text != "" && textBox2.Text != "")
+            {
+                //authController.AddUserToDatabase(textBox1.Text, textBox2.Text);
+            }
         }
     }
 }
