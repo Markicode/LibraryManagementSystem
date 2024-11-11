@@ -12,16 +12,15 @@ namespace LibraryModels
         public override string[] attributes { get; set; }
         public override string tableName { get; set; }
 
-        public int id { get; set; }
+        public int? id { get; set; }
         public string email { get; set; }
         public string password { get; set; }
         public string role { get; set; }
 
-        public User(int id, string email, string password, string role) 
+        public User(string email, string password, string role) 
         {
             this.attributes = new string[] {"id", "email", "password", "role"};
             this.tableName = "user";
-            this.id = id;
             this.email = email;
             this.password = password;
             this.role = role;
@@ -46,11 +45,38 @@ namespace LibraryModels
                     tempPassword = Convert.ToString(row[2]);
                     tempRole = Convert.ToString(row[3]);
                 }
-                user = new User(tempId, tempEmail, tempPassword, tempRole);
+                user = new User(tempEmail, tempPassword, tempRole);
+                user.id = tempId;
                 return user;
             }
 
             return user;
+        }
+
+        public void UpdatePassword(int id, string hashedPassword)
+        {
+            dbConn.PerformNonQuery($"UPDATE user SET password = \"{hashedPassword}\" WHERE id = \"{id}\"");
+        }
+
+        public int CountUsers()
+        {
+            int userCount = 0;
+            var results = dbConn.PerformQuery($"SELECT COUNT(*) FROM user");
+            if (results.Count > 0)
+            {
+                foreach (List<object> row in results)
+                {
+                    userCount = Convert.ToInt32(row[0]);
+                }
+            }
+            return userCount;
+        }
+
+        public List<object> GetAllUsers()
+        {
+            var results = new List<object>();
+            results = dbConn.PerformQuery("SELECT * FROM user");
+            return results;
         }
     }
 }

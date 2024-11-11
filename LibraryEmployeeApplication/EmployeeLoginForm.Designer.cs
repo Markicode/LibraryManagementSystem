@@ -34,6 +34,9 @@
             label2 = new Label();
             label3 = new Label();
             CheckButton = new Button();
+            label1 = new Label();
+            label4 = new Label();
+            UpdateButton = new Button();
             SuspendLayout();
             // 
             // textBox1
@@ -88,11 +91,41 @@
             CheckButton.UseVisualStyleBackColor = true;
             CheckButton.Click += CheckButton_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(250, 242);
+            label1.Name = "label1";
+            label1.Size = new Size(103, 15);
+            label1.TabIndex = 8;
+            label1.Text = "Hashed Password:";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(359, 242);
+            label4.Name = "label4";
+            label4.Size = new Size(0, 15);
+            label4.TabIndex = 9;
+            // 
+            // UpdateButton
+            // 
+            UpdateButton.Location = new Point(81, 60);
+            UpdateButton.Name = "UpdateButton";
+            UpdateButton.Size = new Size(75, 23);
+            UpdateButton.TabIndex = 10;
+            UpdateButton.Text = "Update Users";
+            UpdateButton.UseVisualStyleBackColor = true;
+            UpdateButton.Click += UpdateButton_Click;
+            // 
             // EmployeeLoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(UpdateButton);
+            Controls.Add(label4);
+            Controls.Add(label1);
             Controls.Add(CheckButton);
             Controls.Add(label3);
             Controls.Add(label2);
@@ -112,5 +145,8 @@
         private Label label2;
         private Label label3;
         private Button CheckButton;
+        private Label label1;
+        private Label label4;
+        private Button UpdateButton;
     }
 }

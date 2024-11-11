@@ -31,14 +31,20 @@ namespace LibraryModels
             string statement = "INSERT INTO " + this.tableName + " (";
             foreach (string attribute in attributes)
             {
-                statement += attribute + ", ";
+                if (attribute != "id") 
+                {
+                    statement += attribute + ", ";
+                }
             }
             statement = statement.Remove(statement.Length - 2);
             statement += ") VALUES (";
             foreach (string attribute in attributes)
             {
                 // TODO: Implement possibilty of empty attributes.
+                if (attribute != "id")
+                { 
                 statement += "\"" + model[attribute].ToString() + "\", ";
+                }
             }
             statement = statement.Remove(statement.Length - 2);
             statement += ")";
