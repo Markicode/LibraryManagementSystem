@@ -3,12 +3,12 @@
     partial class EmployeeLoginForm
     {
         /// <summary>
-        ///  Required designer variable.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        ///  Clean up any resources being used.
+        /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
@@ -23,130 +23,97 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            AddButton = new Button();
-            label2 = new Label();
-            label3 = new Label();
             CheckButton = new Button();
-            label1 = new Label();
-            label4 = new Label();
-            UpdateButton = new Button();
+            label3 = new Label();
+            label2 = new Label();
+            AddButton = new Button();
+            textBox2 = new TextBox();
+            textBox1 = new TextBox();
             SuspendLayout();
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(376, 103);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(224, 23);
-            textBox1.TabIndex = 2;
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(376, 132);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(224, 23);
-            textBox2.TabIndex = 3;
-            // 
-            // AddButton
-            // 
-            AddButton.Location = new Point(376, 170);
-            AddButton.Name = "AddButton";
-            AddButton.Size = new Size(75, 23);
-            AddButton.TabIndex = 4;
-            AddButton.Text = "Add";
-            AddButton.UseVisualStyleBackColor = true;
-            AddButton.Click += AddButton_Click;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(334, 106);
-            label2.Name = "label2";
-            label2.Size = new Size(36, 15);
-            label2.TabIndex = 5;
-            label2.Text = "email";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(313, 135);
-            label3.Name = "label3";
-            label3.Size = new Size(57, 15);
-            label3.TabIndex = 6;
-            label3.Text = "password";
             // 
             // CheckButton
             // 
-            CheckButton.Location = new Point(457, 170);
+            CheckButton.Location = new Point(168, 232);
             CheckButton.Name = "CheckButton";
             CheckButton.Size = new Size(75, 23);
-            CheckButton.TabIndex = 7;
+            CheckButton.TabIndex = 13;
             CheckButton.Text = "Check";
             CheckButton.UseVisualStyleBackColor = true;
             CheckButton.Click += CheckButton_Click;
             // 
-            // label1
+            // label3
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(250, 242);
-            label1.Name = "label1";
-            label1.Size = new Size(103, 15);
-            label1.TabIndex = 8;
-            label1.Text = "Hashed Password:";
+            label3.AutoSize = true;
+            label3.Location = new Point(24, 197);
+            label3.Name = "label3";
+            label3.Size = new Size(57, 15);
+            label3.TabIndex = 12;
+            label3.Text = "password";
             // 
-            // label4
+            // label2
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(359, 242);
-            label4.Name = "label4";
-            label4.Size = new Size(0, 15);
-            label4.TabIndex = 9;
+            label2.AutoSize = true;
+            label2.Location = new Point(45, 168);
+            label2.Name = "label2";
+            label2.Size = new Size(36, 15);
+            label2.TabIndex = 11;
+            label2.Text = "email";
             // 
-            // UpdateButton
+            // AddButton
             // 
-            UpdateButton.Location = new Point(81, 60);
-            UpdateButton.Name = "UpdateButton";
-            UpdateButton.Size = new Size(75, 23);
-            UpdateButton.TabIndex = 10;
-            UpdateButton.Text = "Update Users";
-            UpdateButton.UseVisualStyleBackColor = true;
-            UpdateButton.Click += UpdateButton_Click;
+            AddButton.Location = new Point(87, 232);
+            AddButton.Name = "AddButton";
+            AddButton.Size = new Size(75, 23);
+            AddButton.TabIndex = 10;
+            AddButton.Text = "Add";
+            AddButton.UseVisualStyleBackColor = true;
+            AddButton.Click += AddButton_Click;
+            // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(87, 194);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(224, 23);
+            textBox2.TabIndex = 9;
+            textBox2.UseSystemPasswordChar = true;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(87, 165);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(224, 23);
+            textBox1.TabIndex = 8;
             // 
             // EmployeeLoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(UpdateButton);
-            Controls.Add(label4);
-            Controls.Add(label1);
+            ClientSize = new Size(335, 421);
             Controls.Add(CheckButton);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(AddButton);
             Controls.Add(textBox2);
             Controls.Add(textBox1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "EmployeeLoginForm";
-            Text = "Form1";
+            Text = "EmployeeMainForm";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private Button AddButton;
-        private Label label2;
-        private Label label3;
+
         private Button CheckButton;
-        private Label label1;
-        private Label label4;
-        private Button UpdateButton;
+        private Label label3;
+        private Label label2;
+        private Button AddButton;
+        private TextBox textBox2;
+        private TextBox textBox1;
     }
 }
