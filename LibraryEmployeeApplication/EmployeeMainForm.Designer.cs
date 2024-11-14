@@ -32,6 +32,9 @@
             LogoPictureBox = new PictureBox();
             CloseButtonLabel = new Label();
             MenuLabel1 = new Label();
+            label1 = new Label();
+            MenuLabel2 = new Label();
+            MenuLabel3 = new Label();
             ((System.ComponentModel.ISupportInitialize)LogoPictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -73,12 +76,47 @@
             MenuLabel1.MouseEnter += MenuLabel1_MouseEnter;
             MenuLabel1.MouseLeave += MenuLabel1_MouseLeave;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(245, 163);
+            label1.Name = "label1";
+            label1.Size = new Size(0, 15);
+            label1.TabIndex = 3;
+            // 
+            // MenuLabel2
+            // 
+            MenuLabel2.AutoSize = true;
+            MenuLabel2.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
+            MenuLabel2.ForeColor = Color.FromArgb(33, 0, 127);
+            MenuLabel2.Location = new Point(12, 198);
+            MenuLabel2.Name = "MenuLabel2";
+            MenuLabel2.Size = new Size(105, 25);
+            MenuLabel2.TabIndex = 4;
+            MenuLabel2.Text = "Zoek Item";
+            MenuLabel2.Click += MenuLabel2_Click;
+            // 
+            // MenuLabel3
+            // 
+            MenuLabel3.AutoSize = true;
+            MenuLabel3.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
+            MenuLabel3.ForeColor = Color.FromArgb(33, 0, 127);
+            MenuLabel3.Location = new Point(12, 243);
+            MenuLabel3.Name = "MenuLabel3";
+            MenuLabel3.Size = new Size(139, 25);
+            MenuLabel3.TabIndex = 5;
+            MenuLabel3.Text = "Zoek Persoon";
+            MenuLabel3.Click += MenuLabel3_Click;
+            // 
             // EmployeeMainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1336, 552);
+            Controls.Add(MenuLabel3);
+            Controls.Add(MenuLabel2);
+            Controls.Add(label1);
             Controls.Add(MenuLabel1);
             Controls.Add(LogoPictureBox);
             Controls.Add(CloseButtonLabel);
@@ -93,5 +131,8 @@
         private PictureBox LogoPictureBox;
         private Label CloseButtonLabel;
         private Label MenuLabel1;
+        private Label label1;
+        private Label MenuLabel2;
+        private Label MenuLabel3;
     }
 }

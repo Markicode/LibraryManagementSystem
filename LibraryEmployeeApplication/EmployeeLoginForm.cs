@@ -16,11 +16,13 @@ namespace LibraryEmployeeApplication
     {
         private AuthController authController;
         private User? user;
+        private EmployeeMainForm parentForm;
 
-        public EmployeeLoginForm()
+        public EmployeeLoginForm(EmployeeMainForm parentForm)
         {
             InitializeComponent();
             this.authController = new AuthController();
+            this.parentForm = parentForm;
         }
 
         private void CheckButton_Click(object sender, EventArgs e)
@@ -31,6 +33,9 @@ namespace LibraryEmployeeApplication
                     textBox1.BackColor = Color.Green;
                     textBox2.BackColor = Color.Green;
                     user = authController.GetPersonInfo(textBox1.Text);
+                    this.parentForm.user = user;
+                    this.parentForm.WelcomeUser(user);
+                    this.Close();
                     break;
                 case AuthController.AuthenticationResult.Failed:
                     textBox1.BackColor = Color.Red;
