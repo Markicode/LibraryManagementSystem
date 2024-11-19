@@ -1,4 +1,5 @@
 using Controllers;
+using EmployeeApplication;
 using LibraryModels;
 using Mysqlx.Notice;
 
@@ -12,17 +13,61 @@ namespace LibraryEmployeeApplication
         private Font closeButtonFont;
         private Font hoverCloseButtonFont;
         public User? user { get; set; }
+        private string language;
+
+        private List<Label> menuLabels;
+        private Dictionary<Label, menuChoises> menuLabelAssignment;
+        private Dictionary<menuChoises, string> menuChoisesDutch;
+        private Dictionary<menuChoises, string> menuChoisesEnglish;
+
+        public enum menuChoises
+        {
+            Login = 0, Intake = 1, Dispense = 2, SearchItem = 3, SearchPerson = 4
+        }
 
         public EmployeeMainForm()
         {
+            InitializeComponent();
+            GoFullscreen(true);
+
             this.fontFamily = new FontFamily("Lato");
             this.menuFont = new Font(this.fontFamily, 16, FontStyle.Regular);
             this.hoverMenuFont = new Font(this.fontFamily, 16, FontStyle.Bold);
             this.closeButtonFont = new Font(this.fontFamily, 24, FontStyle.Regular);
             this.hoverCloseButtonFont = new Font(this.fontFamily, 24, FontStyle.Bold);
+            this.language = "NL";
+            this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5 };
 
-            InitializeComponent();
-            GoFullscreen(true);
+            this.menuLabelAssignment = new Dictionary<Label, menuChoises>()
+            {
+                {MenuLabel1, menuChoises.Login},
+                {MenuLabel2, menuChoises.Intake},
+                {MenuLabel3, menuChoises.Dispense},
+                {MenuLabel4, menuChoises.SearchItem},
+                {MenuLabel5, menuChoises.SearchPerson}
+            };
+
+            this.menuChoisesDutch = new Dictionary<menuChoises, string>()
+            {
+                {menuChoises.Login, "Login"},
+                {menuChoises.Intake, "Inname"},
+                {menuChoises.Dispense, "Uitgave"},
+                {menuChoises.SearchItem, "Zoek Item"},
+                {menuChoises.SearchPerson, "Zoek Persoon"}
+            };
+            this.menuChoisesEnglish = new Dictionary<menuChoises, string>()
+            {
+                {menuChoises.Login, "Login"},
+                {menuChoises.Intake, "Intake"},
+                {menuChoises.Dispense, "Dispense"},
+                {menuChoises.SearchItem, "Search Item"},
+                {menuChoises.SearchPerson, "Search Person"}
+            };
+
+            foreach (Label label in menuLabels)
+            {
+                label.Text = menuChoisesDutch[menuLabelAssignment[label]];
+            }
         }
 
         private void GoFullscreen(bool fullscreen)
@@ -37,6 +82,52 @@ namespace LibraryEmployeeApplication
             {
                 this.WindowState = FormWindowState.Maximized;
                 this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+            }
+        }
+
+        public void WelcomeUser(User user)
+        {
+            label1.Text = $"Hallo {user.email}, gebruik het menu om te beginnen.";
+        }
+
+        private void OpenForm(menuChoises choise)
+        {
+            switch(choise)
+            {
+                case menuChoises.Login:
+                    {
+                        EmployeeLoginForm employeeLoginForm = new EmployeeLoginForm(this);
+                        employeeLoginForm.ShowDialog();
+                        break;
+                    }
+                case menuChoises.Intake:
+                    {
+                        EmployeeIntakeForm employeeIntakeForm = new EmployeeIntakeForm(this);
+                        employeeIntakeForm.Show();
+                        this.Hide();
+                        break;
+                    }
+                case menuChoises.Dispense:
+                    {
+                        EmployeeDispenseForm employeeDispenseForm = new EmployeeDispenseForm(this);
+                        employeeDispenseForm.Show();
+                        this.Hide();
+                        break;
+                    }
+                case menuChoises.SearchItem:
+                    {
+                        EmployeeItemSearchForm employeeItemSearchForm = new EmployeeItemSearchForm(this);
+                        employeeItemSearchForm.Show();
+                        this.Hide();
+                        break;
+                    }
+                case menuChoises.SearchPerson:
+                    {
+                        EmployeeMemberSearchForm employeeMemberSearchForm = new EmployeeMemberSearchForm(this);
+                        employeeMemberSearchForm.Show();
+                        this.Hide();
+                        break;
+                    }
             }
         }
 
@@ -67,27 +158,67 @@ namespace LibraryEmployeeApplication
 
         private void MenuLabel1_Click(object sender, EventArgs e)
         {
-            EmployeeLoginForm employeeLoginForm = new EmployeeLoginForm(this);
-            employeeLoginForm.ShowDialog();
+            OpenForm(menuLabelAssignment[MenuLabel1]);
         }
 
-        public void WelcomeUser(User user)
+        private void MenuLabel2_MouseEnter(object sender, EventArgs e)
         {
-            label1.Text = $"Hallo {user.email}, gebruik het menu om te beginnen.";
+            MenuLabel2.Font = this.hoverMenuFont;
         }
 
-        private void MenuLabel3_Click(object sender, EventArgs e)
+        private void MenuLabel2_MouseLeave(object sender, EventArgs e)
         {
-            EmployeeMemberSearchForm employeeMemberSearchForm = new EmployeeMemberSearchForm(this);
-            employeeMemberSearchForm.Show();
-            this.Hide();
+            MenuLabel2.Font = this.menuFont;
         }
 
         private void MenuLabel2_Click(object sender, EventArgs e)
         {
-            EmployeeItemSearchForm employeeItemSearchForm = new EmployeeItemSearchForm();
-            employeeItemSearchForm.Show();
-            this.Hide();
+            OpenForm(menuLabelAssignment[MenuLabel2]);
+        }
+
+        private void MenuLabel3_MouseEnter(object sender, EventArgs e)
+        {
+            MenuLabel3.Font = this.hoverMenuFont;
+        }
+
+        private void MenuLabel3_MouseLeave(object sender, EventArgs e)
+        {
+            MenuLabel3.Font = this.menuFont;
+        }
+
+        private void MenuLabel3_Click(object sender, EventArgs e)
+        {
+            OpenForm(menuLabelAssignment[MenuLabel3]);
+        }
+
+        private void MenuLabel4_MouseEnter(object sender, EventArgs e)
+        {
+            MenuLabel4.Font = this.hoverMenuFont;
+        }
+
+        private void MenuLabel4_MouseLeave(object sender, EventArgs e)
+        {
+            MenuLabel4.Font = this.menuFont;
+        }
+
+        private void MenuLabel4_Click(object sender, EventArgs e)
+        {
+            OpenForm(menuLabelAssignment[MenuLabel4]);
+        }
+
+        private void MenuLabel5_MouseEnter(object sender, EventArgs e)
+        {
+            MenuLabel5.Font = this.hoverMenuFont;
+        }
+
+        private void MenuLabel5_MouseLeave(object sender, EventArgs e)
+        {
+            MenuLabel5.Font = this.menuFont;
+        }
+
+        private void MenuLabel5_Click(object sender, EventArgs e)
+        {
+            OpenForm(menuLabelAssignment[MenuLabel5]);
         }
     }
 }

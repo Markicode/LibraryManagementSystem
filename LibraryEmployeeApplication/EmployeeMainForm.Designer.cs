@@ -35,6 +35,8 @@
             label1 = new Label();
             MenuLabel2 = new Label();
             MenuLabel3 = new Label();
+            MenuLabel4 = new Label();
+            MenuLabel5 = new Label();
             ((System.ComponentModel.ISupportInitialize)LogoPictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -67,7 +69,7 @@
             MenuLabel1.AutoSize = true;
             MenuLabel1.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
             MenuLabel1.ForeColor = Color.FromArgb(33, 0, 127);
-            MenuLabel1.Location = new Point(12, 154);
+            MenuLabel1.Location = new Point(32, 171);
             MenuLabel1.Name = "MenuLabel1";
             MenuLabel1.Size = new Size(62, 25);
             MenuLabel1.TabIndex = 2;
@@ -89,24 +91,56 @@
             MenuLabel2.AutoSize = true;
             MenuLabel2.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
             MenuLabel2.ForeColor = Color.FromArgb(33, 0, 127);
-            MenuLabel2.Location = new Point(12, 198);
+            MenuLabel2.Location = new Point(32, 219);
             MenuLabel2.Name = "MenuLabel2";
-            MenuLabel2.Size = new Size(105, 25);
+            MenuLabel2.Size = new Size(80, 25);
             MenuLabel2.TabIndex = 4;
-            MenuLabel2.Text = "Zoek Item";
+            MenuLabel2.Text = "Inname";
             MenuLabel2.Click += MenuLabel2_Click;
+            MenuLabel2.MouseEnter += MenuLabel2_MouseEnter;
+            MenuLabel2.MouseLeave += MenuLabel2_MouseLeave;
             // 
             // MenuLabel3
             // 
             MenuLabel3.AutoSize = true;
             MenuLabel3.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
             MenuLabel3.ForeColor = Color.FromArgb(33, 0, 127);
-            MenuLabel3.Location = new Point(12, 243);
+            MenuLabel3.Location = new Point(32, 264);
             MenuLabel3.Name = "MenuLabel3";
-            MenuLabel3.Size = new Size(139, 25);
+            MenuLabel3.Size = new Size(83, 25);
             MenuLabel3.TabIndex = 5;
-            MenuLabel3.Text = "Zoek Persoon";
+            MenuLabel3.Text = "Uitgave";
             MenuLabel3.Click += MenuLabel3_Click;
+            MenuLabel3.MouseEnter += MenuLabel3_MouseEnter;
+            MenuLabel3.MouseLeave += MenuLabel3_MouseLeave;
+            // 
+            // MenuLabel4
+            // 
+            MenuLabel4.AutoSize = true;
+            MenuLabel4.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
+            MenuLabel4.ForeColor = Color.FromArgb(33, 0, 127);
+            MenuLabel4.Location = new Point(32, 309);
+            MenuLabel4.Name = "MenuLabel4";
+            MenuLabel4.Size = new Size(105, 25);
+            MenuLabel4.TabIndex = 6;
+            MenuLabel4.Text = "Zoek Item";
+            MenuLabel4.Click += MenuLabel4_Click;
+            MenuLabel4.MouseEnter += MenuLabel4_MouseEnter;
+            MenuLabel4.MouseLeave += MenuLabel4_MouseLeave;
+            // 
+            // MenuLabel5
+            // 
+            MenuLabel5.AutoSize = true;
+            MenuLabel5.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
+            MenuLabel5.ForeColor = Color.FromArgb(33, 0, 127);
+            MenuLabel5.Location = new Point(32, 352);
+            MenuLabel5.Name = "MenuLabel5";
+            MenuLabel5.Size = new Size(139, 25);
+            MenuLabel5.TabIndex = 7;
+            MenuLabel5.Text = "Zoek Persoon";
+            MenuLabel5.Click += MenuLabel5_Click;
+            MenuLabel5.MouseEnter += MenuLabel5_MouseEnter;
+            MenuLabel5.MouseLeave += MenuLabel5_MouseLeave;
             // 
             // EmployeeMainForm
             // 
@@ -114,6 +148,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1336, 552);
+            Controls.Add(MenuLabel5);
+            Controls.Add(MenuLabel4);
             Controls.Add(MenuLabel3);
             Controls.Add(MenuLabel2);
             Controls.Add(label1);
@@ -134,5 +170,7 @@
         private Label label1;
         private Label MenuLabel2;
         private Label MenuLabel3;
+        private Label MenuLabel4;
+        private Label MenuLabel5;
     }
 }

@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LibraryDatabase\LibraryDatabase.csproj" />
-    <ProjectReference Include="..\LibraryModels\LibraryModels.csproj" />
+    <ProjectReference Include="..\LibraryDatabase\Database.csproj" />
+    <ProjectReference Include="..\LibraryModels\Models.csproj" />
   </ItemGroup>
 
 </Project>

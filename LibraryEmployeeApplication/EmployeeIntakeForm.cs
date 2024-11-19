@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibraryEmployeeApplication;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,13 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LibraryEmployeeApplication
+namespace EmployeeApplication
 {
-    public partial class EmployeeItemSearchForm : Form
+    public partial class EmployeeIntakeForm : Form
     {
         private EmployeeMainForm parentForm;
 
-        public EmployeeItemSearchForm(EmployeeMainForm parentForm)
+        public EmployeeIntakeForm(EmployeeMainForm parentForm)
         {
             InitializeComponent();
             GoFullscreen(true);
@@ -41,5 +42,6 @@ namespace LibraryEmployeeApplication
             parentForm.Show();
             this.Close();
         }
+
     }
 }

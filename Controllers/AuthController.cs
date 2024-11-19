@@ -54,17 +54,6 @@ namespace Controllers
         {
             return user = defaultUser.FindUser(email);
         }
-
-        public void UpdateUsers()
-        {
-            int userCount = 0;
-            userCount = defaultUser.CountUsers();
-            List<object> users = defaultUser.GetAllUsers();
-            foreach (List<object> user in users)
-            {
-                defaultUser.UpdatePassword(Convert.ToInt32(user[0]), HashPassword(user[3].ToString()));
-            }
-        }
             
 
         public string HashPassword(string password)

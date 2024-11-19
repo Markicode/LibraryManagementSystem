@@ -26,6 +26,17 @@ namespace LibraryModels
             this.role = role;
         }
 
+        public User(int id, string email, string password, string role)
+        {
+            this.attributes = new string[] { "id", "email", "password", "role" };
+            this.tableName = "user";
+            this.id = id;
+            this.email = email;
+            this.password = password;
+            this.role = role;
+        }
+
+        // Find single user in database, returns object of User class.
         public User FindUser(string email)
         {
             User? user = null;
@@ -53,11 +64,7 @@ namespace LibraryModels
             return user;
         }
 
-        public void UpdatePassword(int id, string hashedPassword)
-        {
-            dbConn.PerformNonQuery($"UPDATE user SET password = \"{hashedPassword}\" WHERE id = \"{id}\"");
-        }
-
+        // Count number of users in database.
         public int CountUsers()
         {
             int userCount = 0;
@@ -72,11 +79,20 @@ namespace LibraryModels
             return userCount;
         }
 
-        public List<object> GetAllUsers()
+        // Retrieve all user data and create List of User objects.
+        public List<User> GetAllUsers()
         {
             var results = new List<object>();
+            List<User> users = new List<User>();
             results = dbConn.PerformQuery("SELECT * FROM user");
-            return results;
+            if (results.Count > 0)
+            {
+                foreach (List<object> row in results)
+                {
+                    users.Add(new User(Convert.ToInt32(row[0]), row[1].ToString(), row[2].ToString(), row[3].ToString()));
+                }
+            }
+            return users;
         }
     }
 }

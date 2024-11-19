@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryEmployeeApplication", "LibraryEmployeeApplication\LibraryEmployeeApplication.csproj", "{96B41C65-33B8-4B58-8322-8E1E22954629}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeApplication", "LibraryEmployeeApplication\EmployeeApplication.csproj", "{96B41C65-33B8-4B58-8322-8E1E22954629}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryModels", "LibraryModels\LibraryModels.csproj", "{3CC8217C-E6CE-4B1E-A0B7-B073C74BA181}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "LibraryModels\Models.csproj", "{3CC8217C-E6CE-4B1E-A0B7-B073C74BA181}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project Diagrams", "Project Diagrams", "{E237FFBA-C005-43A0-A11B-96D8425D7C45}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,11 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project Diagrams", "Project
 		..\..\..\Shared\LMS_UseCase_Diagram.vsdx = ..\..\..\Shared\LMS_UseCase_Diagram.vsdx
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryUserApplication", "LibraryUserApplication\LibraryUserApplication.csproj", "{7BBE8037-6C66-4D7D-AB7C-D02A5D059766}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApplication", "LibraryUserApplication\UserApplication.csproj", "{7BBE8037-6C66-4D7D-AB7C-D02A5D059766}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryDatabase", "LibraryDatabase\LibraryDatabase.csproj", "{C0B909CD-C4D1-42B4-8D5A-BD59A1BDD2F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "LibraryDatabase\Database.csproj", "{C0B909CD-C4D1-42B4-8D5A-BD59A1BDD2F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controllers", "Controllers\Controllers.csproj", "{2DFBE851-C23B-45BF-939E-9AEC4EC188B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controllers", "Controllers\Controllers.csproj", "{2DFBE851-C23B-45BF-939E-9AEC4EC188B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

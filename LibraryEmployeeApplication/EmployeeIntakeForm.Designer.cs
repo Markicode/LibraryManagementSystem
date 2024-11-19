@@ -1,6 +1,6 @@
-﻿namespace LibraryEmployeeApplication
+﻿namespace EmployeeApplication
 {
-    partial class EmployeeItemSearchForm
+    partial class EmployeeIntakeForm
     {
         /// <summary>
         /// Required designer variable.
@@ -36,22 +36,21 @@
             label1.AutoSize = true;
             label1.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
             label1.ForeColor = Color.FromArgb(33, 0, 127);
-            label1.Location = new Point(28, 31);
+            label1.Location = new Point(23, 26);
             label1.Name = "label1";
             label1.Size = new Size(224, 25);
             label1.TabIndex = 1;
             label1.Text = "Terug naar Hoofdmenu";
             label1.Click += label1_Click;
             // 
-            // EmployeeItemSearchForm
+            // EmployeeIntakeForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
             ClientSize = new Size(800, 450);
             Controls.Add(label1);
-            Name = "EmployeeItemSearchForm";
-            Text = "EmployeeItemSearchForm";
+            Name = "EmployeeIntakeForm";
+            Text = "EmployeeIntakeForm";
             ResumeLayout(false);
             PerformLayout();
         }
