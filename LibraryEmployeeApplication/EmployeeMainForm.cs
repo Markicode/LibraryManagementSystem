@@ -14,6 +14,7 @@ namespace LibraryEmployeeApplication
         private Font hoverCloseButtonFont;
         public User? user { get; set; }
         private string language;
+        public AuthController authController { get; set; }
 
         private List<Label> menuLabels;
         private Dictionary<Label, menuChoises> menuLabelAssignment;
@@ -30,6 +31,7 @@ namespace LibraryEmployeeApplication
             InitializeComponent();
             GoFullscreen(true);
 
+            this.authController = new AuthController();
             this.fontFamily = new FontFamily("Lato");
             this.menuFont = new Font(this.fontFamily, 16, FontStyle.Regular);
             this.hoverMenuFont = new Font(this.fontFamily, 16, FontStyle.Bold);
@@ -37,6 +39,7 @@ namespace LibraryEmployeeApplication
             this.hoverCloseButtonFont = new Font(this.fontFamily, 24, FontStyle.Bold);
             this.language = "NL";
             this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5 };
+            this.authController.LoggedIn += UpdateMenu;
 
             this.menuLabelAssignment = new Dictionary<Label, menuChoises>()
             {
@@ -66,8 +69,23 @@ namespace LibraryEmployeeApplication
 
             foreach (Label label in menuLabels)
             {
-                label.Text = menuChoisesDutch[menuLabelAssignment[label]];
+                label.Enabled = false;
+                if (menuLabelAssignment[label] == menuChoises.Login)
+                {
+                    label.Enabled = true;
+                }
+
+                if (this.language == "NL")
+                {
+                    label.Text = menuChoisesDutch[menuLabelAssignment[label]];
+                }
+                if (this.language == "EN")
+                {
+                    label.Text = menuChoisesEnglish[menuLabelAssignment[label]];
+                }
             }
+
+
         }
 
         private void GoFullscreen(bool fullscreen)
@@ -96,7 +114,7 @@ namespace LibraryEmployeeApplication
             {
                 case menuChoises.Login:
                     {
-                        EmployeeLoginForm employeeLoginForm = new EmployeeLoginForm(this);
+                        EmployeeLoginForm employeeLoginForm = new EmployeeLoginForm(this, authController);
                         employeeLoginForm.ShowDialog();
                         break;
                     }
@@ -128,6 +146,14 @@ namespace LibraryEmployeeApplication
                         this.Hide();
                         break;
                     }
+            }
+        }
+
+        private void UpdateMenu()
+        {
+            foreach (Label label in menuLabels)
+            {
+                label.Enabled = true;
             }
         }
 

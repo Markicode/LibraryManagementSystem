@@ -20,6 +20,9 @@ namespace Controllers
             [VersionId1] = new PasswordHasherVersion(HashAlgorithmName.SHA256, SaltSize: 256 / 8, KeySize: 256 / 8, Iterations: 600000),
         };
 
+        public delegate void LoggedInDelegate();
+        public event LoggedInDelegate LoggedIn;
+
         public AuthController() 
         {
             this.defaultUser = new User("default@lms.nl", "12345678", "default");
@@ -36,6 +39,10 @@ namespace Controllers
                 }
                 if (VerifyHashedPassword(user.password, password) == PasswordVerificationResult.Success)
                 {
+                    if (this.LoggedIn != null)
+                    {
+                        this.LoggedIn();
+                    }
                     return AuthenticationResult.Success;
                 }
                 return AuthenticationResult.Failed;

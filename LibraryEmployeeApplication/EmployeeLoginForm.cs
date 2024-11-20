@@ -18,11 +18,12 @@ namespace LibraryEmployeeApplication
         private User? user;
         private EmployeeMainForm parentForm;
 
-        public EmployeeLoginForm(EmployeeMainForm parentForm)
+        public EmployeeLoginForm(EmployeeMainForm parentForm, AuthController authController)
         {
             InitializeComponent();
-            this.authController = new AuthController();
+            this.authController = authController;
             this.parentForm = parentForm;
+            //this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
         }
 
         private void CheckButton_Click(object sender, EventArgs e)
