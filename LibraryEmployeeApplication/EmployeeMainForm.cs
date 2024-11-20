@@ -23,7 +23,7 @@ namespace LibraryEmployeeApplication
 
         public enum menuChoises
         {
-            Login = 0, Intake = 1, Dispense = 2, SearchItem = 3, SearchPerson = 4
+            Login = 0, Intake = 1, Dispense = 2, SearchItem = 3, SearchPerson = 4, ItemManagement = 5, EmployeeManagement = 6
         }
 
         public EmployeeMainForm()
@@ -38,7 +38,7 @@ namespace LibraryEmployeeApplication
             this.closeButtonFont = new Font(this.fontFamily, 24, FontStyle.Regular);
             this.hoverCloseButtonFont = new Font(this.fontFamily, 24, FontStyle.Bold);
             this.language = "NL";
-            this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5 };
+            this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5, MenuLabel6, MenuLabel7 };
             this.authController.LoggedIn += UpdateMenu;
 
             this.menuLabelAssignment = new Dictionary<Label, menuChoises>()
@@ -47,7 +47,9 @@ namespace LibraryEmployeeApplication
                 {MenuLabel2, menuChoises.Intake},
                 {MenuLabel3, menuChoises.Dispense},
                 {MenuLabel4, menuChoises.SearchItem},
-                {MenuLabel5, menuChoises.SearchPerson}
+                {MenuLabel5, menuChoises.SearchPerson},
+                {MenuLabel6, menuChoises.ItemManagement},
+                {MenuLabel7, menuChoises.EmployeeManagement}
             };
 
             this.menuChoisesDutch = new Dictionary<menuChoises, string>()
@@ -56,7 +58,9 @@ namespace LibraryEmployeeApplication
                 {menuChoises.Intake, "Inname"},
                 {menuChoises.Dispense, "Uitgave"},
                 {menuChoises.SearchItem, "Zoek Item"},
-                {menuChoises.SearchPerson, "Zoek Persoon"}
+                {menuChoises.SearchPerson, "Zoek Persoon"},
+                {menuChoises.ItemManagement, "Beheer Items"},
+                {menuChoises.EmployeeManagement, "Beheer Personeel"}
             };
             this.menuChoisesEnglish = new Dictionary<menuChoises, string>()
             {
@@ -64,7 +68,9 @@ namespace LibraryEmployeeApplication
                 {menuChoises.Intake, "Intake"},
                 {menuChoises.Dispense, "Dispense"},
                 {menuChoises.SearchItem, "Search Item"},
-                {menuChoises.SearchPerson, "Search Person"}
+                {menuChoises.SearchPerson, "Search Person"},
+                {menuChoises.ItemManagement, "Manage Items"},
+                {menuChoises.EmployeeManagement, "Manage Employees"}
             };
 
             foreach (Label label in menuLabels)
@@ -110,7 +116,7 @@ namespace LibraryEmployeeApplication
 
         private void OpenForm(menuChoises choise)
         {
-            switch(choise)
+            switch (choise)
             {
                 case menuChoises.Login:
                     {
@@ -143,6 +149,20 @@ namespace LibraryEmployeeApplication
                     {
                         EmployeeMemberSearchForm employeeMemberSearchForm = new EmployeeMemberSearchForm(this);
                         employeeMemberSearchForm.Show();
+                        this.Hide();
+                        break;
+                    }
+                case menuChoises.ItemManagement:
+                    {
+                        EmployeeManageItemsForm employeeManageItemsForm = new EmployeeManageItemsForm(this);
+                        employeeManageItemsForm.Show();
+                        this.Hide();
+                        break;
+                    }
+                case menuChoises.EmployeeManagement:
+                    {
+                        EmployeeManageEmployeesForm employeeManageEmployeesForm = new EmployeeManageEmployeesForm(this);
+                        employeeManageEmployeesForm.Show();
                         this.Hide();
                         break;
                     }
@@ -245,6 +265,36 @@ namespace LibraryEmployeeApplication
         private void MenuLabel5_Click(object sender, EventArgs e)
         {
             OpenForm(menuLabelAssignment[MenuLabel5]);
+        }
+
+        private void MenuLabel6_Click(object sender, EventArgs e)
+        {
+            OpenForm(menuLabelAssignment[MenuLabel6]);
+        }
+
+        private void MenuLabel7_Click(object sender, EventArgs e)
+        {
+            OpenForm(menuLabelAssignment[MenuLabel7]);
+        }
+
+        private void MenuLabel6_MouseEnter(object sender, EventArgs e)
+        {
+            MenuLabel6.Font = this.hoverMenuFont;
+        }
+
+        private void MenuLabel6_MouseLeave(object sender, EventArgs e)
+        {
+            MenuLabel6.Font = this.menuFont;
+        }
+
+        private void MenuLabel7_MouseEnter(object sender, EventArgs e)
+        {
+            MenuLabel7.Font = this.hoverMenuFont;
+        }
+
+        private void MenuLabel7_MouseLeave(object sender, EventArgs e)
+        {
+            MenuLabel7.Font = this.menuFont;
         }
     }
 }
