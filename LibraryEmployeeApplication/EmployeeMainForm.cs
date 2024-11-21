@@ -132,8 +132,7 @@ namespace LibraryEmployeeApplication
                 TableLayoutPanel[] messagePanels = new TableLayoutPanel[news.Count];
                 Label[] titleLabels = new Label[news.Count];
                 Label[] contentLabels = new Label[news.Count];
-                Label[] pictureLabels = new Label[news.Count];
-                Label[] targetLabels = new Label[news.Count];
+                PictureBox[] pictureBoxes = new PictureBox[news.Count];
                 NewsTablePanel.RowCount = news.Count;
 
                 for (int i = 0; i < news.Count; i++)
@@ -141,19 +140,43 @@ namespace LibraryEmployeeApplication
                     messagePanels[i] = new TableLayoutPanel();
                     titleLabels[i] = new Label();
                     contentLabels[i] = new Label();
-                    pictureLabels[i] = new Label();
-                    targetLabels[i] = new Label();
+                    pictureBoxes[i] = new PictureBox();
+
+                    pictureBoxes[i].Size = new System.Drawing.Size(500, 500);
+                    titleLabels[i].AutoSize = true;
+                    contentLabels[i].Width = 600;
+                    contentLabels[i].AutoSize = true;
+
                     NewsTablePanel.Controls.Add(messagePanels[i], 0, i);
 
                     titleLabels[i].Text = news[i].title;
+                    titleLabels[i].Font = this.menuFont;
                     contentLabels[i].Text = news[i].content;
-                    pictureLabels[i].Text = news[i].picture;
-                    targetLabels[i].Text = news[i].target;
+                    pictureBoxes[i].Text = news[i].picture;
+                    if (news[i].picture != null && news[i].picture != "")
+                    {
+                        pictureBoxes[i].Load(newsImages + @"\" + news[i].picture);
+                    }
+                    else
+                    {
+                        pictureBoxes[i].Load(newsImages + @"\news.bmp");
+                    }
 
+                    
+                    messagePanels[i].ColumnStyles.Clear();
+                    messagePanels[i].RowStyles.Clear();
+                    messagePanels[i].ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                    messagePanels[i].ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                    messagePanels[i].RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                    messagePanels[i].RowStyles.Add(new RowStyle(SizeType.AutoSize));
                     messagePanels[i].Controls.Add(titleLabels[i], 0, 0);
-                    messagePanels[i].Controls.Add(contentLabels[i], 0, 1);
-                    messagePanels[i].Controls.Add(pictureLabels[i], 1, 0);
-                    messagePanels[i].Controls.Add(targetLabels[i], 1, 1);
+                    messagePanels[i].Controls.Add(contentLabels[i], 1, 1);
+                    messagePanels[i].Controls.Add(pictureBoxes[i], 1, 0);
+                    pictureBoxes[i].SizeMode = PictureBoxSizeMode.StretchImage;
+                    pictureBoxes[i].Show();
+
+                    messagePanels[i].SetColumnSpan(titleLabels[i], 2);
+                    
                 }
             }
         }
