@@ -1,5 +1,5 @@
-﻿using LibraryDatabase;
-using LibraryModels;
+﻿using Database;
+using Models;
 using MySqlX.XDevAPI;
 using MySql.Data;
 using MySql.Data.MySqlClient;

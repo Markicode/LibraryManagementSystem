@@ -32,13 +32,14 @@
             LogoPictureBox = new PictureBox();
             CloseButtonLabel = new Label();
             MenuLabel1 = new Label();
-            label1 = new Label();
+            WelcomeLabel = new Label();
             MenuLabel2 = new Label();
             MenuLabel3 = new Label();
             MenuLabel4 = new Label();
             MenuLabel5 = new Label();
             MenuLabel6 = new Label();
             MenuLabel7 = new Label();
+            NewsTablePanel = new TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)LogoPictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -80,13 +81,15 @@
             MenuLabel1.MouseEnter += MenuLabel1_MouseEnter;
             MenuLabel1.MouseLeave += MenuLabel1_MouseLeave;
             // 
-            // label1
+            // WelcomeLabel
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(245, 163);
-            label1.Name = "label1";
-            label1.Size = new Size(0, 15);
-            label1.TabIndex = 3;
+            WelcomeLabel.AutoSize = true;
+            WelcomeLabel.Font = new Font("Lato", 14F, FontStyle.Regular, GraphicsUnit.Point);
+            WelcomeLabel.Location = new Point(240, 175);
+            WelcomeLabel.Name = "WelcomeLabel";
+            WelcomeLabel.Size = new Size(89, 23);
+            WelcomeLabel.TabIndex = 3;
+            WelcomeLabel.Text = "Welcome";
             // 
             // MenuLabel2
             // 
@@ -172,19 +175,34 @@
             MenuLabel7.MouseEnter += MenuLabel7_MouseEnter;
             MenuLabel7.MouseLeave += MenuLabel7_MouseLeave;
             // 
+            // NewsTablePanel
+            // 
+            NewsTablePanel.AutoScroll = true;
+            NewsTablePanel.ColumnCount = 1;
+            NewsTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            NewsTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            NewsTablePanel.Location = new Point(240, 220);
+            NewsTablePanel.Name = "NewsTablePanel";
+            NewsTablePanel.RowCount = 1;
+            NewsTablePanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            NewsTablePanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            NewsTablePanel.Size = new Size(1063, 320);
+            NewsTablePanel.TabIndex = 10;
+            // 
             // EmployeeMainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1336, 552);
+            Controls.Add(NewsTablePanel);
             Controls.Add(MenuLabel7);
             Controls.Add(MenuLabel6);
             Controls.Add(MenuLabel5);
             Controls.Add(MenuLabel4);
             Controls.Add(MenuLabel3);
             Controls.Add(MenuLabel2);
-            Controls.Add(label1);
+            Controls.Add(WelcomeLabel);
             Controls.Add(MenuLabel1);
             Controls.Add(LogoPictureBox);
             Controls.Add(CloseButtonLabel);
@@ -199,12 +217,13 @@
         private PictureBox LogoPictureBox;
         private Label CloseButtonLabel;
         private Label MenuLabel1;
-        private Label label1;
+        private Label WelcomeLabel;
         private Label MenuLabel2;
         private Label MenuLabel3;
         private Label MenuLabel4;
         private Label MenuLabel5;
         private Label MenuLabel6;
         private Label MenuLabel7;
+        private TableLayoutPanel NewsTablePanel;
     }
 }

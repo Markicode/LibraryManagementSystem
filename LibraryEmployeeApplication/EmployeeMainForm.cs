@@ -1,6 +1,6 @@
 using Controllers;
 using EmployeeApplication;
-using LibraryModels;
+using Models;
 using Mysqlx.Notice;
 
 namespace LibraryEmployeeApplication
@@ -14,7 +14,12 @@ namespace LibraryEmployeeApplication
         private Font hoverCloseButtonFont;
         public User? user { get; set; }
         private string language;
-        public AuthController authController { get; set; }
+
+        public AuthController authController;
+        public NewsController newsController;
+
+        public static string imageFiles = @"C:\\Mark\\Images\\LMS_images";
+        public static string newsImages = imageFiles + @"\news";
 
         private List<Label> menuLabels;
         private Dictionary<Label, menuChoises> menuLabelAssignment;
@@ -32,6 +37,8 @@ namespace LibraryEmployeeApplication
             GoFullscreen(true);
 
             this.authController = new AuthController();
+            this.newsController = new NewsController();
+
             this.fontFamily = new FontFamily("Lato");
             this.menuFont = new Font(this.fontFamily, 16, FontStyle.Regular);
             this.hoverMenuFont = new Font(this.fontFamily, 16, FontStyle.Bold);
@@ -40,6 +47,7 @@ namespace LibraryEmployeeApplication
             this.language = "NL";
             this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5, MenuLabel6, MenuLabel7 };
             this.authController.LoggedIn += UpdateMenu;
+            this.authController.LoggedIn += ShowNews;
 
             this.menuLabelAssignment = new Dictionary<Label, menuChoises>()
             {
@@ -91,6 +99,7 @@ namespace LibraryEmployeeApplication
                 }
             }
 
+            
 
         }
 
@@ -111,7 +120,42 @@ namespace LibraryEmployeeApplication
 
         public void WelcomeUser(User user)
         {
-            label1.Text = $"Hallo {user.email}, gebruik het menu om te beginnen.";
+            WelcomeLabel.Text = $"Hallo {user.email}, gebruik het menu om te beginnen.";
+        }
+
+        public void ShowNews()
+        {
+            List<NewsMessage> news = new List<NewsMessage>();
+            news = newsController.GetAllNews();
+            if(news != null && news.Count > 0) 
+            {
+                TableLayoutPanel[] messagePanels = new TableLayoutPanel[news.Count];
+                Label[] titleLabels = new Label[news.Count];
+                Label[] contentLabels = new Label[news.Count];
+                Label[] pictureLabels = new Label[news.Count];
+                Label[] targetLabels = new Label[news.Count];
+                NewsTablePanel.RowCount = news.Count;
+
+                for (int i = 0; i < news.Count; i++)
+                {
+                    messagePanels[i] = new TableLayoutPanel();
+                    titleLabels[i] = new Label();
+                    contentLabels[i] = new Label();
+                    pictureLabels[i] = new Label();
+                    targetLabels[i] = new Label();
+                    NewsTablePanel.Controls.Add(messagePanels[i], 0, i);
+
+                    titleLabels[i].Text = news[i].title;
+                    contentLabels[i].Text = news[i].content;
+                    pictureLabels[i].Text = news[i].picture;
+                    targetLabels[i].Text = news[i].target;
+
+                    messagePanels[i].Controls.Add(titleLabels[i], 0, 0);
+                    messagePanels[i].Controls.Add(contentLabels[i], 0, 1);
+                    messagePanels[i].Controls.Add(pictureLabels[i], 1, 0);
+                    messagePanels[i].Controls.Add(targetLabels[i], 1, 1);
+                }
+            }
         }
 
         private void OpenForm(menuChoises choise)

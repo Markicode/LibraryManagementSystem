@@ -1,4 +1,4 @@
-﻿namespace LibraryDatabase
+﻿namespace Database
 {
     using MySql.Data;
     using MySql.Data.MySqlClient;

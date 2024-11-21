@@ -5,9 +5,9 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LibraryDatabase;
+using Database;
 
-namespace LibraryModels
+namespace Models
 {
     public abstract class Model
     {
@@ -17,7 +17,7 @@ namespace LibraryModels
 
         protected Model() 
         { 
-            this.dbConn = new DbConn("localhost", "test", "mark", "FakePassword");
+            this.dbConn = new DbConn("localhost", "lms_woordenschat", "mark", "FakePassword");
         }
 
         public object this[string propertyName]
