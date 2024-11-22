@@ -8,6 +8,7 @@ namespace LibraryEmployeeApplication
     public partial class EmployeeMainForm : Form
     {
         private FontFamily fontFamily;
+        private Font textFont;
         private Font menuFont;
         private Font hoverMenuFont;
         private Font closeButtonFont;
@@ -40,6 +41,7 @@ namespace LibraryEmployeeApplication
             this.newsController = new NewsController();
 
             this.fontFamily = new FontFamily("Lato");
+            this.textFont = new Font(this.fontFamily, 10, FontStyle.Regular);
             this.menuFont = new Font(this.fontFamily, 16, FontStyle.Regular);
             this.hoverMenuFont = new Font(this.fontFamily, 16, FontStyle.Bold);
             this.closeButtonFont = new Font(this.fontFamily, 24, FontStyle.Regular);
@@ -98,7 +100,7 @@ namespace LibraryEmployeeApplication
                     label.Text = menuChoisesEnglish[menuLabelAssignment[label]];
                 }
             }
-
+            this.ShowNews();
             
 
         }
@@ -129,30 +131,47 @@ namespace LibraryEmployeeApplication
             news = newsController.GetAllNews();
             if(news != null && news.Count > 0) 
             {
+                TableLayoutPanel NewsTablePanel = new TableLayoutPanel();
                 TableLayoutPanel[] messagePanels = new TableLayoutPanel[news.Count];
                 Label[] titleLabels = new Label[news.Count];
                 Label[] contentLabels = new Label[news.Count];
                 PictureBox[] pictureBoxes = new PictureBox[news.Count];
+                Label[] targetLabels = new Label[news.Count];
+                NewsTablePanel.ColumnCount = 1;
                 NewsTablePanel.RowCount = news.Count;
-
+                NewsTablePanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
+                NewsTablePanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                NewsTablePanel.RowStyles.Clear();
+                NewsTablePanel.ColumnStyles.Clear();
+                NewsTablePanel.Size = new System.Drawing.Size(Screen.PrimaryScreen.Bounds.Width - 275, Screen.PrimaryScreen.Bounds.Height - 250);
+                NewsTablePanel.Location = new System.Drawing.Point(240, 220);
+                NewsTablePanel.AutoScroll = true;
+                this.Controls.Add(NewsTablePanel);
+                
                 for (int i = 0; i < news.Count; i++)
                 {
+                    NewsTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+                    NewsTablePanel.RowStyles.Add(new ColumnStyle(SizeType.AutoSize));
                     messagePanels[i] = new TableLayoutPanel();
+                    messagePanels[i].RowCount = 2;
+                    messagePanels[i].ColumnCount = 2;
+                    messagePanels[i].Dock = DockStyle.Fill;
+                    messagePanels[i].AutoSize = true;
                     titleLabels[i] = new Label();
                     contentLabels[i] = new Label();
-                    pictureBoxes[i] = new PictureBox();
+                    //pictureBoxes[i] = new PictureBox();
+                    targetLabels[i] = new Label();
 
-                    pictureBoxes[i].Size = new System.Drawing.Size(500, 500);
-                    titleLabels[i].AutoSize = true;
-                    contentLabels[i].Width = 600;
-                    contentLabels[i].AutoSize = true;
+                    NewsTablePanel.Controls.Add(messagePanels[i], 1, i);
+                    //pictureBoxes[i].Size = new System.Drawing.Size(500, 500);
+                    //titleLabels[i].AutoSize = true;
+                    //contentLabels[i].Width = 600;
+                    //contentLabels[i].AutoSize = true;
 
-                    NewsTablePanel.Controls.Add(messagePanels[i], 0, i);
+                    //NewsTablePanel.Controls.Add(messagePanels[i], 0, i);
 
-                    titleLabels[i].Text = news[i].title;
-                    titleLabels[i].Font = this.menuFont;
-                    contentLabels[i].Text = news[i].content;
-                    pictureBoxes[i].Text = news[i].picture;
+                    
+                    /*pictureBoxes[i].Text = news[i].picture;
                     if (news[i].picture != null && news[i].picture != "")
                     {
                         pictureBoxes[i].Load(newsImages + @"\" + news[i].picture);
@@ -160,23 +179,33 @@ namespace LibraryEmployeeApplication
                     else
                     {
                         pictureBoxes[i].Load(newsImages + @"\news.bmp");
-                    }
+                    }*/
 
-                    
+                    messagePanels[i].CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
                     messagePanels[i].ColumnStyles.Clear();
                     messagePanels[i].RowStyles.Clear();
-                    messagePanels[i].ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                    messagePanels[i].ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 500));
                     messagePanels[i].ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                     messagePanels[i].RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                    messagePanels[i].RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                    messagePanels[i].RowStyles.Add(new RowStyle(SizeType.Absolute, 750));
                     messagePanels[i].Controls.Add(titleLabels[i], 0, 0);
+                    messagePanels[i].Controls.Add(targetLabels[i], 0, 1);
                     messagePanels[i].Controls.Add(contentLabels[i], 1, 1);
-                    messagePanels[i].Controls.Add(pictureBoxes[i], 1, 0);
-                    pictureBoxes[i].SizeMode = PictureBoxSizeMode.StretchImage;
-                    pictureBoxes[i].Show();
+                    //messagePanels[i].Controls.Add(pictureBoxes[i], 1, 0);
+                    //pictureBoxes[i].SizeMode = PictureBoxSizeMode.StretchImage;
+                    //pictureBoxes[i].Show();
 
                     messagePanels[i].SetColumnSpan(titleLabels[i], 2);
-                    
+
+                    titleLabels[i].AutoSize = true;
+                    titleLabels[i].Text = news[i].title;
+                    titleLabels[i].Font = this.menuFont;
+                    contentLabels[i].AutoSize = true;
+                    contentLabels[i].Text = news[i].content;
+                    contentLabels[i].Font = this.textFont;
+                    targetLabels[i].AutoSize = true;
+                    targetLabels[i].Text = news[i].target;
+                    targetLabels[i].Font = this.textFont;
                 }
             }
         }
