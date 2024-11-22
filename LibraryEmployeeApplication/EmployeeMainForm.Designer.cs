@@ -39,7 +39,11 @@
             MenuLabel5 = new Label();
             MenuLabel6 = new Label();
             MenuLabel7 = new Label();
+            SettingsIconBox = new PictureBox();
+            LogoutIconBox = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)LogoPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)SettingsIconBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)LogoutIconBox).BeginInit();
             SuspendLayout();
             // 
             // LogoPictureBox
@@ -47,7 +51,7 @@
             LogoPictureBox.Image = (Image)resources.GetObject("LogoPictureBox.Image");
             LogoPictureBox.Location = new Point(12, 12);
             LogoPictureBox.Name = "LogoPictureBox";
-            LogoPictureBox.Size = new Size(1203, 121);
+            LogoPictureBox.Size = new Size(1176, 121);
             LogoPictureBox.TabIndex = 0;
             LogoPictureBox.TabStop = false;
             // 
@@ -174,12 +178,32 @@
             MenuLabel7.MouseEnter += MenuLabel7_MouseEnter;
             MenuLabel7.MouseLeave += MenuLabel7_MouseLeave;
             // 
+            // SettingsIconBox
+            // 
+            SettingsIconBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            SettingsIconBox.Location = new Point(1223, 12);
+            SettingsIconBox.Name = "SettingsIconBox";
+            SettingsIconBox.Size = new Size(40, 40);
+            SettingsIconBox.TabIndex = 10;
+            SettingsIconBox.TabStop = false;
+            // 
+            // LogoutIconBox
+            // 
+            LogoutIconBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            LogoutIconBox.Location = new Point(1181, 12);
+            LogoutIconBox.Name = "LogoutIconBox";
+            LogoutIconBox.Size = new Size(40, 40);
+            LogoutIconBox.TabIndex = 11;
+            LogoutIconBox.TabStop = false;
+            // 
             // EmployeeMainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1336, 552);
+            Controls.Add(LogoutIconBox);
+            Controls.Add(SettingsIconBox);
             Controls.Add(MenuLabel7);
             Controls.Add(MenuLabel6);
             Controls.Add(MenuLabel5);
@@ -193,6 +217,8 @@
             Name = "EmployeeMainForm";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)LogoPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)SettingsIconBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)LogoutIconBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -208,5 +234,7 @@
         private Label MenuLabel5;
         private Label MenuLabel6;
         private Label MenuLabel7;
+        private PictureBox SettingsIconBox;
+        private PictureBox LogoutIconBox;
     }
 }

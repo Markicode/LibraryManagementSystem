@@ -3,19 +3,23 @@ using EmployeeApplication;
 using Models;
 using Mysqlx.Notice;
 
+
 namespace LibraryEmployeeApplication
 {
     public partial class EmployeeMainForm : Form
     {
-        private FontFamily fontFamily;
+        // Styling
         private Font textFont;
         private Font menuFont;
         private Font hoverMenuFont;
         private Font closeButtonFont;
         private Font hoverCloseButtonFont;
-        public User? user { get; set; }
         private string language;
+        public static FontFamily fontFamily = new FontFamily("Lato");
+        public static Color orangeColor = Color.FromArgb(255, 76, 0);
+        public static Color purpleColor = Color.FromArgb(33, 0, 127);
 
+        public User? user { get; set; }
         public AuthController authController;
         public NewsController newsController;
 
@@ -40,12 +44,11 @@ namespace LibraryEmployeeApplication
             this.authController = new AuthController();
             this.newsController = new NewsController();
 
-            this.fontFamily = new FontFamily("Lato");
-            this.textFont = new Font(this.fontFamily, 10, FontStyle.Regular);
-            this.menuFont = new Font(this.fontFamily, 16, FontStyle.Regular);
-            this.hoverMenuFont = new Font(this.fontFamily, 16, FontStyle.Bold);
-            this.closeButtonFont = new Font(this.fontFamily, 24, FontStyle.Regular);
-            this.hoverCloseButtonFont = new Font(this.fontFamily, 24, FontStyle.Bold);
+            this.textFont = new Font(EmployeeMainForm.fontFamily, 10, FontStyle.Regular);
+            this.menuFont = new Font(EmployeeMainForm.fontFamily, 16, FontStyle.Regular);
+            this.hoverMenuFont = new Font(EmployeeMainForm.fontFamily, 16, FontStyle.Bold);
+            this.closeButtonFont = new Font(EmployeeMainForm.fontFamily, 24, FontStyle.Regular);
+            this.hoverCloseButtonFont = new Font(EmployeeMainForm.fontFamily, 24, FontStyle.Bold);
             this.language = "NL";
             this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5, MenuLabel6, MenuLabel7 };
             this.authController.LoggedIn += UpdateMenu;
@@ -61,7 +64,6 @@ namespace LibraryEmployeeApplication
                 {MenuLabel6, menuChoises.ItemManagement},
                 {MenuLabel7, menuChoises.EmployeeManagement}
             };
-
             this.menuChoisesDutch = new Dictionary<menuChoises, string>()
             {
                 {menuChoises.Login, "Login"},
@@ -83,6 +85,7 @@ namespace LibraryEmployeeApplication
                 {menuChoises.EmployeeManagement, "Manage Employees"}
             };
 
+            WelcomeLabel.Visible = false;
             foreach (Label label in menuLabels)
             {
                 label.Enabled = false;
@@ -100,7 +103,7 @@ namespace LibraryEmployeeApplication
                     label.Text = menuChoisesEnglish[menuLabelAssignment[label]];
                 }
             }
-            this.ShowNews();
+
             
 
         }
@@ -123,6 +126,7 @@ namespace LibraryEmployeeApplication
         public void WelcomeUser(User user)
         {
             WelcomeLabel.Text = $"Hallo {user.email}, gebruik het menu om te beginnen.";
+            WelcomeLabel.Visible = true;
         }
 
         public void ShowNews()
@@ -136,10 +140,13 @@ namespace LibraryEmployeeApplication
                 Label[] titleLabels = new Label[news.Count];
                 Label[] contentLabels = new Label[news.Count];
                 PictureBox[] pictureBoxes = new PictureBox[news.Count];
-                Label[] targetLabels = new Label[news.Count];
+                //Label[] targetLabels = new Label[news.Count];
                 NewsTablePanel.ColumnCount = 1;
                 NewsTablePanel.RowCount = news.Count;
-                NewsTablePanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
+                //NewsTablePanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
+                
+                NewsTablePanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+                
                 NewsTablePanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
                 NewsTablePanel.RowStyles.Clear();
                 NewsTablePanel.ColumnStyles.Clear();
@@ -147,7 +154,7 @@ namespace LibraryEmployeeApplication
                 NewsTablePanel.Location = new System.Drawing.Point(240, 220);
                 NewsTablePanel.AutoScroll = true;
                 this.Controls.Add(NewsTablePanel);
-                
+               
                 for (int i = 0; i < news.Count; i++)
                 {
                     NewsTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -159,19 +166,11 @@ namespace LibraryEmployeeApplication
                     messagePanels[i].AutoSize = true;
                     titleLabels[i] = new Label();
                     contentLabels[i] = new Label();
-                    //pictureBoxes[i] = new PictureBox();
-                    targetLabels[i] = new Label();
+                    pictureBoxes[i] = new PictureBox();
 
                     NewsTablePanel.Controls.Add(messagePanels[i], 1, i);
-                    //pictureBoxes[i].Size = new System.Drawing.Size(500, 500);
-                    //titleLabels[i].AutoSize = true;
-                    //contentLabels[i].Width = 600;
-                    //contentLabels[i].AutoSize = true;
-
-                    //NewsTablePanel.Controls.Add(messagePanels[i], 0, i);
-
-                    
-                    /*pictureBoxes[i].Text = news[i].picture;
+                    pictureBoxes[i].Size = new System.Drawing.Size(300, 300);
+                    pictureBoxes[i].Text = news[i].picture;
                     if (news[i].picture != null && news[i].picture != "")
                     {
                         pictureBoxes[i].Load(newsImages + @"\" + news[i].picture);
@@ -179,20 +178,19 @@ namespace LibraryEmployeeApplication
                     else
                     {
                         pictureBoxes[i].Load(newsImages + @"\news.bmp");
-                    }*/
+                    }
 
-                    messagePanels[i].CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
-                    messagePanels[i].ColumnStyles.Clear();
-                    messagePanels[i].RowStyles.Clear();
-                    messagePanels[i].ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 500));
+                    //messagePanels[i].CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
+                    //messagePanels[i].ColumnStyles.Clear();
+                    //messagePanels[i].RowStyles.Clear();
+                    messagePanels[i].ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 300));
                     messagePanels[i].ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                     messagePanels[i].RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                    messagePanels[i].RowStyles.Add(new RowStyle(SizeType.Absolute, 750));
+                    messagePanels[i].RowStyles.Add(new RowStyle(SizeType.AutoSize));
                     messagePanels[i].Controls.Add(titleLabels[i], 0, 0);
-                    messagePanels[i].Controls.Add(targetLabels[i], 0, 1);
+                    messagePanels[i].Controls.Add(pictureBoxes[i], 0, 1);
                     messagePanels[i].Controls.Add(contentLabels[i], 1, 1);
-                    //messagePanels[i].Controls.Add(pictureBoxes[i], 1, 0);
-                    //pictureBoxes[i].SizeMode = PictureBoxSizeMode.StretchImage;
+                    pictureBoxes[i].SizeMode = PictureBoxSizeMode.StretchImage;
                     //pictureBoxes[i].Show();
 
                     messagePanels[i].SetColumnSpan(titleLabels[i], 2);
@@ -203,9 +201,7 @@ namespace LibraryEmployeeApplication
                     contentLabels[i].AutoSize = true;
                     contentLabels[i].Text = news[i].content;
                     contentLabels[i].Font = this.textFont;
-                    targetLabels[i].AutoSize = true;
-                    targetLabels[i].Text = news[i].target;
-                    targetLabels[i].Font = this.textFont;
+
                 }
             }
         }
@@ -275,12 +271,14 @@ namespace LibraryEmployeeApplication
 
         private void CloseButtonLabel_MouseEnter(object sender, EventArgs e)
         {
-            CloseButtonLabel.Font = this.hoverCloseButtonFont;
+            //CloseButtonLabel.Font = this.hoverCloseButtonFont;
+            CloseButtonLabel.ForeColor = EmployeeMainForm.purpleColor;
         }
 
         private void CloseButtonLabel_MouseLeave(object sender, EventArgs e)
         {
             CloseButtonLabel.Font = this.closeButtonFont;
+            CloseButtonLabel.ForeColor = Color.FromArgb(255, 76, 0);
         }
 
         private void CloseButtonLabel_Click(object sender, EventArgs e)
