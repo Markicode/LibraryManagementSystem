@@ -1,5 +1,6 @@
 using Controllers;
 using EmployeeApplication;
+using GlobalApplicationVariables;
 using Models;
 using Mysqlx.Notice;
 
@@ -8,32 +9,22 @@ namespace LibraryEmployeeApplication
 {
     public partial class EmployeeMainForm : Form
     {
-        // Styling
-        private Font textFont;
-        private Font menuFont;
-        private Font hoverMenuFont;
-        private Font closeButtonFont;
-        private Font hoverCloseButtonFont;
+        // Form variables declaration.
         private string language;
-        public static FontFamily fontFamily = new FontFamily("Lato");
-        public static Color orangeColor = Color.FromArgb(255, 76, 0);
-        public static Color purpleColor = Color.FromArgb(33, 0, 127);
 
         public User? user { get; set; }
         public AuthController authController;
         public NewsController newsController;
 
-        public static string imageFiles = @"C:\\Mark\\Images\\LMS_images";
-        public static string newsImages = imageFiles + @"\news";
-
         private List<Label> menuLabels;
         private Dictionary<Label, menuChoises> menuLabelAssignment;
         private Dictionary<menuChoises, string> menuChoisesDutch;
         private Dictionary<menuChoises, string> menuChoisesEnglish;
+        private TableLayoutPanel NewsTablePanel;
 
         public enum menuChoises
         {
-            Login = 0, Intake = 1, Dispense = 2, SearchItem = 3, SearchPerson = 4, ItemManagement = 5, EmployeeManagement = 6
+            Login = 0, Intake = 1, Dispense = 2, SearchItem = 3, SearchPerson = 4, ItemManagement = 5, EmployeeManagement = 6, MemberManagement = 7
         }
 
         public EmployeeMainForm()
@@ -44,13 +35,8 @@ namespace LibraryEmployeeApplication
             this.authController = new AuthController();
             this.newsController = new NewsController();
 
-            this.textFont = new Font(EmployeeMainForm.fontFamily, 10, FontStyle.Regular);
-            this.menuFont = new Font(EmployeeMainForm.fontFamily, 16, FontStyle.Regular);
-            this.hoverMenuFont = new Font(EmployeeMainForm.fontFamily, 16, FontStyle.Bold);
-            this.closeButtonFont = new Font(EmployeeMainForm.fontFamily, 24, FontStyle.Regular);
-            this.hoverCloseButtonFont = new Font(EmployeeMainForm.fontFamily, 24, FontStyle.Bold);
             this.language = "NL";
-            this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5, MenuLabel6, MenuLabel7 };
+            this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5, MenuLabel6, MenuLabel7, MenuLabel8 };
             this.authController.LoggedIn += UpdateMenu;
             this.authController.LoggedIn += ShowNews;
 
@@ -61,8 +47,9 @@ namespace LibraryEmployeeApplication
                 {MenuLabel3, menuChoises.Dispense},
                 {MenuLabel4, menuChoises.SearchItem},
                 {MenuLabel5, menuChoises.SearchPerson},
-                {MenuLabel6, menuChoises.ItemManagement},
-                {MenuLabel7, menuChoises.EmployeeManagement}
+                {MenuLabel6, menuChoises.MemberManagement},
+                {MenuLabel7, menuChoises.ItemManagement},
+                {MenuLabel8, menuChoises.EmployeeManagement}
             };
             this.menuChoisesDutch = new Dictionary<menuChoises, string>()
             {
@@ -72,7 +59,8 @@ namespace LibraryEmployeeApplication
                 {menuChoises.SearchItem, "Zoek Item"},
                 {menuChoises.SearchPerson, "Zoek Persoon"},
                 {menuChoises.ItemManagement, "Beheer Items"},
-                {menuChoises.EmployeeManagement, "Beheer Personeel"}
+                {menuChoises.EmployeeManagement, "Beheer Personeel"},
+                {menuChoises.MemberManagement, "Beheer Leden" }
             };
             this.menuChoisesEnglish = new Dictionary<menuChoises, string>()
             {
@@ -82,10 +70,16 @@ namespace LibraryEmployeeApplication
                 {menuChoises.SearchItem, "Search Item"},
                 {menuChoises.SearchPerson, "Search Person"},
                 {menuChoises.ItemManagement, "Manage Items"},
-                {menuChoises.EmployeeManagement, "Manage Employees"}
+                {menuChoises.EmployeeManagement, "Manage Employees"},
+                {menuChoises.MemberManagement, "Manage Members"}
             };
 
+            CloseIconBox.Load(AppDirectory.iconImages + @"\ClosebuttonOrange.bmp");
             WelcomeLabel.Visible = false;
+            SettingsIconBox.Enabled = false;
+            LogoutIconBox.Enabled = false;
+            this.NewsTablePanel = new TableLayoutPanel();
+
             foreach (Label label in menuLabels)
             {
                 label.Enabled = false;
@@ -104,7 +98,7 @@ namespace LibraryEmployeeApplication
                 }
             }
 
-            
+
 
         }
 
@@ -126,16 +120,21 @@ namespace LibraryEmployeeApplication
         public void WelcomeUser(User user)
         {
             WelcomeLabel.Text = $"Hallo {user.email}, gebruik het menu om te beginnen.";
+            SettingsIconBox.Load(AppDirectory.iconImages + @"\SettingsbuttonOrange.bmp");
+            LogoutIconBox.Load(AppDirectory.iconImages + @"\LogoutbuttonOrange.bmp");
             WelcomeLabel.Visible = true;
+            SettingsIconBox.Visible = true;
+            LogoutIconBox.Visible = true;
+            SettingsIconBox.Enabled = true;
+            LogoutIconBox.Enabled = true;
         }
 
         public void ShowNews()
         {
             List<NewsMessage> news = new List<NewsMessage>();
             news = newsController.GetAllNews();
-            if(news != null && news.Count > 0) 
+            if (news != null && news.Count > 0)
             {
-                TableLayoutPanel NewsTablePanel = new TableLayoutPanel();
                 TableLayoutPanel[] messagePanels = new TableLayoutPanel[news.Count];
                 Label[] titleLabels = new Label[news.Count];
                 Label[] contentLabels = new Label[news.Count];
@@ -144,9 +143,9 @@ namespace LibraryEmployeeApplication
                 NewsTablePanel.ColumnCount = 1;
                 NewsTablePanel.RowCount = news.Count;
                 //NewsTablePanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
-                
+
                 NewsTablePanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-                
+
                 NewsTablePanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
                 NewsTablePanel.RowStyles.Clear();
                 NewsTablePanel.ColumnStyles.Clear();
@@ -154,7 +153,8 @@ namespace LibraryEmployeeApplication
                 NewsTablePanel.Location = new System.Drawing.Point(240, 220);
                 NewsTablePanel.AutoScroll = true;
                 this.Controls.Add(NewsTablePanel);
-               
+                NewsTablePanel.Visible = true;
+
                 for (int i = 0; i < news.Count; i++)
                 {
                     NewsTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -173,11 +173,11 @@ namespace LibraryEmployeeApplication
                     pictureBoxes[i].Text = news[i].picture;
                     if (news[i].picture != null && news[i].picture != "")
                     {
-                        pictureBoxes[i].Load(newsImages + @"\" + news[i].picture);
+                        pictureBoxes[i].Load(AppDirectory.newsImages + @"\" + news[i].picture);
                     }
                     else
                     {
-                        pictureBoxes[i].Load(newsImages + @"\news.bmp");
+                        pictureBoxes[i].Load(AppDirectory.newsImages + @"\news.bmp");
                     }
 
                     //messagePanels[i].CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
@@ -197,10 +197,10 @@ namespace LibraryEmployeeApplication
 
                     titleLabels[i].AutoSize = true;
                     titleLabels[i].Text = news[i].title;
-                    titleLabels[i].Font = this.menuFont;
+                    titleLabels[i].Font = Style.menuFont;
                     contentLabels[i].AutoSize = true;
                     contentLabels[i].Text = news[i].content;
-                    contentLabels[i].Font = this.textFont;
+                    contentLabels[i].Font = Style.textFont;
 
                 }
             }
@@ -269,31 +269,25 @@ namespace LibraryEmployeeApplication
             }
         }
 
-        private void CloseButtonLabel_MouseEnter(object sender, EventArgs e)
+        public void Logout()
         {
-            //CloseButtonLabel.Font = this.hoverCloseButtonFont;
-            CloseButtonLabel.ForeColor = EmployeeMainForm.purpleColor;
-        }
+            this.user = null;
+            NewsTablePanel.Visible = false;
+            SettingsIconBox.Visible = false;
+            LogoutIconBox.Visible = false;
+            SettingsIconBox.Enabled = false;
+            LogoutIconBox.Enabled = false;
 
-        private void CloseButtonLabel_MouseLeave(object sender, EventArgs e)
-        {
-            CloseButtonLabel.Font = this.closeButtonFont;
-            CloseButtonLabel.ForeColor = Color.FromArgb(255, 76, 0);
-        }
-
-        private void CloseButtonLabel_Click(object sender, EventArgs e)
-        {
-            Environment.Exit(0);
         }
 
         private void MenuLabel1_MouseEnter(object sender, EventArgs e)
         {
-            MenuLabel1.Font = this.hoverMenuFont;
+            MenuLabel1.Font = Style.hoverMenuFont;
         }
 
         private void MenuLabel1_MouseLeave(object sender, EventArgs e)
         {
-            MenuLabel1.Font = this.menuFont;
+            MenuLabel1.Font = Style.menuFont;
         }
 
         private void MenuLabel1_Click(object sender, EventArgs e)
@@ -303,12 +297,12 @@ namespace LibraryEmployeeApplication
 
         private void MenuLabel2_MouseEnter(object sender, EventArgs e)
         {
-            MenuLabel2.Font = this.hoverMenuFont;
+            MenuLabel2.Font = Style.hoverMenuFont;
         }
 
         private void MenuLabel2_MouseLeave(object sender, EventArgs e)
         {
-            MenuLabel2.Font = this.menuFont;
+            MenuLabel2.Font = Style.menuFont;
         }
 
         private void MenuLabel2_Click(object sender, EventArgs e)
@@ -318,12 +312,12 @@ namespace LibraryEmployeeApplication
 
         private void MenuLabel3_MouseEnter(object sender, EventArgs e)
         {
-            MenuLabel3.Font = this.hoverMenuFont;
+            MenuLabel3.Font = Style.hoverMenuFont;
         }
 
         private void MenuLabel3_MouseLeave(object sender, EventArgs e)
         {
-            MenuLabel3.Font = this.menuFont;
+            MenuLabel3.Font = Style.menuFont;
         }
 
         private void MenuLabel3_Click(object sender, EventArgs e)
@@ -333,12 +327,12 @@ namespace LibraryEmployeeApplication
 
         private void MenuLabel4_MouseEnter(object sender, EventArgs e)
         {
-            MenuLabel4.Font = this.hoverMenuFont;
+            MenuLabel4.Font = Style.hoverMenuFont;
         }
 
         private void MenuLabel4_MouseLeave(object sender, EventArgs e)
         {
-            MenuLabel4.Font = this.menuFont;
+            MenuLabel4.Font = Style.menuFont;
         }
 
         private void MenuLabel4_Click(object sender, EventArgs e)
@@ -348,12 +342,12 @@ namespace LibraryEmployeeApplication
 
         private void MenuLabel5_MouseEnter(object sender, EventArgs e)
         {
-            MenuLabel5.Font = this.hoverMenuFont;
+            MenuLabel5.Font = Style.hoverMenuFont;
         }
 
         private void MenuLabel5_MouseLeave(object sender, EventArgs e)
         {
-            MenuLabel5.Font = this.menuFont;
+            MenuLabel5.Font = Style.menuFont;
         }
 
         private void MenuLabel5_Click(object sender, EventArgs e)
@@ -373,22 +367,82 @@ namespace LibraryEmployeeApplication
 
         private void MenuLabel6_MouseEnter(object sender, EventArgs e)
         {
-            MenuLabel6.Font = this.hoverMenuFont;
+            MenuLabel6.Font = Style.hoverMenuFont;
         }
 
         private void MenuLabel6_MouseLeave(object sender, EventArgs e)
         {
-            MenuLabel6.Font = this.menuFont;
+            MenuLabel6.Font = Style.menuFont;
         }
 
         private void MenuLabel7_MouseEnter(object sender, EventArgs e)
         {
-            MenuLabel7.Font = this.hoverMenuFont;
+            MenuLabel7.Font = Style.hoverMenuFont;
         }
 
         private void MenuLabel7_MouseLeave(object sender, EventArgs e)
         {
-            MenuLabel7.Font = this.menuFont;
+            MenuLabel7.Font = Style.menuFont;
+        }
+
+        private void MenuLabel8_MouseEnter(object sender, EventArgs e)
+        {
+            MenuLabel8.Font = Style.hoverMenuFont;
+        }
+
+        private void MenuLabel8_MouseLeave(object sender, EventArgs e)
+        {
+            MenuLabel8.Font = Style.menuFont;
+        }
+
+        private void MenuLabel8_Click(object sender, EventArgs e)
+        {
+            OpenForm(menuLabelAssignment[MenuLabel7]);
+        }
+
+        private void SettingsIconBox_MouseEnter(object sender, EventArgs e)
+        {
+            SettingsIconBox.Load(AppDirectory.iconImages + @"\SettingsbuttonPurple.bmp");
+        }
+
+        private void SettingsIconBox_MouseLeave(object sender, EventArgs e)
+        {
+            SettingsIconBox.Load(AppDirectory.iconImages + @"\SettingsbuttonOrange.bmp");
+        }
+
+        private void SettingsIconBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LogoutIconBox_MouseEnter(object sender, EventArgs e)
+        {
+            LogoutIconBox.Load(AppDirectory.iconImages + @"\LogoutbuttonPurple.bmp");
+        }
+
+        private void LogoutIconBox_MouseLeave(object sender, EventArgs e)
+        {
+            LogoutIconBox.Load(AppDirectory.iconImages + @"\LogoutbuttonOrange.bmp");
+        }
+
+        private void LogoutIconBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CloseIconBox_MouseEnter(object sender, EventArgs e)
+        {
+            CloseIconBox.Load(AppDirectory.iconImages + @"\ClosebuttonPurple.bmp");
+        }
+
+        private void CloseIconBox_MouseLeave(object sender, EventArgs e)
+        {
+            CloseIconBox.Load(AppDirectory.iconImages + @"\ClosebuttonOrange.bmp");
+        }
+
+        private void CloseIconBox_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }

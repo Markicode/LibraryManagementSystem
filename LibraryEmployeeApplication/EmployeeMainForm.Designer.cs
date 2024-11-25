@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EmployeeMainForm));
             LogoPictureBox = new PictureBox();
-            CloseButtonLabel = new Label();
             MenuLabel1 = new Label();
             WelcomeLabel = new Label();
             MenuLabel2 = new Label();
@@ -41,9 +40,12 @@
             MenuLabel7 = new Label();
             SettingsIconBox = new PictureBox();
             LogoutIconBox = new PictureBox();
+            MenuLabel8 = new Label();
+            CloseIconBox = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)LogoPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)SettingsIconBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)LogoutIconBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)CloseIconBox).BeginInit();
             SuspendLayout();
             // 
             // LogoPictureBox
@@ -54,21 +56,6 @@
             LogoPictureBox.Size = new Size(1176, 121);
             LogoPictureBox.TabIndex = 0;
             LogoPictureBox.TabStop = false;
-            // 
-            // CloseButtonLabel
-            // 
-            CloseButtonLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            CloseButtonLabel.AutoSize = true;
-            CloseButtonLabel.Font = new Font("Lato", 24F, FontStyle.Regular, GraphicsUnit.Point);
-            CloseButtonLabel.ForeColor = Color.OrangeRed;
-            CloseButtonLabel.Location = new Point(1265, 12);
-            CloseButtonLabel.Name = "CloseButtonLabel";
-            CloseButtonLabel.Size = new Size(38, 39);
-            CloseButtonLabel.TabIndex = 1;
-            CloseButtonLabel.Text = "X";
-            CloseButtonLabel.Click += CloseButtonLabel_Click;
-            CloseButtonLabel.MouseEnter += CloseButtonLabel_MouseEnter;
-            CloseButtonLabel.MouseLeave += CloseButtonLabel_MouseLeave;
             // 
             // MenuLabel1
             // 
@@ -186,15 +173,47 @@
             SettingsIconBox.Size = new Size(40, 40);
             SettingsIconBox.TabIndex = 10;
             SettingsIconBox.TabStop = false;
+            SettingsIconBox.Click += SettingsIconBox_Click;
+            SettingsIconBox.MouseEnter += SettingsIconBox_MouseEnter;
+            SettingsIconBox.MouseLeave += SettingsIconBox_MouseLeave;
             // 
             // LogoutIconBox
             // 
             LogoutIconBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            LogoutIconBox.Location = new Point(1181, 12);
+            LogoutIconBox.Location = new Point(1177, 12);
             LogoutIconBox.Name = "LogoutIconBox";
             LogoutIconBox.Size = new Size(40, 40);
             LogoutIconBox.TabIndex = 11;
             LogoutIconBox.TabStop = false;
+            LogoutIconBox.Click += LogoutIconBox_Click;
+            LogoutIconBox.MouseEnter += LogoutIconBox_MouseEnter;
+            LogoutIconBox.MouseLeave += LogoutIconBox_MouseLeave;
+            // 
+            // MenuLabel8
+            // 
+            MenuLabel8.AutoSize = true;
+            MenuLabel8.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
+            MenuLabel8.ForeColor = Color.FromArgb(33, 0, 127);
+            MenuLabel8.Location = new Point(32, 490);
+            MenuLabel8.Name = "MenuLabel8";
+            MenuLabel8.Size = new Size(84, 25);
+            MenuLabel8.TabIndex = 12;
+            MenuLabel8.Text = "Menu 8";
+            MenuLabel8.Click += MenuLabel8_Click;
+            MenuLabel8.MouseEnter += MenuLabel8_MouseEnter;
+            MenuLabel8.MouseLeave += MenuLabel8_MouseLeave;
+            // 
+            // CloseIconBox
+            // 
+            CloseIconBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            CloseIconBox.Location = new Point(1269, 12);
+            CloseIconBox.Name = "CloseIconBox";
+            CloseIconBox.Size = new Size(40, 40);
+            CloseIconBox.TabIndex = 13;
+            CloseIconBox.TabStop = false;
+            CloseIconBox.Click += CloseIconBox_Click;
+            CloseIconBox.MouseEnter += CloseIconBox_MouseEnter;
+            CloseIconBox.MouseLeave += CloseIconBox_MouseLeave;
             // 
             // EmployeeMainForm
             // 
@@ -202,6 +221,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1336, 552);
+            Controls.Add(CloseIconBox);
+            Controls.Add(MenuLabel8);
             Controls.Add(LogoutIconBox);
             Controls.Add(SettingsIconBox);
             Controls.Add(MenuLabel7);
@@ -213,19 +234,18 @@
             Controls.Add(WelcomeLabel);
             Controls.Add(MenuLabel1);
             Controls.Add(LogoPictureBox);
-            Controls.Add(CloseButtonLabel);
             Name = "EmployeeMainForm";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)LogoPictureBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)SettingsIconBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)LogoutIconBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)CloseIconBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
         private PictureBox LogoPictureBox;
-        private Label CloseButtonLabel;
         private Label MenuLabel1;
         private Label WelcomeLabel;
         private Label MenuLabel2;
@@ -236,5 +256,7 @@
         private Label MenuLabel7;
         private PictureBox SettingsIconBox;
         private PictureBox LogoutIconBox;
+        private Label MenuLabel8;
+        private PictureBox CloseIconBox;
     }
 }
