@@ -1,4 +1,5 @@
 ﻿using Database;
+using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,6 +94,32 @@ namespace Models
                 }
             }
             return users;
+        }
+
+        public Employee GetEmployee(User user)
+        {
+            Employee? employee = null;
+            List<object> results = new List<object>();
+            results = dbConn.PerformQuery(
+                $"SELECT employee.id, person.id, person.first_name, person.last_name, person.birth_date, employee.user_id, employee.bsn, employee.salary " +
+                $"FROM employee " +
+                $"JOIN person ON employee.person_id = person.id " +
+                $"JOIN user ON employee.user_id = user.id " +
+                $"WHERE user.id = \"{user.id}\"");
+
+            if (results.Count > 0)
+            {
+                foreach (List<object> row in results)
+                {
+                    employee = new Employee(Convert.ToInt32(row[0]), Convert.ToInt32(row[1]), row[2].ToString(), row[3].ToString(), Convert.ToDateTime(row[4]),
+                        Convert.ToInt32(row[5]), row[6].ToString(), Convert.ToDouble(row[7]));     
+                }
+            }
+            else
+            {
+                throw new Exception();
+            }
+            return employee;
         }
     }
 }

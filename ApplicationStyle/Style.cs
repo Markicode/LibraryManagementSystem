@@ -4,7 +4,7 @@ using System.Runtime.Versioning;
 namespace GlobalApplicationVariables
 {
     [SupportedOSPlatform("windows")]
-    public class Style
+    public static class Style
     {
         public static FontFamily fontFamily = new FontFamily("Lato"); 
         public static Color orangeColor = Color.FromArgb(255, 76, 0);

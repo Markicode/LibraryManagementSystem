@@ -22,6 +22,7 @@ namespace LibraryEmployeeApplication
         private Dictionary<menuChoises, string> menuChoisesEnglish;
         private TableLayoutPanel NewsTablePanel;
 
+        // Enumeration used to dynamically adjust the menu to the employees permissions. 
         public enum menuChoises
         {
             Login = 0, Intake = 1, Dispense = 2, SearchItem = 3, SearchPerson = 4, ItemManagement = 5, EmployeeManagement = 6, MemberManagement = 7
@@ -98,8 +99,6 @@ namespace LibraryEmployeeApplication
                 }
             }
 
-
-
         }
 
         private void GoFullscreen(bool fullscreen)
@@ -139,10 +138,9 @@ namespace LibraryEmployeeApplication
                 Label[] titleLabels = new Label[news.Count];
                 Label[] contentLabels = new Label[news.Count];
                 PictureBox[] pictureBoxes = new PictureBox[news.Count];
-                //Label[] targetLabels = new Label[news.Count];
+
                 NewsTablePanel.ColumnCount = 1;
                 NewsTablePanel.RowCount = news.Count;
-                //NewsTablePanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
 
                 NewsTablePanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 
@@ -180,9 +178,6 @@ namespace LibraryEmployeeApplication
                         pictureBoxes[i].Load(AppDirectory.newsImages + @"\news.bmp");
                     }
 
-                    //messagePanels[i].CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
-                    //messagePanels[i].ColumnStyles.Clear();
-                    //messagePanels[i].RowStyles.Clear();
                     messagePanels[i].ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 300));
                     messagePanels[i].ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                     messagePanels[i].RowStyles.Add(new RowStyle(SizeType.AutoSize));
@@ -191,7 +186,6 @@ namespace LibraryEmployeeApplication
                     messagePanels[i].Controls.Add(pictureBoxes[i], 0, 1);
                     messagePanels[i].Controls.Add(contentLabels[i], 1, 1);
                     pictureBoxes[i].SizeMode = PictureBoxSizeMode.StretchImage;
-                    //pictureBoxes[i].Show();
 
                     messagePanels[i].SetColumnSpan(titleLabels[i], 2);
 
@@ -253,7 +247,7 @@ namespace LibraryEmployeeApplication
                     }
                 case menuChoises.EmployeeManagement:
                     {
-                        EmployeeManageEmployeesForm employeeManageEmployeesForm = new EmployeeManageEmployeesForm(this);
+                        EmployeeManageEmployeesForm employeeManageEmployeesForm = new EmployeeManageEmployeesForm(this, this.authController);
                         employeeManageEmployeesForm.Show();
                         this.Hide();
                         break;
@@ -397,7 +391,7 @@ namespace LibraryEmployeeApplication
 
         private void MenuLabel8_Click(object sender, EventArgs e)
         {
-            OpenForm(menuLabelAssignment[MenuLabel7]);
+            OpenForm(menuLabelAssignment[MenuLabel8]);
         }
 
         private void SettingsIconBox_MouseEnter(object sender, EventArgs e)
