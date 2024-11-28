@@ -40,6 +40,11 @@
             DomainAccountTextbox = new TextBox();
             DomainNameLabel = new Label();
             EmailLabel = new Label();
+            BsnLabel = new Label();
+            BsnTextbox = new TextBox();
+            SalaryLabel = new Label();
+            SalaryTextbox = new TextBox();
+            AddButton = new Button();
             SuspendLayout();
             // 
             // TitleLabel
@@ -156,12 +161,65 @@
             EmailLabel.TabIndex = 11;
             EmailLabel.Text = "@woordenschat.nl";
             // 
+            // BsnLabel
+            // 
+            BsnLabel.AutoSize = true;
+            BsnLabel.Font = new Font("Lato", 9.749999F, FontStyle.Regular, GraphicsUnit.Point);
+            BsnLabel.Location = new Point(12, 246);
+            BsnLabel.Name = "BsnLabel";
+            BsnLabel.Size = new Size(35, 16);
+            BsnLabel.TabIndex = 12;
+            BsnLabel.Text = "BSN:";
+            // 
+            // BsnTextbox
+            // 
+            BsnTextbox.BorderStyle = BorderStyle.FixedSingle;
+            BsnTextbox.Font = new Font("Lato", 9.749999F, FontStyle.Regular, GraphicsUnit.Point);
+            BsnTextbox.Location = new Point(127, 244);
+            BsnTextbox.Name = "BsnTextbox";
+            BsnTextbox.Size = new Size(200, 23);
+            BsnTextbox.TabIndex = 13;
+            // 
+            // SalaryLabel
+            // 
+            SalaryLabel.AutoSize = true;
+            SalaryLabel.Font = new Font("Lato", 9.749999F, FontStyle.Regular, GraphicsUnit.Point);
+            SalaryLabel.Location = new Point(12, 281);
+            SalaryLabel.Name = "SalaryLabel";
+            SalaryLabel.Size = new Size(44, 16);
+            SalaryLabel.TabIndex = 14;
+            SalaryLabel.Text = "Salary:";
+            // 
+            // SalaryTextbox
+            // 
+            SalaryTextbox.BorderStyle = BorderStyle.FixedSingle;
+            SalaryTextbox.Font = new Font("Lato", 9.749999F, FontStyle.Regular, GraphicsUnit.Point);
+            SalaryTextbox.Location = new Point(127, 279);
+            SalaryTextbox.Name = "SalaryTextbox";
+            SalaryTextbox.Size = new Size(200, 23);
+            SalaryTextbox.TabIndex = 15;
+            // 
+            // AddButton
+            // 
+            AddButton.Location = new Point(128, 332);
+            AddButton.Name = "AddButton";
+            AddButton.Size = new Size(75, 23);
+            AddButton.TabIndex = 16;
+            AddButton.Text = "Add";
+            AddButton.UseVisualStyleBackColor = true;
+            AddButton.Click += AddButton_Click;
+            // 
             // EmployeeSingleEmployeeForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(800, 450);
+            Controls.Add(AddButton);
+            Controls.Add(SalaryTextbox);
+            Controls.Add(SalaryLabel);
+            Controls.Add(BsnTextbox);
+            Controls.Add(BsnLabel);
             Controls.Add(EmailLabel);
             Controls.Add(DomainAccountTextbox);
             Controls.Add(DomainNameLabel);
@@ -194,5 +252,10 @@
         private TextBox DomainAccountTextbox;
         private Label DomainNameLabel;
         private Label EmailLabel;
+        private Label BsnLabel;
+        private TextBox BsnTextbox;
+        private Label SalaryLabel;
+        private TextBox SalaryTextbox;
+        private Button AddButton;
     }
 }

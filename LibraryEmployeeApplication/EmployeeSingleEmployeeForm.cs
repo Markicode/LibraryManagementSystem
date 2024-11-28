@@ -16,6 +16,8 @@ namespace EmployeeApplication
     public partial class EmployeeSingleEmployeeForm : Form
     {
         private Employee activeEmployee;
+        private AuthController authController;
+        private EmployeeController employeeController;
 
         public EmployeeSingleEmployeeForm(string mode, AuthController authController, EmployeeController employeeController)
         {
@@ -23,6 +25,8 @@ namespace EmployeeApplication
             TitleLabel.ForeColor = Style.purpleColor;
 
             this.activeEmployee = employeeController.activeEmployee;
+            this.authController = authController;
+            this.employeeController = employeeController;
 
             if (mode == "inspect")
             {
@@ -31,6 +35,23 @@ namespace EmployeeApplication
                 RoleTextbox.Text = employeeController.user.role;
                 BirthDateTimePicker.Value = activeEmployee.birthDate;
             }
+        }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            string firstName = FirstNameTextbox.Text;
+            string lastName = LastNameTextbox.Text;
+            string email = DomainAccountTextbox.Text + "@woordenschat.nl";
+            string password = authController.HashPassword("Welkom123!");
+            string role = "employee";
+            DateTime birthDate = BirthDateTimePicker.Value;
+            string bsn = BsnTextbox.Text;
+            double salary = Convert.ToDouble(SalaryTextbox.Text);
+
+            Employee employee = new Employee(0, 0, firstName, lastName, birthDate, 0, bsn, salary);
+            User user = new User(email, password, role); 
+
+            employeeController.addEmployee(employee, user);
         }
     }
 }

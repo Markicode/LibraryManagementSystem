@@ -18,10 +18,16 @@ namespace Controllers
             this.activeEmployee = user.GetEmployee(user);
         }
 
-        public Employee addEmployee()
+        public void addEmployee(Employee employee, User user)
         {
-            Employee? employee = null;
-            return employee;
+            activeEmployee.AddEmployee(employee, user);
+        }
+
+        public List<Employee> getAllEmployees()
+        {
+            List<Employee> employees = new List<Employee>();
+            employees = activeEmployee.GetAllEmployees();
+            return employees;
         }
     }
 }

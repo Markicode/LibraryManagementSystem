@@ -12,7 +12,7 @@
         public string userName { get; set; }
         public string password { get; set; }
         public MySqlConnection? connection { get; set; }
-        private string connString;
+        public string connString;
 
         public DbConn(string server, string databaseName, string userName, string password)
         {
