@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             HomeLabel = new Label();
-            dataGridView1 = new DataGridView();
+            EmployeesGridView = new DataGridView();
             InspectEmployeeButton = new Button();
             AddEmployeeButton = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)EmployeesGridView).BeginInit();
             SuspendLayout();
             // 
             // HomeLabel
@@ -47,14 +47,14 @@
             HomeLabel.MouseEnter += HomeLabel_MouseEnter;
             HomeLabel.MouseLeave += HomeLabel_MouseLeave;
             // 
-            // dataGridView1
+            // EmployeesGridView
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(12, 46);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowTemplate.Height = 25;
-            dataGridView1.Size = new Size(240, 150);
-            dataGridView1.TabIndex = 1;
+            EmployeesGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            EmployeesGridView.Location = new Point(12, 46);
+            EmployeesGridView.Name = "EmployeesGridView";
+            EmployeesGridView.RowTemplate.Height = 25;
+            EmployeesGridView.Size = new Size(240, 150);
+            EmployeesGridView.TabIndex = 1;
             // 
             // InspectEmployeeButton
             // 
@@ -83,11 +83,11 @@
             ClientSize = new Size(800, 450);
             Controls.Add(AddEmployeeButton);
             Controls.Add(InspectEmployeeButton);
-            Controls.Add(dataGridView1);
+            Controls.Add(EmployeesGridView);
             Controls.Add(HomeLabel);
             Name = "EmployeeManageEmployeesForm";
             Text = "EmployeeManageEmployeesForm";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)EmployeesGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -95,7 +95,7 @@
         #endregion
 
         private Label HomeLabel;
-        private DataGridView dataGridView1;
+        private DataGridView EmployeesGridView;
         private Button InspectEmployeeButton;
         private Button AddEmployeeButton;
     }

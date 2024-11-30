@@ -17,6 +17,8 @@ namespace EmployeeApplication
     {
         private EmployeeMainForm parentForm;
         public EmployeeController employeeController;
+        private int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+        private int screenHeight = Screen.PrimaryScreen.Bounds.Height;
 
         public EmployeeManageEmployeesForm(EmployeeMainForm parentForm, AuthController authController)
         {
@@ -26,7 +28,10 @@ namespace EmployeeApplication
             HomeLabel.Font = Style.menuFont;
             HomeLabel.ForeColor = Style.purpleColor;
             this.employeeController = new EmployeeController(parentForm.user);
-
+            EmployeesGridView.Location = new System.Drawing.Point(12, HomeLabel.Height + 18);
+            EmployeesGridView.Size = new System.Drawing.Size(screenWidth - 20, screenHeight - HomeLabel.Height - InspectEmployeeButton.Height - 40);
+            InspectEmployeeButton.Location = new System.Drawing.Point(12, screenHeight - InspectEmployeeButton.Height - 10);
+            AddEmployeeButton.Location = new System.Drawing.Point(12 + InspectEmployeeButton.Width + 12, screenHeight - AddEmployeeButton.Height - 10);
         }
 
         private void GoFullscreen(bool fullscreen)
