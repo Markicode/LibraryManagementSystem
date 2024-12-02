@@ -32,7 +32,7 @@ namespace Controllers
         {
             if (defaultUser.FindUser(email) != null)
             {
-                user = defaultUser.FindUser(email);
+                this.user = defaultUser.FindUser(email);
                 if(user.role != "employee")
                 {
                     return AuthenticationResult.Failed;

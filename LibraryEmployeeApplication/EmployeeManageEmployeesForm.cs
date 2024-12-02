@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using GlobalApplicationVariables;
 using Controllers;
+using Models;
 
 namespace EmployeeApplication
 {
@@ -19,6 +20,7 @@ namespace EmployeeApplication
         public EmployeeController employeeController;
         private int screenWidth = Screen.PrimaryScreen.Bounds.Width;
         private int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+        private List<Employee> employees; 
 
         public EmployeeManageEmployeesForm(EmployeeMainForm parentForm, AuthController authController)
         {
@@ -32,6 +34,10 @@ namespace EmployeeApplication
             EmployeesGridView.Size = new System.Drawing.Size(screenWidth - 20, screenHeight - HomeLabel.Height - InspectEmployeeButton.Height - 40);
             InspectEmployeeButton.Location = new System.Drawing.Point(12, screenHeight - InspectEmployeeButton.Height - 10);
             AddEmployeeButton.Location = new System.Drawing.Point(12 + InspectEmployeeButton.Width + 12, screenHeight - AddEmployeeButton.Height - 10);
+
+            this.employees = this.employeeController.getAllEmployees();
+            EmployeesGridView.DataSource = this.CreateEmployeeDataTable(this.employees);
+            EmployeesGridView.AllowUserToAddRows = false;
         }
 
         private void GoFullscreen(bool fullscreen)
@@ -47,6 +53,29 @@ namespace EmployeeApplication
                 this.WindowState = FormWindowState.Maximized;
                 this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
             }
+        }
+
+        private DataTable CreateEmployeeDataTable(List<Employee> employees)
+        {
+            DataTable dataTable = new DataTable("Employees");
+            dataTable.Columns.Add("id");
+            dataTable.Columns.Add("First Name");
+            dataTable.Columns.Add("Last Name");
+
+            DataRow dataRow;
+            DataSet dataSet = new DataSet();
+            dataSet.Tables.Add(dataTable);
+
+            for (int i = 0; i < employees.Count; i++)
+            {
+                dataRow = dataTable.NewRow();
+                dataRow["id"] = employees[i].id;
+                dataRow["First Name"] = employees[i].firstName;
+                dataRow["Last Name"] = employees[i].lastName;
+                dataTable.Rows.Add(dataRow);
+            }
+
+            return dataTable;
         }
 
         private void OpenEmployeeForm(string mode)
