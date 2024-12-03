@@ -16,8 +16,10 @@ namespace Models
         public int userId { get; set; }
         public string bsn { get; set; }
         public double salary { get; set; }
+        public User account { get; set; }
+        public DateTime dateStarted { get; set; }
 
-        public Employee(int id, int personId, string firstName, string lastName, DateTime birthDate, int userId, string bsn, double salary) 
+        public Employee(int id, int personId, string firstName, string lastName, DateTime birthDate, int userId, string bsn, double salary, DateTime dateStarted, User user) 
         {
             this.id = id;
             this.personId = personId;
@@ -27,6 +29,8 @@ namespace Models
             this.userId = userId;
             this.bsn = bsn;
             this.salary = salary;
+            this.account = user;
+            this.dateStarted = dateStarted;
 
             this.tableName = "employee";
             this.attributes = new string[] { "id", "user_id", "person_id", "bsn", "salary" };
@@ -37,7 +41,8 @@ namespace Models
             List<Employee> employees = new List<Employee>();
             List<object> results = new List<object>();
             results = dbConn.PerformQuery(
-                $"SELECT employee.id, person.id, person.first_name, person.last_name, person.birth_date, employee.user_id, employee.bsn, employee.salary " +
+                $"SELECT employee.id, person.id, person.first_name, person.last_name, person.birth_date, employee.user_id, employee.bsn, employee.salary, employee.date_started, " +
+                $"user.id, user.email, user.password, user.role " +
                 $"FROM employee " +
                 $"JOIN person ON employee.person_id = person.id " +
                 $"JOIN user ON employee.user_id = user.id " +
@@ -47,8 +52,9 @@ namespace Models
             {
                 foreach (List<object> row in results)
                 {
+                    User user = new User(Convert.ToInt32(row[9]), row[10].ToString(), row[11].ToString(), row[12].ToString());
                     Employee employee = new Employee(Convert.ToInt32(row[0]), Convert.ToInt32(row[1]), row[2].ToString(), row[3].ToString(), Convert.ToDateTime(row[4]),
-                        Convert.ToInt32(row[5]), row[6].ToString(), Convert.ToDouble(row[7]));
+                        Convert.ToInt32(row[5]), row[6].ToString(), Convert.ToDouble(row[7]), Convert.ToDateTime(row[8]), user);
                     employees.Add(employee);
                 }
             }
@@ -68,7 +74,7 @@ namespace Models
                 MySqlTransaction transaction = dbConn.connection.BeginTransaction();
                 cmd.Connection = dbConn.connection;
                 cmd.Transaction = transaction;
-
+                // TODO: Bind parameters 
                 try
                 {
                     cmd.CommandText =

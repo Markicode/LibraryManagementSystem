@@ -39,6 +39,7 @@ namespace EmployeeApplication
 
         private void AddButton_Click(object sender, EventArgs e)
         {
+            // TODO: sanitize / check user input
             string firstName = FirstNameTextbox.Text;
             string lastName = LastNameTextbox.Text;
             string email = DomainAccountTextbox.Text + "@woordenschat.nl";
@@ -48,8 +49,9 @@ namespace EmployeeApplication
             string bsn = BsnTextbox.Text;
             double salary = Convert.ToDouble(SalaryTextbox.Text);
 
-            Employee employee = new Employee(0, 0, firstName, lastName, birthDate, 0, bsn, salary);
-            User user = new User(email, password, role); 
+            User user = new User(email, password, role);
+            Employee employee = new Employee(0, 0, firstName, lastName, birthDate, 0, bsn, salary, DateTime.Now, user);
+             
 
             employeeController.addEmployee(employee, user);
         }

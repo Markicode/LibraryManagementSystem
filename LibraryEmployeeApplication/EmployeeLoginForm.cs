@@ -23,7 +23,8 @@ namespace LibraryEmployeeApplication
             InitializeComponent();
             this.authController = authController;
             this.parentForm = parentForm;
-            //this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            textBox1.Text = "mark@test.nl";
+            textBox2.Text = "12345678";
         }
 
         private void CheckButton_Click(object sender, EventArgs e)
