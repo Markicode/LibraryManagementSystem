@@ -38,8 +38,11 @@ namespace LibraryEmployeeApplication
 
             this.language = "NL";
             this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5, MenuLabel6, MenuLabel7, MenuLabel8 };
-            this.authController.LoggedIn += UpdateMenu;
+
             this.authController.LoggedIn += ShowNews;
+            this.authController.LoggedIn += EnableMenu;
+            this.authController.LoggedOut += HideMenu;
+            this.authController.LoggedOut += HideNews;
 
             this.menuLabelAssignment = new Dictionary<Label, menuChoises>()
             {
@@ -76,6 +79,9 @@ namespace LibraryEmployeeApplication
             };
 
             CloseIconBox.Load(AppDirectory.iconImages + @"\ClosebuttonOrange.bmp");
+            SettingsIconBox.Load(AppDirectory.iconImages + @"\SettingsbuttonOrange.bmp");
+            LogoutIconBox.Load(AppDirectory.iconImages + @"\LogoutbuttonOrange.bmp");
+
             WelcomeLabel.Visible = false;
             SettingsIconBox.Enabled = false;
             LogoutIconBox.Enabled = false;
@@ -84,11 +90,12 @@ namespace LibraryEmployeeApplication
             foreach (Label label in menuLabels)
             {
                 label.Enabled = false;
+                label.Visible = false;
                 if (menuLabelAssignment[label] == menuChoises.Login)
                 {
                     label.Enabled = true;
+                    label.Visible = true;
                 }
-
                 if (this.language == "NL")
                 {
                     label.Text = menuChoisesDutch[menuLabelAssignment[label]];
@@ -97,6 +104,7 @@ namespace LibraryEmployeeApplication
                 {
                     label.Text = menuChoisesEnglish[menuLabelAssignment[label]];
                 }
+
             }
 
         }
@@ -119,8 +127,6 @@ namespace LibraryEmployeeApplication
         public void WelcomeUser(User user)
         {
             WelcomeLabel.Text = $"Hallo {user.email}, gebruik het menu om te beginnen.";
-            SettingsIconBox.Load(AppDirectory.iconImages + @"\SettingsbuttonOrange.bmp");
-            LogoutIconBox.Load(AppDirectory.iconImages + @"\LogoutbuttonOrange.bmp");
             WelcomeLabel.Visible = true;
             SettingsIconBox.Visible = true;
             LogoutIconBox.Visible = true;
@@ -128,7 +134,33 @@ namespace LibraryEmployeeApplication
             LogoutIconBox.Enabled = true;
         }
 
-        public void ShowNews()
+        private void EnableMenu()
+        {
+            foreach (Label label in menuLabels)
+            {
+                label.Enabled = true;
+                label.Visible = true;  
+            }
+        }
+
+        private void HideMenu()
+        {
+            foreach (Label label in menuLabels)
+            {
+                //if(!(menuLabelAssignment[label] == menuChoises.Login))
+                //{
+                    label.Visible = false;
+                    label.Enabled= false;
+                //}
+            }
+        }
+
+        private void HideNews()
+        {
+            NewsTablePanel.Visible = false;
+        }
+
+        private void ShowNews()
         {
             List<NewsMessage> news = new List<NewsMessage>();
             news = newsController.GetAllNews();
@@ -255,16 +287,9 @@ namespace LibraryEmployeeApplication
             }
         }
 
-        private void UpdateMenu()
-        {
-            foreach (Label label in menuLabels)
-            {
-                label.Enabled = true;
-            }
-        }
-
         public void Logout()
         {
+            authController.LogoutUser();
             this.user = null;
             NewsTablePanel.Visible = false;
             SettingsIconBox.Visible = false;
@@ -421,7 +446,7 @@ namespace LibraryEmployeeApplication
 
         private void LogoutIconBox_Click(object sender, EventArgs e)
         {
-
+            this.Logout();
         }
 
         private void CloseIconBox_MouseEnter(object sender, EventArgs e)

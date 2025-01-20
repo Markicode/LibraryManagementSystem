@@ -1,0 +1,16 @@
+/* Create database in case it doesn't exist yet. */
+CREATE DATABASE IF NOT EXISTS lms_woordenschat;
+
+/* Use the database */
+USE lms_woordenschat;
+
+/* Tabellen verwijderen indien database al bestaat */
+DROP TABLE IF EXISTS news;
+DROP TABLE IF EXISTS employee;
+DROP TABLE IF EXISTS person;
+DROP TABLE IF EXISTS user;
+
+/* Tabellen aanmaken */
+CREATE TABLE user (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  

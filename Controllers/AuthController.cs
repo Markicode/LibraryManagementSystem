@@ -22,6 +22,8 @@ namespace Controllers
 
         public delegate void LoggedInDelegate();
         public event LoggedInDelegate LoggedIn;
+        public delegate void LoggedOutDelegate();
+        public event LoggedInDelegate LoggedOut;
 
         public AuthController() 
         {
@@ -49,6 +51,17 @@ namespace Controllers
             }
             return AuthenticationResult.NotFound;
 
+        }
+
+        public bool LogoutUser()
+        {
+            this.user = defaultUser;
+            if(this.LoggedOut != null)
+            {
+                this.LoggedOut();
+                return true;
+            }
+            return false;
         }
 
         public void AddUser(string email, string password)

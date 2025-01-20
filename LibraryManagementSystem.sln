@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "LibraryDatabase
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controllers", "Controllers\Controllers.csproj", "{2DFBE851-C23B-45BF-939E-9AEC4EC188B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalApplicationVariables", "ApplicationStyle\GlobalApplicationVariables.csproj", "{9330B075-0CF8-4C37-AC6A-3FD0809D85EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlobalApplicationVariables", "ApplicationStyle\GlobalApplicationVariables.csproj", "{9330B075-0CF8-4C37-AC6A-3FD0809D85EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerApplication", "ServerApplication\ServerApplication.csproj", "{7CBB9C3A-C898-4AFF-B9F2-DDC12B43082B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{9330B075-0CF8-4C37-AC6A-3FD0809D85EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9330B075-0CF8-4C37-AC6A-3FD0809D85EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9330B075-0CF8-4C37-AC6A-3FD0809D85EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CBB9C3A-C898-4AFF-B9F2-DDC12B43082B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CBB9C3A-C898-4AFF-B9F2-DDC12B43082B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CBB9C3A-C898-4AFF-B9F2-DDC12B43082B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CBB9C3A-C898-4AFF-B9F2-DDC12B43082B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
