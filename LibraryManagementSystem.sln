@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerApplication", "ServerApplication\ServerApplication.csproj", "{7CBB9C3A-C898-4AFF-B9F2-DDC12B43082B}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeApplication", "LibraryEmployeeApplication\EmployeeApplication.csproj", "{96B41C65-33B8-4B58-8322-8E1E22954629}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "LibraryModels\Models.csproj", "{3CC8217C-E6CE-4B1E-A0B7-B073C74BA181}"
@@ -20,8 +22,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controllers", "Controllers\Controllers.csproj", "{2DFBE851-C23B-45BF-939E-9AEC4EC188B6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlobalApplicationVariables", "ApplicationStyle\GlobalApplicationVariables.csproj", "{9330B075-0CF8-4C37-AC6A-3FD0809D85EA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerApplication", "ServerApplication\ServerApplication.csproj", "{7CBB9C3A-C898-4AFF-B9F2-DDC12B43082B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
