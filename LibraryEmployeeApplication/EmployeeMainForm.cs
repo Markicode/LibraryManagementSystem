@@ -15,6 +15,7 @@ namespace LibraryEmployeeApplication
         public User? user { get; set; }
         public AuthController authController;
         public NewsController newsController;
+        public ConnectionController connectionController;
 
         private List<Label> menuLabels;
         private Dictionary<Label, menuChoises> menuLabelAssignment;
@@ -25,7 +26,7 @@ namespace LibraryEmployeeApplication
         // Enumeration used to dynamically adjust the menu to the employees permissions. 
         public enum menuChoises
         {
-            Login = 0, Intake = 1, Dispense = 2, SearchItem = 3, SearchPerson = 4, ItemManagement = 5, EmployeeManagement = 6, MemberManagement = 7
+            Login = 0, Intake = 1, Dispense = 2, SearchItem = 3, SearchPerson = 4, ItemManagement = 5, EmployeeManagement = 6, MemberManagement = 7, ConnectToServer = 8
         }
 
         public EmployeeMainForm()
@@ -35,6 +36,7 @@ namespace LibraryEmployeeApplication
 
             this.authController = new AuthController();
             this.newsController = new NewsController();
+            this.connectionController = new ConnectionController();
 
             this.language = "NL";
             this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5, MenuLabel6, MenuLabel7, MenuLabel8 };
@@ -43,6 +45,7 @@ namespace LibraryEmployeeApplication
             this.authController.LoggedIn += EnableMenu;
             this.authController.LoggedOut += HideMenu;
             this.authController.LoggedOut += HideNews;
+            this.connectionController.connected += EnableLogin;
 
             this.menuLabelAssignment = new Dictionary<Label, menuChoises>()
             {
@@ -64,7 +67,8 @@ namespace LibraryEmployeeApplication
                 {menuChoises.SearchPerson, "Zoek Persoon"},
                 {menuChoises.ItemManagement, "Beheer Items"},
                 {menuChoises.EmployeeManagement, "Beheer Personeel"},
-                {menuChoises.MemberManagement, "Beheer Leden" }
+                {menuChoises.MemberManagement, "Beheer Leden" },
+                {menuChoises.ConnectToServer, "Maak verbinding met de server"}
             };
             this.menuChoisesEnglish = new Dictionary<menuChoises, string>()
             {
@@ -75,14 +79,15 @@ namespace LibraryEmployeeApplication
                 {menuChoises.SearchPerson, "Search Person"},
                 {menuChoises.ItemManagement, "Manage Items"},
                 {menuChoises.EmployeeManagement, "Manage Employees"},
-                {menuChoises.MemberManagement, "Manage Members"}
+                {menuChoises.MemberManagement, "Manage Members"},
+                {menuChoises.ConnectToServer, "Connect to the server"}
             };
 
             CloseIconBox.Load(AppDirectory.iconImages + @"\ClosebuttonOrange.bmp");
             SettingsIconBox.Load(AppDirectory.iconImages + @"\SettingsbuttonOrange.bmp");
             LogoutIconBox.Load(AppDirectory.iconImages + @"\LogoutbuttonOrange.bmp");
 
-            WelcomeLabel.Visible = false;
+            //WelcomeLabel.Visible = false;
             SettingsIconBox.Enabled = false;
             LogoutIconBox.Enabled = false;
             this.NewsTablePanel = new TableLayoutPanel();
@@ -91,11 +96,7 @@ namespace LibraryEmployeeApplication
             {
                 label.Enabled = false;
                 label.Visible = false;
-                if (menuLabelAssignment[label] == menuChoises.Login)
-                {
-                    label.Enabled = true;
-                    label.Visible = true;
-                }
+
                 if (this.language == "NL")
                 {
                     label.Text = menuChoisesDutch[menuLabelAssignment[label]];
@@ -107,6 +108,15 @@ namespace LibraryEmployeeApplication
 
             }
 
+            
+
+        }
+
+        public void Connect()
+        {
+            WelcomeLabel.Text = "Connecting to server..";
+            WelcomeLabel.Visible = true;
+            connectionController.ConnectToServer();
         }
 
         private void GoFullscreen(bool fullscreen)
@@ -134,12 +144,24 @@ namespace LibraryEmployeeApplication
             LogoutIconBox.Enabled = true;
         }
 
+        private void EnableLogin()
+        {
+            foreach (Label label in menuLabels)
+            {
+                if (menuLabelAssignment[label] == menuChoises.Login)
+                {
+                    label.Invoke(() => label.Enabled = true);
+                    label.Invoke(() => label.Visible = true);
+                }
+            }
+        }
+
         private void EnableMenu()
         {
             foreach (Label label in menuLabels)
             {
                 label.Enabled = true;
-                label.Visible = true;  
+                label.Visible = true;
             }
         }
 
@@ -149,8 +171,8 @@ namespace LibraryEmployeeApplication
             {
                 //if(!(menuLabelAssignment[label] == menuChoises.Login))
                 //{
-                    label.Visible = false;
-                    label.Enabled= false;
+                label.Visible = false;
+                label.Enabled = false;
                 //}
             }
         }
@@ -232,6 +254,11 @@ namespace LibraryEmployeeApplication
             }
         }
 
+        private void OpenServerConnectionForm()
+        {
+            OpenForm(menuChoises.ConnectToServer);
+        }
+
         private void OpenForm(menuChoises choise)
         {
             switch (choise)
@@ -282,6 +309,12 @@ namespace LibraryEmployeeApplication
                         EmployeeManageEmployeesForm employeeManageEmployeesForm = new EmployeeManageEmployeesForm(this, this.authController);
                         employeeManageEmployeesForm.Show();
                         this.Hide();
+                        break;
+                    }
+                case menuChoises.ConnectToServer:
+                    {
+                        EmployeeServerConnectForm employeeServerConnectForm = new EmployeeServerConnectForm(this, connectionController);
+                        employeeServerConnectForm.ShowDialog();
                         break;
                     }
             }
@@ -463,5 +496,6 @@ namespace LibraryEmployeeApplication
         {
             Environment.Exit(0);
         }
+
     }
 }

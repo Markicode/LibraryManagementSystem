@@ -2,6 +2,6 @@
 Console.WriteLine("Server Application Library Management System \"Woordenschat\"");
 
 Server server = new Server();
-server.ShowMainMenu();
+server.Start();
 
 
