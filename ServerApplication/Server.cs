@@ -3,6 +3,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using ServerApplication;
 using System.Text;
+using System.Xml.Linq;
 
 public class Server
 {
@@ -16,7 +17,7 @@ public class Server
     public List<settingsMenuOptions> settingsMenuList;
 
     public event ListeningModeChangedDelegate ListeningModeChanged;
-    public delegate void ListeningModeChangedDelegate();
+    public delegate void ListeningModeChangedDelegate(string message);
     public event clientConnectedDelegate clientConnected;
     public delegate void clientConnectedDelegate(Client client);
     public event clientConnectedDelegate clientDisconnected;
@@ -44,17 +45,20 @@ public class Server
             {mainMenuOptions.Settings, "Change server settings."},
             {mainMenuOptions.StartListening, "Start listening for clients."},
             {mainMenuOptions.StopListening, "Stop listening for clients."},
-            {mainMenuOptions.ViewClients, "View all connected clients."}
+            {mainMenuOptions.ViewClients, "View all connected clients."},
+            {mainMenuOptions.ViewLog, "View the latest log entries." },
+            {mainMenuOptions.Close, "Close the server application." }
         };
         settingsMenuOptionsAssignment = new Dictionary<settingsMenuOptions, string>()
         {
             {settingsMenuOptions.SetIp, "Change the server IP-address."},
             {settingsMenuOptions.SetPort, "Change the server port."},
+            {settingsMenuOptions.SetLogSize, "Adjust the number of shown log entries" },
             {settingsMenuOptions.Exit, "Exit to main menu."}
         };
 
-        mainMenuList = new List<mainMenuOptions> {mainMenuOptions.Settings, mainMenuOptions.StartListening, mainMenuOptions.ViewClients};
-        settingsMenuList = new List<settingsMenuOptions> {settingsMenuOptions.SetIp, settingsMenuOptions.SetPort, settingsMenuOptions.Exit};
+        mainMenuList = new List<mainMenuOptions> {mainMenuOptions.Settings, mainMenuOptions.StartListening, mainMenuOptions.ViewLog, mainMenuOptions.ViewClients, mainMenuOptions.Close};
+        settingsMenuList = new List<settingsMenuOptions> {settingsMenuOptions.SetIp, settingsMenuOptions.SetPort, settingsMenuOptions.SetLogSize, settingsMenuOptions.Exit};
 
         this.ipAdress = IPAddress.Parse("127.0.0.1");
         this.port = 8086;
@@ -69,12 +73,12 @@ public class Server
     } 
     public enum mainMenuOptions
     {   
-        Settings = 0, StartListening = 1, StopListening = 3, ViewClients = 4
+        Settings = 0, StartListening = 1, StopListening = 3, ViewClients = 4, ViewLog = 5, Close = 6
     }
 
     public enum settingsMenuOptions
     {
-        SetIp = 0, SetPort = 1, Exit = 3
+        SetIp = 0, SetPort = 1, SetLogSize = 3, Exit = 4
     }
 
     public void Start()
@@ -93,7 +97,7 @@ public class Server
         Console.WriteLine("Main menu options:");
         foreach(KeyValuePair<int, mainMenuOptions> mainOption in mainMenu)
         {
-            string choiseText = string.Format("{0}. {1, -5}", mainOption.Key, mainOption.Value.ToString());
+            string choiseText = string.Format("{0}. {1, -5}", mainOption.Key, mainMenuOptionsAssignment[mainOption.Value]);
             Console.WriteLine(choiseText);
         }
         int mainChoise = ValidateMenuChoise(mainMenuList.Count);
@@ -120,8 +124,18 @@ public class Server
                     this.ViewClients();
                     break;
                 }
+            case mainMenuOptions.ViewLog:
+                {
+                    this.ViewLog();
+                    break;
+                }
         }
 
+    }
+
+    public void ViewLog()
+    {
+        Console.WriteLine("Log here");
     }
 
     public void ShowSettingsMenu()
@@ -176,6 +190,7 @@ public class Server
                 mainMenuList.Add(mainMenuOptions.StartListening);
             }
         }
+        
     }
 
     private Task Listen(IPAddress ipAddress, int port)
@@ -187,11 +202,7 @@ public class Server
             listener = new TcpListener(ipAddress, port);
             listener.Start();
             this.isListening = true;
-            //if (this.ListeningModeChanged != null)
-            //{
-            //    this.ListeningModeChanged();
-            //}
-            Console.WriteLine("Listening..");
+            Task.Run(() => RefreshScreen("Server is listening."));
 
             // listen loop as long as task is not canceled.
             while (!listenCancellationToken.IsCancellationRequested)
@@ -203,18 +214,19 @@ public class Server
             this.isListening = false;
             if (this.ListeningModeChanged != null)
             {
-                this.ListeningModeChanged();
+                this.ListeningModeChanged("Server stopped listening.");
             }
-            Console.WriteLine("Stopped Listening.");
         });
         return listenTask;
     }
 
-    public void RefreshScreen()
+    public void RefreshScreen(string message)
     {
-        this.updateMainMenu();
-        Console.Clear();
-        this.ShowMainMenu();
+
+            this.updateMainMenu();
+            Console.Clear();
+            Console.WriteLine(message + "\r\n");
+            this.ShowMainMenu();
     }
 
     private Task AcceptClients()
@@ -235,6 +247,7 @@ public class Server
                 // The server will respond with a taken or free message.
                 TcpClient tcpClient = listener.AcceptTcpClient();
                 string clientName = await ReceiveName(tcpClient);
+                
 
                 /*foreach (var c in clients)
                 {
@@ -268,7 +281,7 @@ public class Server
                     //chatters = chatters.Remove(chatters.Length - 1);
                     await this.Send("ok", tcpClient);
                     this.clientConnected(client);
-                    Console.WriteLine(clientName + "  connected.\r\n");
+                    //Console.WriteLine(clientName + "  connected.\r\n");
                 
 
             }
@@ -308,8 +321,8 @@ public class Server
             lock (_lock) clients.Remove(clientToHandle.clientName);
             clientToHandle.tcpClient.Client.Shutdown(SocketShutdown.Both);
             clientToHandle.tcpClient.Close();
-            this.clientDisconnected(clientToHandle);
-            Console.WriteLine(clientToHandle.clientName + " disconnected \r\n");
+            //this.clientDisconnected(clientToHandle);
+            //Console.WriteLine(clientToHandle.clientName + " disconnected \r\n");
         });
         await handleClientsTask;
     }
@@ -340,35 +353,22 @@ public class Server
     {
         return Task.Run(() =>
         {
-            NetworkStream nwStream = client.GetStream();
-            byte[] buffer = new byte[1024];
-            int byteCount = nwStream.Read(buffer, 0, buffer.Length);
-            string name = Encoding.ASCII.GetString(buffer, 0, byteCount);
+            string name = "";
+            bool nameReceived = false;
+            while (!nameReceived)
+            {
+                NetworkStream nwStream = client.GetStream();
+                if (nwStream.DataAvailable)
+                {
+                    byte[] buffer = new byte[1024];
+                    int byteCount = nwStream.Read(buffer, 0, buffer.Length);
+                    name = Encoding.ASCII.GetString(buffer, 0, byteCount);
+                    nameReceived = true;
+                    break;
+                }    
+            }
             return name;
         });
-    }
-
-    public async void ListenForClients()
-    {
-        Task startListeningTask = Task.Run(()=> 
-        {
-            this.isListening = true;
-            Console.WriteLine("Started listening. \r\n");
-        });
-
-        await startListeningTask;
-    }
-
-    public async void StopListeningForClients()
-    {
-        Task stopListeningTask = Task.Run(() =>
-        {
-            this.isListening = false;
-            Console.WriteLine("Stopped listening. \r\n");
-            this.updateMainMenu();
-            this.ShowMainMenu();
-        });
-        await stopListeningTask;
     }
 
     public void ViewClients()

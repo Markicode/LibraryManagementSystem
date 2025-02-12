@@ -236,6 +236,7 @@
             Controls.Add(LogoPictureBox);
             Name = "EmployeeMainForm";
             Text = "Form1";
+            Load += EmployeeMainForm_Load;
             ((System.ComponentModel.ISupportInitialize)LogoPictureBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)SettingsIconBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)LogoutIconBox).EndInit();

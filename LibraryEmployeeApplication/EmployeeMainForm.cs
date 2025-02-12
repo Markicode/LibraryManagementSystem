@@ -108,16 +108,8 @@ namespace LibraryEmployeeApplication
 
             }
 
-            
-
         }
 
-        public void Connect()
-        {
-            WelcomeLabel.Text = "Connecting to server..";
-            WelcomeLabel.Visible = true;
-            connectionController.ConnectToServer();
-        }
 
         private void GoFullscreen(bool fullscreen)
         {
@@ -497,5 +489,9 @@ namespace LibraryEmployeeApplication
             Environment.Exit(0);
         }
 
+        private void EmployeeMainForm_Load(object sender, EventArgs e)
+        {
+            this.OpenServerConnectionForm();
+        }
     }
 }

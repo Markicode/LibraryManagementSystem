@@ -28,12 +28,58 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "EmployeeServerConnectForm";
+            StatusLabel = new Label();
+            ConnectButton = new Button();
+            CloseButton = new Button();
+            SuspendLayout();
+            // 
+            // StatusLabel
+            // 
+            StatusLabel.AutoSize = true;
+            StatusLabel.Location = new Point(214, 86);
+            StatusLabel.Name = "StatusLabel";
+            StatusLabel.Size = new Size(229, 15);
+            StatusLabel.TabIndex = 0;
+            StatusLabel.Text = "Click connect button to connect to server.";
+            // 
+            // ConnectButton
+            // 
+            ConnectButton.Location = new Point(172, 154);
+            ConnectButton.Name = "ConnectButton";
+            ConnectButton.Size = new Size(75, 23);
+            ConnectButton.TabIndex = 1;
+            ConnectButton.Text = "Connect";
+            ConnectButton.UseVisualStyleBackColor = true;
+            ConnectButton.Click += ConnectButton_Click;
+            // 
+            // CloseButton
+            // 
+            CloseButton.Location = new Point(389, 157);
+            CloseButton.Name = "CloseButton";
+            CloseButton.Size = new Size(75, 23);
+            CloseButton.TabIndex = 2;
+            CloseButton.Text = "Close";
+            CloseButton.UseVisualStyleBackColor = true;
+            CloseButton.Click += CloseButton_Click;
+            // 
+            // EmployeeServerConnectForm
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(CloseButton);
+            Controls.Add(ConnectButton);
+            Controls.Add(StatusLabel);
+            Name = "EmployeeServerConnectForm";
+            Text = "EmployeeServerConnectForm";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private Label StatusLabel;
+        private Button ConnectButton;
+        private Button CloseButton;
     }
 }

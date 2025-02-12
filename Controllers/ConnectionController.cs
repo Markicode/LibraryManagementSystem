@@ -53,6 +53,7 @@ namespace Controllers
 
                 NetworkStream ns = client.GetStream();
                 string answer = "";
+                
 
                 if (this.chatName != null && client != null)
                 {
@@ -60,7 +61,7 @@ namespace Controllers
                     byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(this.chatName);
                     ns.Write(bytesToSend, 0, bytesToSend.Length);
 
-                    for (int i = 0; i < 10000; i++)
+                    for (int i = 0; i < 1000000; i++)
                     {
                         if (ns.DataAvailable)
                         {
@@ -69,12 +70,9 @@ namespace Controllers
                             answer = Encoding.ASCII.GetString(receivedBytes, 0, byte_count);
                             break;
                         }
-                        else
-                        {
-                            answer = "timeout";
-                            
-                        }
+                        answer = "timeout";
                     }
+                   
 
                     if (answer == "ok")
                     {
