@@ -31,6 +31,10 @@
             StatusLabel = new Label();
             ConnectButton = new Button();
             CloseButton = new Button();
+            IPTextbox = new TextBox();
+            PortTextbox = new TextBox();
+            IPLabel = new Label();
+            PortLabel = new Label();
             SuspendLayout();
             // 
             // StatusLabel
@@ -62,11 +66,49 @@
             CloseButton.UseVisualStyleBackColor = true;
             CloseButton.Click += CloseButton_Click;
             // 
+            // IPTextbox
+            // 
+            IPTextbox.Location = new Point(103, 332);
+            IPTextbox.Name = "IPTextbox";
+            IPTextbox.Size = new Size(193, 23);
+            IPTextbox.TabIndex = 3;
+            IPTextbox.Text = "127.0.0.1";
+            // 
+            // PortTextbox
+            // 
+            PortTextbox.Location = new Point(103, 371);
+            PortTextbox.Name = "PortTextbox";
+            PortTextbox.Size = new Size(100, 23);
+            PortTextbox.TabIndex = 4;
+            PortTextbox.Text = "8086";
+            // 
+            // IPLabel
+            // 
+            IPLabel.AutoSize = true;
+            IPLabel.Location = new Point(12, 335);
+            IPLabel.Name = "IPLabel";
+            IPLabel.Size = new Size(55, 15);
+            IPLabel.TabIndex = 5;
+            IPLabel.Text = "IP Adress";
+            // 
+            // PortLabel
+            // 
+            PortLabel.AutoSize = true;
+            PortLabel.Location = new Point(12, 374);
+            PortLabel.Name = "PortLabel";
+            PortLabel.Size = new Size(29, 15);
+            PortLabel.TabIndex = 6;
+            PortLabel.Text = "Port";
+            // 
             // EmployeeServerConnectForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(PortLabel);
+            Controls.Add(IPLabel);
+            Controls.Add(PortTextbox);
+            Controls.Add(IPTextbox);
             Controls.Add(CloseButton);
             Controls.Add(ConnectButton);
             Controls.Add(StatusLabel);
@@ -81,5 +123,9 @@
         private Label StatusLabel;
         private Button ConnectButton;
         private Button CloseButton;
+        private TextBox IPTextbox;
+        private TextBox PortTextbox;
+        private Label IPLabel;
+        private Label PortLabel;
     }
 }

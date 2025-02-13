@@ -32,6 +32,8 @@ namespace EmployeeApplication
             ConnectButton.Enabled = false;
             try
             {
+                connectionController.serverIPAdress = IPTextbox.Text;
+                connectionController.serverPort = Convert.ToUInt16(PortTextbox.Text);
                 connectionController.ConnectToServer();
             }
             catch (Exception ex)
@@ -56,5 +58,6 @@ namespace EmployeeApplication
         {
             StatusLabel.Invoke(() => StatusLabel.Text = "Error connecting to server.");
         }
+
     }
 }

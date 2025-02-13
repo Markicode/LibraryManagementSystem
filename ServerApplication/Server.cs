@@ -16,14 +16,14 @@ public class Server
     public List<mainMenuOptions> mainMenuList;
     public List<settingsMenuOptions> settingsMenuList;
 
-    public event ListeningModeChangedDelegate ListeningModeChanged;
-    public delegate void ListeningModeChangedDelegate(string message);
+    //public event ListeningModeChangedDelegate ListeningModeChanged;
+    //public delegate void ListeningModeChangedDelegate(string message);
     public event clientConnectedDelegate clientConnected;
     public delegate void clientConnectedDelegate(Client client);
     public event clientConnectedDelegate clientDisconnected;
     public delegate void clientDisconnectedDelegate(Client client);
-    public event operationFinishedDelegate operationFinished;
-    public delegate void operationFinishedDelegate();
+    //public event operationFinishedDelegate operationFinished;
+    //public delegate void operationFinishedDelegate();
 
     public bool isListening {get; set;}
 
@@ -69,7 +69,6 @@ public class Server
         listenCancellationToken = listenCancellationTokenSource.Token;
 
         clientConnected += HandleClient;
-        ListeningModeChanged += RefreshScreen;
     } 
     public enum mainMenuOptions
     {   
@@ -100,6 +99,7 @@ public class Server
             string choiseText = string.Format("{0}. {1, -5}", mainOption.Key, mainMenuOptionsAssignment[mainOption.Value]);
             Console.WriteLine(choiseText);
         }
+        Console.WriteLine("");
         int mainChoise = ValidateMenuChoise(mainMenuList.Count);
         mainMenuOptions chosenOption = mainMenu[mainChoise];
         switch (chosenOption)
@@ -116,6 +116,7 @@ public class Server
                 }
             case mainMenuOptions.Settings:
                 {
+                    Console.Clear();
                     this.ShowSettingsMenu();
                     break;
                 }
@@ -129,13 +130,18 @@ public class Server
                     this.ViewLog();
                     break;
                 }
+            case mainMenuOptions.Close:
+                {
+                    serverCancellationTokenSource.Cancel();
+                    break;
+                }
         }
 
     }
 
     public void ViewLog()
     {
-        Console.WriteLine("Log here");
+        this.RefreshScreen("Here are the latest log entries: \r\n", "main");
     }
 
     public void ShowSettingsMenu()
@@ -147,25 +153,31 @@ public class Server
             string choiseText = string.Format("{0}. {1, -5}", settingOption.Key, settingOption.Value.ToString());
             Console.WriteLine(choiseText);
         }
+        Console.WriteLine("");
         int settingChoise = ValidateMenuChoise(settingsMenuList.Count);
         settingsMenuOptions chosenOption = settingsMenu[settingChoise];
         switch (chosenOption)
         {
             case settingsMenuOptions.SetIp:
                 {
-                    Console.WriteLine("Set IP here \r\n");
-                    this.ShowSettingsMenu();
+                    Console.WriteLine("Current IP adress is: " + this.ipAdress.ToString());
+                    Console.WriteLine("Please enter the IP Adress for this server: \r\n");
+                    // TODO: IP input validation (regex)
+                    this.ipAdress = IPAddress.Parse(Console.ReadLine());
+                    this.RefreshScreen("Your IP adress has successfully been changed to: " + this.ipAdress.ToString(), "settings");
                     break;
                 }
             case settingsMenuOptions.SetPort:
                 {
-                    Console.WriteLine("Set Port here \r\n");
-                    this.ShowSettingsMenu();
+                    Console.WriteLine("Current Port is: " + this.port.ToString());
+                    Console.WriteLine("Please enter the port for this server: \r\n");
+                    // TODO: Port input validation (regex)
+                    this.port = Convert.ToUInt16(Console.ReadLine());
+                    this.RefreshScreen("Your port has successfully been changed to: " + this.port.ToString(), "settings");
                     break;
                 }
             case settingsMenuOptions.Exit:
                 {
-                    Console.WriteLine("Exiting to main menu. \r\n");
                     this.ShowMainMenu();
                     break;
                 }
@@ -202,7 +214,7 @@ public class Server
             listener = new TcpListener(ipAddress, port);
             listener.Start();
             this.isListening = true;
-            Task.Run(() => RefreshScreen("Server is listening."));
+            Task.Run(() => RefreshScreen("Server is listening.", "main"));
 
             // listen loop as long as task is not canceled.
             while (!listenCancellationToken.IsCancellationRequested)
@@ -212,21 +224,30 @@ public class Server
             }
             listener.Stop();
             this.isListening = false;
-            if (this.ListeningModeChanged != null)
-            {
-                this.ListeningModeChanged("Server stopped listening.");
-            }
+            Task.Run(() => RefreshScreen("Server stopped listening.", "main"));
         });
         return listenTask;
     }
 
-    public void RefreshScreen(string message)
+    public void RefreshScreen(string message, string nextMenu)
     {
-
-            this.updateMainMenu();
-            Console.Clear();
-            Console.WriteLine(message + "\r\n");
-            this.ShowMainMenu();
+        this.updateMainMenu();
+        Console.Clear();
+        Console.WriteLine(message + "\r\n");
+        switch(nextMenu)
+        {
+            case "main":
+                {
+                    this.ShowMainMenu();
+                    break;
+                }
+            case "settings":
+                {
+                    this.ShowSettingsMenu();
+                    break;
+                }
+                
+        }
     }
 
     private Task AcceptClients()
@@ -373,8 +394,16 @@ public class Server
 
     public void ViewClients()
     {
-        Console.WriteLine("Clients here");
-        this.ShowMainMenu();
+        string clientsListString = "Here is a list of the connected clients: \r\n \r\n";
+        lock (_lock)
+        {
+            for (int i = 0; i < clients.Count; i++)
+            {
+                clientsListString += string.Format("{0}. {1, -5} \r\n", i, clients.ElementAt(i).Key);
+            }
+        }
+        this.RefreshScreen(clientsListString, "main");
+
     }
 
     private Dictionary<int, TValue> MakeDictionary<TValue>(List<TValue> list)
