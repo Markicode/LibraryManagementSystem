@@ -309,6 +309,7 @@ public class Server
         });
         return acceptClientsTask;
     }
+
     private async void HandleClient(Client client)
     {
         Task handleClientsTask = Task.Run(async () =>
@@ -450,5 +451,9 @@ public class Server
         return choise;
     }
 
+    private string CheckForUser(string email)
+    {
+        return "";
+    }
 
 }

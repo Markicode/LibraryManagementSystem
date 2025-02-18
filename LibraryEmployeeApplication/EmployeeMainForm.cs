@@ -34,9 +34,10 @@ namespace LibraryEmployeeApplication
             InitializeComponent();
             GoFullscreen(true);
 
-            this.authController = new AuthController();
-            this.newsController = new NewsController();
             this.connectionController = new ConnectionController();
+            this.authController = new AuthController(connectionController);
+            this.newsController = new NewsController();
+            
 
             this.language = "NL";
             this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5, MenuLabel6, MenuLabel7, MenuLabel8 };

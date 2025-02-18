@@ -27,18 +27,19 @@ namespace EmployeeApplication
             connectionController.disconnected += ShowMessage;
         }
 
-        private void ConnectButton_Click(object sender, EventArgs e)
+        private async void ConnectButton_Click(object sender, EventArgs e)
         {
             ConnectButton.Enabled = false;
             try
             {
                 connectionController.serverIPAdress = IPTextbox.Text;
                 connectionController.serverPort = Convert.ToUInt16(PortTextbox.Text);
-                connectionController.ConnectToServer();
+                //connectionController.ConnectToServer();
+                await connectionController.Connect(connectionController.connectionCancelToken);
             }
             catch (Exception ex)
             {
-                StatusLabel.Text = ex.Message;
+                StatusLabel.Invoke(() => StatusLabel.Text = ex.Message);
                 ConnectButton.Enabled = true;
             }
         }

@@ -10,6 +10,8 @@ namespace Controllers
 {
     public class AuthController
     {
+        private ConnectionController connectionController;
+
         private User defaultUser;
         public User? user;
         private const byte VersionId1 = 0x01;
@@ -25,15 +27,17 @@ namespace Controllers
         public delegate void LoggedOutDelegate();
         public event LoggedInDelegate LoggedOut;
 
-        public AuthController() 
+        public AuthController(ConnectionController connectionController) 
         {
             this.defaultUser = new User("default@lms.nl", "12345678", "default");
+            this.connectionController = connectionController;
         }
 
         public AuthenticationResult AuthenticateUser(string email, string password)
         {
             if (defaultUser.FindUser(email) != null)
             {
+                this.connectionController.SendMessageToServer(email);
                 this.user = defaultUser.FindUser(email);
                 if(user.role != "employee")
                 {

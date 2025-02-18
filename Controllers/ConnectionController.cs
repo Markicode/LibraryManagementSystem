@@ -15,9 +15,9 @@ namespace Controllers
         public string serverIPAdress {  get; set; }
         public ushort serverPort {  get; set; }
         private TcpClient? client;
-        private string? chatName;
-        CancellationTokenSource connectionCTS;
-        CancellationToken connectionCancelToken;
+        private string? clientName;
+        public CancellationTokenSource connectionCTS;
+        public CancellationToken connectionCancelToken;
 
         public delegate void disconnectedDelegate();
         public event disconnectedDelegate disconnected;
@@ -37,28 +37,27 @@ namespace Controllers
             await this.Connect(this.connectionCancelToken);
         }
 
-        private Task Connect(CancellationToken connCancelToken)
+        public async void SendMessageToServer(string message)
+        {
+            await this.Send(message);
+        }
+
+        public Task Connect(CancellationToken connCancelToken)
         {
             Task connectTask = Task.Run(async () =>
             {
-                //try
-                //{
-                    this.client = new TcpClient(serverIPAdress, serverPort);
-                    this.chatName = System.Environment.MachineName;
-                //}
-                //catch (Exception ex)
-                //{
-
-                //}
+ 
+                this.client = new TcpClient(serverIPAdress, serverPort);
+                this.clientName = System.Environment.MachineName;
 
                 NetworkStream ns = client.GetStream();
                 string answer = "";
                 
 
-                if (this.chatName != null && client != null)
+                if (this.clientName != null && client != null)
                 {
                     // Send chatname to server
-                    byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(this.chatName);
+                    byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(this.clientName);
                     ns.Write(bytesToSend, 0, bytesToSend.Length);
 
                     for (int i = 0; i < 1000000; i++)
@@ -129,18 +128,6 @@ namespace Controllers
                     }
                     catch (Exception ex)
                     {
-                        /*if (ex is OperationCanceledException)
-                        {
-                            ChatTextBox.Invoke(() => ChatTextBox.Text += $"Disconnected by user \r\n");
-                            ConnectButton.Invoke(() => { ConnectButton.Text = "Connect"; });
-                            break;
-                        }
-                        else
-                        {
-                            MessageBox.Show($"Other exception");
-                            ConnectButton.Invoke(() => { ConnectButton.Text = "Connect"; });
-                            break;
-                        }*/
                         break;
                     }
                 }
@@ -167,7 +154,7 @@ namespace Controllers
                     // Open stream and convert message to bytes
                     // Add nr.1 at the beginning to let the server know its a string message.
                     NetworkStream nwStream = client.GetStream();
-                    byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes("1~" + this.chatName + "~" + message);
+                    byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes("1~" + this.clientName + "~" + message);
 
                     // Send the message
                     nwStream.Write(bytesToSend, 0, bytesToSend.Length);
@@ -191,7 +178,7 @@ namespace Controllers
                     // Add nr. 2 at the beginning of the string to signal the server that it is receiving an object.
                     string jsonString = JsonSerializer.Serialize(o);
                     NetworkStream nwStream = client.GetStream();
-                    byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes("2~" + this.chatName + "~" + jsonString);
+                    byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes("2~" + this.clientName + "~" + jsonString);
 
                     // Send the message
                     nwStream.Write(bytesToSend, 0, bytesToSend.Length);
