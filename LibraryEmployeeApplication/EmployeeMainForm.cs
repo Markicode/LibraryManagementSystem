@@ -35,7 +35,7 @@ namespace LibraryEmployeeApplication
             GoFullscreen(true);
 
             this.connectionController = new ConnectionController();
-            this.authController = new AuthController(connectionController);
+            this.authController = connectionController.authController;
             this.newsController = new NewsController();
             
 

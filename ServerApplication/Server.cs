@@ -4,15 +4,18 @@ using System.Security.Cryptography.X509Certificates;
 using ServerApplication;
 using System.Text;
 using System.Xml.Linq;
+using GlobalApplicationVariables;
+using System.Diagnostics.Eventing.Reader;
 
 public class Server
 {
     private IPAddress ipAdress {  get; set; }
     private ushort port { get; set; }
-
+    
     private Dictionary<mainMenuOptions, string> mainMenuOptionsAssignment;
     private Dictionary<settingsMenuOptions, string> settingsMenuOptionsAssignment;
 
+    private DataController datacontroller;
     public List<mainMenuOptions> mainMenuList;
     public List<settingsMenuOptions> settingsMenuList;
 
@@ -56,6 +59,8 @@ public class Server
             {settingsMenuOptions.SetLogSize, "Adjust the number of shown log entries" },
             {settingsMenuOptions.Exit, "Exit to main menu."}
         };
+
+        datacontroller = new DataController();
 
         mainMenuList = new List<mainMenuOptions> {mainMenuOptions.Settings, mainMenuOptions.StartListening, mainMenuOptions.ViewLog, mainMenuOptions.ViewClients, mainMenuOptions.Close};
         settingsMenuList = new List<settingsMenuOptions> {settingsMenuOptions.SetIp, settingsMenuOptions.SetPort, settingsMenuOptions.SetLogSize, settingsMenuOptions.Exit};
@@ -300,7 +305,7 @@ public class Server
                     //    }
                     //}
                     //chatters = chatters.Remove(chatters.Length - 1);
-                    await this.Send("ok", tcpClient);
+                    await this.Send("ok", Enumeration.CommGoal.ServerConnect, tcpClient);
                     this.clientConnected(client);
                     //Console.WriteLine(clientName + "  connected.\r\n");
                 
@@ -331,7 +336,23 @@ public class Server
                     }
 
                     string data = Encoding.ASCII.GetString(buffer, 0, byteCount);
+                    string[] segments = data.Split(new string[] { "~~~" }, StringSplitOptions.None);
                     Console.WriteLine(data);
+
+                    if (segments[0] == Enumeration.CommGoal.EmailCheck.ToString())
+                    {
+                        if(datacontroller.CheckForUser(segments[2]) == true)
+                        {
+                            Console.WriteLine("true");
+                            await this.Send("true", Enumeration.CommGoal.EmailCheck, clientToHandle.tcpClient);
+                        }
+                        else
+                        {
+                            Console.WriteLine("false");
+                            await this.Send("false", Enumeration.CommGoal.EmailCheck, clientToHandle.tcpClient);
+                        }
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -349,7 +370,7 @@ public class Server
         await handleClientsTask;
     }
 
-    private Task Send(string message, TcpClient client)
+    private Task Send(string message,Enumeration.CommGoal commGoal , TcpClient client)
     {
         Task sendTask = Task.Run(() =>
         {
@@ -357,7 +378,7 @@ public class Server
             {
                 // Open stream and convert message to bytes
                 NetworkStream nwStream = client.GetStream();
-                byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(message);
+                byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(commGoal.ToString() + "~~~" + message);
 
                 // Send the message
                 nwStream.Write(bytesToSend, 0, bytesToSend.Length);
@@ -451,9 +472,6 @@ public class Server
         return choise;
     }
 
-    private string CheckForUser(string email)
-    {
-        return "";
-    }
+
 
 }

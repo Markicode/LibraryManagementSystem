@@ -5,6 +5,7 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Bcpg;
 using System.Security.Cryptography;
+using GlobalApplicationVariables;
 
 namespace Controllers
 {
@@ -12,6 +13,7 @@ namespace Controllers
     {
         private ConnectionController connectionController;
 
+        private bool emailPresent;
         private User defaultUser;
         public User? user;
         private const byte VersionId1 = 0x01;
@@ -31,13 +33,26 @@ namespace Controllers
         {
             this.defaultUser = new User("default@lms.nl", "12345678", "default");
             this.connectionController = connectionController;
+            this.emailPresent = false;
         }
 
         public AuthenticationResult AuthenticateUser(string email, string password)
         {
-            if (defaultUser.FindUser(email) != null)
+            this.connectionController.SendMessageToServer(email, Enumeration.CommGoal.EmailCheck);
+            connectionController.manualResetEvent.WaitOne();
+
+            if(this.emailPresent)
             {
-                this.connectionController.SendMessageToServer(email);
+                if (this.LoggedIn != null)
+                {
+                    this.LoggedIn();
+                }
+                return AuthenticationResult.Success;
+            }
+            return AuthenticationResult.NotFound;
+            /*if (defaultUser.FindUser(email) != null)
+            {
+                
                 this.user = defaultUser.FindUser(email);
                 if(user.role != "employee")
                 {
@@ -53,7 +68,7 @@ namespace Controllers
                 }
                 return AuthenticationResult.Failed;
             }
-            return AuthenticationResult.NotFound;
+            return AuthenticationResult.NotFound;*/
 
         }
 
@@ -189,7 +204,10 @@ namespace Controllers
             NotFound = 2
         }
 
-
+        public void SetEmailPresence(bool present)
+        {
+            this.emailPresent = present;
+        }
 
     }
 }
