@@ -19,14 +19,11 @@ public class Server
     public List<mainMenuOptions> mainMenuList;
     public List<settingsMenuOptions> settingsMenuList;
 
-    //public event ListeningModeChangedDelegate ListeningModeChanged;
-    //public delegate void ListeningModeChangedDelegate(string message);
+
     public event clientConnectedDelegate clientConnected;
     public delegate void clientConnectedDelegate(Client client);
     public event clientConnectedDelegate clientDisconnected;
     public delegate void clientDisconnectedDelegate(Client client);
-    //public event operationFinishedDelegate operationFinished;
-    //public delegate void operationFinishedDelegate();
 
     public bool isListening {get; set;}
 
@@ -40,6 +37,10 @@ public class Server
     CancellationTokenSource serverCancellationTokenSource;
     CancellationToken serverCancellationToken;
 
+    /*
+     * Server menu options are declared in enums, and menu lists contain the options that are applicable in a certain state. 
+     * Using dictionaries, strings are coupled with the options from the menu enums. 
+     */
     public Server()
     {
         this.isListening = false;
@@ -75,6 +76,7 @@ public class Server
 
         clientConnected += HandleClient;
     } 
+
     public enum mainMenuOptions
     {   
         Settings = 0, StartListening = 1, StopListening = 3, ViewClients = 4, ViewLog = 5, Close = 6
@@ -85,8 +87,12 @@ public class Server
         SetIp = 0, SetPort = 1, SetLogSize = 3, Exit = 4
     }
 
+    /*
+     * On server start, the main menu is shown, and the main thread will remain active until cancellation is requested.
+     */
     public void Start()
     {
+        
         this.ShowMainMenu();
         while (!serverCancellationToken.IsCancellationRequested)
         {
@@ -95,8 +101,14 @@ public class Server
         Environment.Exit(0);
     }
 
+    /*
+     * When the main menu has to be shown, the mainMenuList is used to create a dictionary where the main menu options are coupled
+     * with numbers. The numbers and options are written in the console and the validateMenuChoise function will validate and wait for user input.
+     * The user input will be used to determine further actions.
+     */
     public async void ShowMainMenu()
     {
+
         Dictionary<int, mainMenuOptions> mainMenu = this.MakeDictionary(mainMenuList);
         Console.WriteLine("Main menu options:");
         foreach(KeyValuePair<int, mainMenuOptions> mainOption in mainMenu)
@@ -148,7 +160,9 @@ public class Server
     {
         this.RefreshScreen("Here are the latest log entries: \r\n", "main");
     }
-
+    /*
+     * The settingsmenu visualization is realized using the same principles as the mainmenu visualization.
+     */
     public void ShowSettingsMenu()
     {
         Dictionary<int, settingsMenuOptions> settingsMenu = this.MakeDictionary(settingsMenuList);
@@ -189,6 +203,10 @@ public class Server
         }
     }
 
+    /*
+     * After making changes to the server state, the main menu must be updated to provide the right options.
+     * In case the server is in listening mode, the startListening option wil be removed, and the StopListening option will be added to the menu list. 
+     */
     public void updateMainMenu()
     {
         if(this.isListening)
@@ -210,6 +228,9 @@ public class Server
         
     }
 
+    /*
+     * 
+     */
     private Task Listen(IPAddress ipAddress, int port)
     {
         Task listenTask = Task.Run(async () =>
@@ -224,7 +245,6 @@ public class Server
             // listen loop as long as task is not canceled.
             while (!listenCancellationToken.IsCancellationRequested)
             {
-                //Console.WriteLine("1");
                 await AcceptClients();
             }
             listener.Stop();
@@ -472,6 +492,9 @@ public class Server
         return choise;
     }
 
-
+    private void HandleException(Exception ex)
+    {
+        // TODO: Handle server exceptions
+    }
 
 }

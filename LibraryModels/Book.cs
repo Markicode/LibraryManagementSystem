@@ -15,10 +15,17 @@ namespace Models
         public override string[] attributes
         { get; set; }
 
+        public override Dictionary<string, string> attributeTypes { get; set; }
+
         public string isbn { get; set; }
         public string title { get; set; }
         public int author {  get; set; }
         public int genre { get; set; }
+
+        public Book()
+        {
+
+        }
 
         public Book(string isbn, string title, int author, int genre) 
         {

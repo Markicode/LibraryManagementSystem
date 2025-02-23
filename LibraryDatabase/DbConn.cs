@@ -46,7 +46,7 @@
         /// <returns>"Dataset"</returns>
         
 
-        public List<object> PerformQuery(string queryStatement)
+        public (int, List<object>) PerformQuery(string queryStatement)
         {
             try
             {
@@ -77,15 +77,15 @@
                                     }
                                     dataSet.Add(row);
                                 }
-                                return dataSet;
+                                return (numberOfReturnValues, dataSet);
                             }
-                            else return dataSet;
+                            else return (numberOfReturnValues, dataSet);
                         }
                     }
                 }
                 else
                 {
-                    return dataSet;
+                    return (numberOfReturnValues, dataSet);
                 }
             }
             catch (Exception)

@@ -11,6 +11,7 @@ namespace Models
     public class User : Model
     {
         public override string[] attributes { get; set; }
+        public override Dictionary<string, string> attributeTypes { get; set; }
         public override string tableName { get; set; }
 
         public int? id { get; set; }
@@ -18,9 +19,30 @@ namespace Models
         public string password { get; set; }
         public string role { get; set; }
 
+        public User() 
+        {
+            this.attributes = new string[] { "id", "email", "password", "role" };
+            this.attributeTypes = new Dictionary<string, string>() {
+                {"id", "int"},
+                {"email", "string"},
+                {"password", "string"},
+                {"role", "string"}
+            };
+            this.email = "no email";
+            this.password = "no password";
+            this.role = "no role";
+            this.tableName = "user";
+        }
+
         public User(string email, string password, string role) 
         {
             this.attributes = new string[] {"id", "email", "password", "role"};
+            this.attributeTypes = new Dictionary<string, string>() {
+                {"id", "int"},
+                {"email", "string"},
+                {"password", "string"},
+                {"role", "string"}
+            };
             this.tableName = "user";
             this.email = email;
             this.password = password;
@@ -30,6 +52,12 @@ namespace Models
         public User(int id, string email, string password, string role)
         {
             this.attributes = new string[] { "id", "email", "password", "role" };
+            this.attributeTypes = new Dictionary<string, string>() {
+                {"id", "int"},
+                {"email", "string"},
+                {"password", "string"},
+                {"role", "string"}
+            };
             this.tableName = "user";
             this.id = id;
             this.email = email;
@@ -47,7 +75,8 @@ namespace Models
             string tempRole = "";
 
             List<object> results = new List<object>();
-            results = dbConn.PerformQuery($"SELECT * FROM {this.tableName} WHERE email = \"{email}\"");
+            int numberOfReturnValues;
+            (numberOfReturnValues, results) = dbConn.PerformQuery($"SELECT * FROM {this.tableName} WHERE email = \"{email}\"");
             if (results.Count > 0)
             {
                 foreach (List<object> row in results)
@@ -72,9 +101,10 @@ namespace Models
             string tempEmail = "";
             string tempPassword = "";
             string tempRole = "";
+            int numberOfReturnValues;
 
             List<object> results = new List<object>();
-            results = dbConn.PerformQuery($"SELECT * FROM {this.tableName} WHERE id = \"{id}\"");
+            (numberOfReturnValues, results) = dbConn.PerformQuery($"SELECT * FROM {this.tableName} WHERE id = \"{id}\"");
             if (results.Count > 0)
             {
                 foreach (List<object> row in results)
@@ -96,7 +126,9 @@ namespace Models
         public int CountUsers()
         {
             int userCount = 0;
-            var results = dbConn.PerformQuery($"SELECT COUNT(*) FROM user");
+            List<object> results = new List<object>();
+            int numberOfReturnValues;
+            (numberOfReturnValues, results) = dbConn.PerformQuery($"SELECT COUNT(*) FROM user");
             if (results.Count > 0)
             {
                 foreach (List<object> row in results)
@@ -112,7 +144,8 @@ namespace Models
         {
             var results = new List<object>();
             List<User> users = new List<User>();
-            results = dbConn.PerformQuery("SELECT * FROM user");
+            int numberOfReturnValues;
+            (numberOfReturnValues, results) = dbConn.PerformQuery("SELECT * FROM user");
             if (results.Count > 0)
             {
                 foreach (List<object> row in results)
@@ -127,7 +160,8 @@ namespace Models
         {
             Employee? employee = null;
             List<object> results = new List<object>();
-            results = dbConn.PerformQuery(
+            int numberOfReturnValues;
+            (numberOfReturnValues, results) = dbConn.PerformQuery(
                 $"SELECT employee.id, person.id, person.first_name, person.last_name, person.birth_date, employee.user_id, employee.bsn, employee.salary, employee.date_started " +
                 $"FROM employee " +
                 $"JOIN person ON employee.person_id = person.id " +

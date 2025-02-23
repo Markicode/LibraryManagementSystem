@@ -14,6 +14,7 @@ namespace Models
         protected DbConn dbConn;
         public abstract string tableName { get; set; }
         public abstract string[] attributes { get; set; }
+        public abstract Dictionary<string, string> attributeTypes { get; set; }
 
         protected Model() 
         { 
@@ -55,15 +56,38 @@ namespace Models
             }
         }
 
-        public List<object> GetAllEntries()
+        // TODO: Create query function with limited return values
+        public List<T> GetAllEntries<T>(T model) where T : Model, new()
         {
-            List<object> result = new List<object>();
+            List<object> results = new List<object>();
+            List<T> resultsList = new List<T>();
+
             string query = "SELECT * FROM " + this.tableName + "";
+            int numberOfAttributes = 0;
             if (this.dbConn != null)
             {
-                result =  dbConn.PerformQuery(query);
+                (numberOfAttributes, results) =  dbConn.PerformQuery(query);
             }
-            return result;
+            foreach (List<object> result in results)
+            {
+                T newObject = Activator.CreateInstance<T>();
+                for (int i = 0; i < numberOfAttributes; i++)
+                {
+                    string attributeType = model.attributeTypes[model.attributes[i]];
+                    switch(attributeType)
+                    {
+                        case "int":
+                            newObject[model.attributes[i]] = result[i];
+                            break;
+                        case "string":
+                            newObject[model.attributes[i]] = result[i].ToString();
+                            break;
+                    }
+                }
+                resultsList.Add( newObject );
+            }
+            
+            return resultsList;
         }
 
         public void Delete(int id)
@@ -80,12 +104,14 @@ namespace Models
         {
             List<object> result = new List<object>();
             string query = "SELECT * FROM " + this.tableName + " WHERE id = \"" + id + "\"";
+            int numberOfAttributes = 0;
             if (this.dbConn != null)
             {
-                result = dbConn.PerformQuery(query);
+                (numberOfAttributes, result) = dbConn.PerformQuery(query);
             }
             return result;
         }
 
+        // TODO: create dummy function to inform about parameterless constructor for derived classes
     }
 }

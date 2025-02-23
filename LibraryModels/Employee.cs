@@ -11,6 +11,7 @@ namespace Models
     {
         public override string tableName { get ; set; }
         public override string[] attributes { get; set; }
+        public override Dictionary<string, string> attributeTypes { get; set; }
 
         public int id { get; set; }
         public int userId { get; set; }
@@ -18,6 +19,11 @@ namespace Models
         public double salary { get; set; }
         public User account { get; set; }
         public DateTime dateStarted { get; set; }
+
+        public Employee() 
+        {
+
+        }
 
         public Employee(int id, int personId, string firstName, string lastName, DateTime birthDate, int userId, string bsn, double salary, DateTime dateStarted, User user) 
         {
@@ -40,7 +46,8 @@ namespace Models
         {
             List<Employee> employees = new List<Employee>();
             List<object> results = new List<object>();
-            results = dbConn.PerformQuery(
+            int numberOfReturnValues;
+            (numberOfReturnValues, results) = dbConn.PerformQuery(
                 $"SELECT employee.id, person.id, person.first_name, person.last_name, person.birth_date, employee.user_id, employee.bsn, employee.salary, employee.date_started, " +
                 $"user.id, user.email, user.password, user.role " +
                 $"FROM employee " +

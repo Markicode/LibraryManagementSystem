@@ -13,19 +13,20 @@ namespace Controllers
 
         public List<NewsMessage> GetAllNews()
         {
-            List<object> results = new List<object>();
+            List<NewsMessage> results = new List<NewsMessage>();
             List<NewsMessage> messages = new List<NewsMessage>();
 
-            NewsMessage message = new NewsMessage(0, "empty", "message", "no picture", "no target");
-            results = message.GetAllEntries();
-            if (results.Count > 0)
+            NewsMessage message = new NewsMessage();
+            results = message.GetAllEntries(message);
+            /*if (results.Count > 0)
             {
                 foreach (List<object> row in results)
                 {
                     messages.Add(new NewsMessage(Convert.ToInt32(row[0]), Convert.ToInt32(row[1]), row[2].ToString(), row[3].ToString(), row[4].ToString(), row[5].ToString()));
                 }
             }
-            return messages;
+            return messages;*/
+            return results;
         }
     }
 }
