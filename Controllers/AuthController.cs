@@ -40,6 +40,7 @@ namespace Controllers
         {
             this.connectionController.SendMessageToServer(email, Enumeration.CommGoal.EmailCheck);
             connectionController.manualResetEvent.WaitOne();
+            connectionController.manualResetEvent.Reset();
 
             if(this.emailPresent)
             {

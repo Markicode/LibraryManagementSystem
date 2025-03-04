@@ -9,15 +9,18 @@ namespace Controllers
 {
     public class NewsController
     {
-        public NewsController() { }
+        private ClientDataController clientDataController;
 
-        public List<NewsMessage> GetAllNews()
+        public NewsController(ClientDataController clientDataController) 
+        {
+            this.clientDataController = clientDataController;
+        }
+
+        public async Task<List<NewsMessage>> GetAllNews()
         {
             List<NewsMessage> results = new List<NewsMessage>();
-            List<NewsMessage> messages = new List<NewsMessage>();
 
-            NewsMessage message = new NewsMessage();
-            results = message.GetAllEntries(message);
+            results = await clientDataController.GetAllNewsMessages();
             /*if (results.Count > 0)
             {
                 foreach (List<object> row in results)

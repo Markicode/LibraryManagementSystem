@@ -8,6 +8,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using GlobalApplicationVariables;
+using Org.BouncyCastle.X509.Store;
+using System.Threading.Tasks.Dataflow;
 
 namespace Controllers
 {
@@ -21,6 +23,7 @@ namespace Controllers
         public CancellationTokenSource connectionCTS;
         public CancellationToken connectionCancelToken;
         public ManualResetEvent manualResetEvent;
+        public BufferBlock<string> bufferBlock;
 
         public delegate void disconnectedDelegate();
         public event disconnectedDelegate disconnected;
@@ -37,7 +40,10 @@ namespace Controllers
             connectionCancelToken = connectionCTS.Token;
             manualResetEvent = new ManualResetEvent(false);
             this.authController = new AuthController(this);
+
+            this.bufferBlock = new BufferBlock<string>();
             emailChecked += authController.SetEmailPresence;
+
         }
 
         public async void ConnectToServer()
@@ -166,7 +172,8 @@ namespace Controllers
                 try
                 {
                     // Open stream and convert message to bytes
-                    // Add nr.1 at the beginning to let the server know its a string message.
+                    // Add communication goal to the start of the message to let the server know what to do with the information.
+                    // To enforce the use of the right terminology, an enumeration is used available for server and client.
                     NetworkStream nwStream = client.GetStream();
                     byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(commGoal + "~~~" + this.clientName + "~~~" + message);
 
@@ -215,8 +222,9 @@ namespace Controllers
                 try
                 {
                     NetworkStream ns = client.GetStream();
-                    byte[] receivedBytes = new byte[1024];
+                    byte[] receivedBytes = new byte[2048];
                     int byte_count;
+                    // TODO: Handle bigger data 
 
                     while (!connCancelToken.IsCancellationRequested)
                     {
@@ -226,25 +234,36 @@ namespace Controllers
                             string data = Encoding.ASCII.GetString(receivedBytes, 0, byte_count);
                             string[] segments = data.Split(new string[] {"~~~"}, StringSplitOptions.None);
 
-                            if (segments[0] == Enumeration.CommGoal.EmailCheck.ToString())
-                            {
-                                if (segments[1] == "true")
+                            Enumeration.CommGoal commGoal = Enumeration.CommGoal.Unknown;
+                            Enum.TryParse(segments[0], out commGoal);
+
+                                switch (commGoal)
                                 {
-                                    if(this.emailChecked != null) 
+                                case Enumeration.CommGoal.EmailCheck:
+                                    if (segments[1] == "true")
                                     {
-                                        this.emailChecked(true);
+                                        if (this.emailChecked != null)
+                                        {
+                                             this.emailChecked(true);
+                                        }
+                                            manualResetEvent.Set();
                                     }
-                                    manualResetEvent.Set();
-                                }
-                                if (segments[1] == "false")
-                                {
-                                    if (this.emailChecked != null)
+                                    if (segments[1] == "false")
                                     {
-                                        this.emailChecked(false);
+                                        if (this.emailChecked != null)
+                                        {
+                                            this.emailChecked(false);
+                                        }
+                                        manualResetEvent.Set();
                                     }
+                                        break;
+                                case Enumeration.CommGoal.SendData:
+                                    bufferBlock.Post(segments[1]);
                                     manualResetEvent.Set();
+                                    break;
                                 }
-                            }
+                            
+            
                         }
                     }
 

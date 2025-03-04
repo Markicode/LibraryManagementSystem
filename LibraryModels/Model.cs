@@ -57,7 +57,7 @@ namespace Models
         }
 
         // TODO: Create query function with limited return values
-        public List<T> GetAllEntries<T>(T model) where T : Model, new()
+        public List<T> GetAllEntries<T>() where T : Model, new()
         {
             List<object> results = new List<object>();
             List<T> resultsList = new List<T>();
@@ -73,14 +73,14 @@ namespace Models
                 T newObject = Activator.CreateInstance<T>();
                 for (int i = 0; i < numberOfAttributes; i++)
                 {
-                    string attributeType = model.attributeTypes[model.attributes[i]];
+                    string attributeType = this.attributeTypes[this.attributes[i]];
                     switch(attributeType)
                     {
                         case "int":
-                            newObject[model.attributes[i]] = result[i];
+                            newObject[this.attributes[i]] = result[i];
                             break;
                         case "string":
-                            newObject[model.attributes[i]] = result[i].ToString();
+                            newObject[this.attributes[i]] = result[i].ToString();
                             break;
                     }
                 }

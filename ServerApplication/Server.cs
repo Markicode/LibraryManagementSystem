@@ -6,6 +6,8 @@ using System.Text;
 using System.Xml.Linq;
 using GlobalApplicationVariables;
 using System.Diagnostics.Eventing.Reader;
+using Models;
+using System.Reflection;
 
 public class Server
 {
@@ -15,7 +17,7 @@ public class Server
     private Dictionary<mainMenuOptions, string> mainMenuOptionsAssignment;
     private Dictionary<settingsMenuOptions, string> settingsMenuOptionsAssignment;
 
-    private DataController datacontroller;
+    private ServerDataController serverDataController;
     public List<mainMenuOptions> mainMenuList;
     public List<settingsMenuOptions> settingsMenuList;
 
@@ -61,7 +63,7 @@ public class Server
             {settingsMenuOptions.Exit, "Exit to main menu."}
         };
 
-        datacontroller = new DataController();
+        serverDataController = new ServerDataController();
 
         mainMenuList = new List<mainMenuOptions> {mainMenuOptions.Settings, mainMenuOptions.StartListening, mainMenuOptions.ViewLog, mainMenuOptions.ViewClients, mainMenuOptions.Close};
         settingsMenuList = new List<settingsMenuOptions> {settingsMenuOptions.SetIp, settingsMenuOptions.SetPort, settingsMenuOptions.SetLogSize, settingsMenuOptions.Exit};
@@ -357,21 +359,37 @@ public class Server
 
                     string data = Encoding.ASCII.GetString(buffer, 0, byteCount);
                     string[] segments = data.Split(new string[] { "~~~" }, StringSplitOptions.None);
+                    // Segments[0] = communication goal, Segments[1] = client name, Segments[2] = message
                     Console.WriteLine(data);
 
-                    if (segments[0] == Enumeration.CommGoal.EmailCheck.ToString())
+                    Enumeration.CommGoal commGoal = Enumeration.CommGoal.Unknown;
+                    Enum.TryParse(segments[0], out commGoal);
+
+                    switch(commGoal)
                     {
-                        if(datacontroller.CheckForUser(segments[2]) == true)
-                        {
-                            Console.WriteLine("true");
-                            await this.Send("true", Enumeration.CommGoal.EmailCheck, clientToHandle.tcpClient);
-                        }
-                        else
-                        {
-                            Console.WriteLine("false");
-                            await this.Send("false", Enumeration.CommGoal.EmailCheck, clientToHandle.tcpClient);
-                        }
+                        case Enumeration.CommGoal.SendData:
+                            // Segments[3] = Enumeration option which calls on ServerDataController method.
+                            //Enumeration.QueryCommands queryCommand = Enumeration.QueryCommands.Unknown;
+                            //Enum.TryParse(segments[3], out queryCommand);
+                            Type type = typeof(ServerDataController);
+                            MethodInfo method = type.GetMethod(segments[2]);
+                            string returnData = (string)method.Invoke(serverDataController, null);
+                            await this.Send(returnData, Enumeration.CommGoal.SendData, clientToHandle.tcpClient);
+                            break;
+                        case Enumeration.CommGoal.EmailCheck:
+                            if (serverDataController.CheckForUser(segments[2]) == true)
+                            {
+                                Console.WriteLine("true");
+                                await this.Send("true", Enumeration.CommGoal.EmailCheck, clientToHandle.tcpClient);
+                            }
+                            else
+                            {
+                                Console.WriteLine("false");
+                                await this.Send("false", Enumeration.CommGoal.EmailCheck, clientToHandle.tcpClient);
+                            }
+                            break;
                     }
+
 
                 }
                 catch (Exception ex)

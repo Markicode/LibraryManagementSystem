@@ -19,7 +19,7 @@ namespace Models
         public string content { get; set; }
         public string picture { get; set; }
         public string target { get; set; }
-        public DateTime date_posted { get; set; }
+        public string date_posted { get; set; }
 
         public NewsMessage()
         {
@@ -40,7 +40,7 @@ namespace Models
             this.content = "No content";
             this.picture = "No picture";
             this.target = "No target";
-            this.date_posted = DateTime.Now;
+            this.date_posted = "DateTime.Now";
         }
 
         public NewsMessage(int posterId, string title, string content, string picture, string target) 
@@ -83,3 +83,5 @@ namespace Models
         }
     }
 }
+
+// TODO: Implement datetime

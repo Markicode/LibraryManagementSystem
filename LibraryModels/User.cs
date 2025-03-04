@@ -28,9 +28,9 @@ namespace Models
                 {"password", "string"},
                 {"role", "string"}
             };
-            this.email = "no email";
-            this.password = "no password";
-            this.role = "no role";
+            this.email = "default@lms.nl";
+            this.password = "12345678";
+            this.role = "default";
             this.tableName = "user";
         }
 

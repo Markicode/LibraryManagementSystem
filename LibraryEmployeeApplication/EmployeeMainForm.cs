@@ -16,6 +16,7 @@ namespace LibraryEmployeeApplication
         public AuthController authController;
         public NewsController newsController;
         public ConnectionController connectionController;
+        public ClientDataController clientDataController;
 
         private List<Label> menuLabels;
         private Dictionary<Label, menuChoises> menuLabelAssignment;
@@ -35,8 +36,10 @@ namespace LibraryEmployeeApplication
             GoFullscreen(true);
 
             this.connectionController = new ConnectionController();
+            this.clientDataController = new ClientDataController(connectionController);
             this.authController = connectionController.authController;
-            this.newsController = new NewsController();
+            this.newsController = new NewsController(clientDataController);
+            
             
 
             this.language = "NL";
@@ -175,10 +178,11 @@ namespace LibraryEmployeeApplication
             NewsTablePanel.Visible = false;
         }
 
-        private void ShowNews()
+        private async void ShowNews()
         {
+            MessageBox.Show("About to show all news");
             List<NewsMessage> news = new List<NewsMessage>();
-            news = newsController.GetAllNews();
+            news = await newsController.GetAllNews();
             if (news != null && news.Count > 0)
             {
                 TableLayoutPanel[] messagePanels = new TableLayoutPanel[news.Count];
