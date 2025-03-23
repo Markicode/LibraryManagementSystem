@@ -416,8 +416,23 @@ public class Server
             {
                 // Open stream and convert message to bytes
                 NetworkStream nwStream = client.GetStream();
-                byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(commGoal.ToString() + "~~~" + message);
-
+                int messageLength = commGoal.ToString().Length + 3 + message.Length;
+                byte[] messageLengthBytes = BitConverter.GetBytes(messageLength);
+                //Console.WriteLine(commGoal.ToString() + "~~~" + messageLength.ToString() + "~~~" + message);
+                byte[] messageBytes = ASCIIEncoding.ASCII.GetBytes("~~~" + commGoal.ToString() + "~~~" + message + "~***~");
+                byte[] bytesToSend = new byte[4 + messageBytes.Length];
+                messageLengthBytes.CopyTo(bytesToSend, 0);
+                messageBytes.CopyTo(bytesToSend, 4);
+                Console.WriteLine(Encoding.ASCII.GetString(bytesToSend));
+                int i = BitConverter.ToInt32(messageLengthBytes, 0);
+                Console.WriteLine(i);
+                if(BitConverter.IsLittleEndian)
+                {
+                    Array.Reverse(messageLengthBytes);
+                }
+                i = BitConverter.ToInt32(messageLengthBytes, 0);
+                Console.WriteLine(i);
+                
                 // Send the message
                 nwStream.Write(bytesToSend, 0, bytesToSend.Length);
 

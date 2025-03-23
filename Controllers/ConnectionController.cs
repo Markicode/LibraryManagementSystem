@@ -83,9 +83,10 @@ namespace Controllers
                             int byte_count = ns.Read(receivedBytes, 0, receivedBytes.Length);
                             data = Encoding.ASCII.GetString(receivedBytes, 0, byte_count);
                             segments = data.Split(new string[] { "~~~" }, StringSplitOptions.None);
-                            if (segments[0] == Enumeration.CommGoal.ServerConnect.ToString())
+                            if (segments[1] == Enumeration.CommGoal.ServerConnect.ToString())
                             {
-                                answer = segments[1];   
+                                answer = segments[2];
+                                answer = answer.Replace("~***~", "");
                             }
                             break;
                         }
@@ -217,30 +218,61 @@ namespace Controllers
 
         private Task ReceiveData(TcpClient client, CancellationToken connCancelToken)
         {
-            Task receiveDataTask = Task.Run(() =>
+            Task receiveDataTask = Task.Run(async () =>
             {
                 try
                 {
                     NetworkStream ns = client.GetStream();
-                    byte[] receivedBytes = new byte[2048];
+                    byte[] receivedBytes = new byte[1024];
                     int byte_count;
+                    var builder = new StringBuilder();
                     // TODO: Handle bigger data 
 
                     while (!connCancelToken.IsCancellationRequested)
                     {
                         if (ns.DataAvailable)
                         {
-                            byte_count = ns.Read(receivedBytes, 0, receivedBytes.Length);
-                            string data = Encoding.ASCII.GetString(receivedBytes, 0, byte_count);
+                            string data = "";
+                            bool firstMessagepart = true;
+                            bool messageEnded = false;
+                            
+                            do
+                            {
+                                if (firstMessagepart)
+                                {
+                                    //byte_count = await ns.ReadAsync(receivedBytes, 0, receivedBytes.Length);
+                                    // TODO: Check for message length
+                                    byte_count = ns.Read(receivedBytes, 0, receivedBytes.Length);
+                                    data += Encoding.ASCII.GetString(receivedBytes, 0, byte_count);
+                                    if (data.Contains("~***~"))
+                                    {
+                                        messageEnded = true;
+                                    }
+                                    firstMessagepart = false;
+                                }
+                                else
+                                {
+                                    byte_count = ns.Read(receivedBytes, 0, receivedBytes.Length);
+                                    data += Encoding.ASCII.GetString(receivedBytes, 0, byte_count);
+                                    if (data.Contains("~***~"))
+                                    {
+                                        messageEnded = true;
+                                    }
+                                }
+
+                            }
+                            while(!messageEnded);
+
                             string[] segments = data.Split(new string[] {"~~~"}, StringSplitOptions.None);
+                            string message = segments[2].Replace("~***~", "");
 
                             Enumeration.CommGoal commGoal = Enumeration.CommGoal.Unknown;
-                            Enum.TryParse(segments[0], out commGoal);
+                            Enum.TryParse(segments[1], out commGoal);
 
                                 switch (commGoal)
                                 {
                                 case Enumeration.CommGoal.EmailCheck:
-                                    if (segments[1] == "true")
+                                    if (message == "true")
                                     {
                                         if (this.emailChecked != null)
                                         {
@@ -248,7 +280,7 @@ namespace Controllers
                                         }
                                             manualResetEvent.Set();
                                     }
-                                    if (segments[1] == "false")
+                                    if (message == "false")
                                     {
                                         if (this.emailChecked != null)
                                         {
@@ -258,7 +290,7 @@ namespace Controllers
                                     }
                                         break;
                                 case Enumeration.CommGoal.SendData:
-                                    bufferBlock.Post(segments[1]);
+                                    bufferBlock.Post(message);
                                     manualResetEvent.Set();
                                     break;
                                 }
