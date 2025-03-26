@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EmployeeMainForm));
             LogoPictureBox = new PictureBox();
             MenuLabel1 = new Label();
             WelcomeLabel = new Label();
@@ -38,22 +37,20 @@
             MenuLabel5 = new Label();
             MenuLabel6 = new Label();
             MenuLabel7 = new Label();
-            SettingsIconBox = new PictureBox();
-            LogoutIconBox = new PictureBox();
             MenuLabel8 = new Label();
-            CloseIconBox = new PictureBox();
+            LineLabel1 = new Label();
+            LineLabel2 = new Label();
+            MenuPicBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)LogoPictureBox).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)SettingsIconBox).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)LogoutIconBox).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)CloseIconBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)MenuPicBox1).BeginInit();
             SuspendLayout();
             // 
             // LogoPictureBox
             // 
-            LogoPictureBox.Image = (Image)resources.GetObject("LogoPictureBox.Image");
-            LogoPictureBox.Location = new Point(12, 12);
+            LogoPictureBox.Image = EmployeeApplication.Properties.Resources.Woordenschat_logo3BMP_Small;
+            LogoPictureBox.Location = new Point(15, 15);
             LogoPictureBox.Name = "LogoPictureBox";
-            LogoPictureBox.Size = new Size(1176, 121);
+            LogoPictureBox.Size = new Size(510, 60);
             LogoPictureBox.TabIndex = 0;
             LogoPictureBox.TabStop = false;
             // 
@@ -62,7 +59,7 @@
             MenuLabel1.AutoSize = true;
             MenuLabel1.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
             MenuLabel1.ForeColor = Color.FromArgb(33, 0, 127);
-            MenuLabel1.Location = new Point(32, 175);
+            MenuLabel1.Location = new Point(24, 232);
             MenuLabel1.Name = "MenuLabel1";
             MenuLabel1.Size = new Size(84, 25);
             MenuLabel1.TabIndex = 2;
@@ -75,7 +72,7 @@
             // 
             WelcomeLabel.AutoSize = true;
             WelcomeLabel.Font = new Font("Lato", 14F, FontStyle.Regular, GraphicsUnit.Point);
-            WelcomeLabel.Location = new Point(240, 175);
+            WelcomeLabel.Location = new Point(232, 232);
             WelcomeLabel.Name = "WelcomeLabel";
             WelcomeLabel.Size = new Size(89, 23);
             WelcomeLabel.TabIndex = 3;
@@ -86,7 +83,7 @@
             MenuLabel2.AutoSize = true;
             MenuLabel2.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
             MenuLabel2.ForeColor = Color.FromArgb(33, 0, 127);
-            MenuLabel2.Location = new Point(32, 220);
+            MenuLabel2.Location = new Point(24, 277);
             MenuLabel2.Name = "MenuLabel2";
             MenuLabel2.Size = new Size(84, 25);
             MenuLabel2.TabIndex = 4;
@@ -100,7 +97,7 @@
             MenuLabel3.AutoSize = true;
             MenuLabel3.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
             MenuLabel3.ForeColor = Color.FromArgb(33, 0, 127);
-            MenuLabel3.Location = new Point(32, 265);
+            MenuLabel3.Location = new Point(24, 322);
             MenuLabel3.Name = "MenuLabel3";
             MenuLabel3.Size = new Size(84, 25);
             MenuLabel3.TabIndex = 5;
@@ -114,7 +111,7 @@
             MenuLabel4.AutoSize = true;
             MenuLabel4.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
             MenuLabel4.ForeColor = Color.FromArgb(33, 0, 127);
-            MenuLabel4.Location = new Point(32, 310);
+            MenuLabel4.Location = new Point(24, 367);
             MenuLabel4.Name = "MenuLabel4";
             MenuLabel4.Size = new Size(84, 25);
             MenuLabel4.TabIndex = 6;
@@ -128,7 +125,7 @@
             MenuLabel5.AutoSize = true;
             MenuLabel5.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
             MenuLabel5.ForeColor = Color.FromArgb(33, 0, 127);
-            MenuLabel5.Location = new Point(32, 355);
+            MenuLabel5.Location = new Point(24, 412);
             MenuLabel5.Name = "MenuLabel5";
             MenuLabel5.Size = new Size(84, 25);
             MenuLabel5.TabIndex = 7;
@@ -142,7 +139,7 @@
             MenuLabel6.AutoSize = true;
             MenuLabel6.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
             MenuLabel6.ForeColor = Color.FromArgb(33, 0, 127);
-            MenuLabel6.Location = new Point(32, 400);
+            MenuLabel6.Location = new Point(24, 457);
             MenuLabel6.Name = "MenuLabel6";
             MenuLabel6.Size = new Size(84, 25);
             MenuLabel6.TabIndex = 8;
@@ -156,7 +153,7 @@
             MenuLabel7.AutoSize = true;
             MenuLabel7.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
             MenuLabel7.ForeColor = Color.FromArgb(33, 0, 127);
-            MenuLabel7.Location = new Point(32, 445);
+            MenuLabel7.Location = new Point(24, 502);
             MenuLabel7.Name = "MenuLabel7";
             MenuLabel7.Size = new Size(84, 25);
             MenuLabel7.TabIndex = 9;
@@ -165,36 +162,12 @@
             MenuLabel7.MouseEnter += MenuLabel7_MouseEnter;
             MenuLabel7.MouseLeave += MenuLabel7_MouseLeave;
             // 
-            // SettingsIconBox
-            // 
-            SettingsIconBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            SettingsIconBox.Location = new Point(1223, 12);
-            SettingsIconBox.Name = "SettingsIconBox";
-            SettingsIconBox.Size = new Size(40, 40);
-            SettingsIconBox.TabIndex = 10;
-            SettingsIconBox.TabStop = false;
-            SettingsIconBox.Click += SettingsIconBox_Click;
-            SettingsIconBox.MouseEnter += SettingsIconBox_MouseEnter;
-            SettingsIconBox.MouseLeave += SettingsIconBox_MouseLeave;
-            // 
-            // LogoutIconBox
-            // 
-            LogoutIconBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            LogoutIconBox.Location = new Point(1177, 12);
-            LogoutIconBox.Name = "LogoutIconBox";
-            LogoutIconBox.Size = new Size(40, 40);
-            LogoutIconBox.TabIndex = 11;
-            LogoutIconBox.TabStop = false;
-            LogoutIconBox.Click += LogoutIconBox_Click;
-            LogoutIconBox.MouseEnter += LogoutIconBox_MouseEnter;
-            LogoutIconBox.MouseLeave += LogoutIconBox_MouseLeave;
-            // 
             // MenuLabel8
             // 
             MenuLabel8.AutoSize = true;
             MenuLabel8.Font = new Font("Lato", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
             MenuLabel8.ForeColor = Color.FromArgb(33, 0, 127);
-            MenuLabel8.Location = new Point(32, 490);
+            MenuLabel8.Location = new Point(24, 547);
             MenuLabel8.Name = "MenuLabel8";
             MenuLabel8.Size = new Size(84, 25);
             MenuLabel8.TabIndex = 12;
@@ -203,17 +176,33 @@
             MenuLabel8.MouseEnter += MenuLabel8_MouseEnter;
             MenuLabel8.MouseLeave += MenuLabel8_MouseLeave;
             // 
-            // CloseIconBox
+            // LineLabel1
             // 
-            CloseIconBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            CloseIconBox.Location = new Point(1269, 12);
-            CloseIconBox.Name = "CloseIconBox";
-            CloseIconBox.Size = new Size(40, 40);
-            CloseIconBox.TabIndex = 13;
-            CloseIconBox.TabStop = false;
-            CloseIconBox.Click += CloseIconBox_Click;
-            CloseIconBox.MouseEnter += CloseIconBox_MouseEnter;
-            CloseIconBox.MouseLeave += CloseIconBox_MouseLeave;
+            LineLabel1.BorderStyle = BorderStyle.Fixed3D;
+            LineLabel1.Location = new Point(15, 90);
+            LineLabel1.Name = "LineLabel1";
+            LineLabel1.Size = new Size(200, 2);
+            LineLabel1.TabIndex = 13;
+            // 
+            // LineLabel2
+            // 
+            LineLabel2.BorderStyle = BorderStyle.Fixed3D;
+            LineLabel2.Location = new Point(15, 200);
+            LineLabel2.Name = "LineLabel2";
+            LineLabel2.Size = new Size(200, 2);
+            LineLabel2.TabIndex = 14;
+            // 
+            // MenuPicBox1
+            // 
+            MenuPicBox1.Image = EmployeeApplication.Properties.Resources.LoginbuttonBMP;
+            MenuPicBox1.Location = new Point(16, 104);
+            MenuPicBox1.Name = "MenuPicBox1";
+            MenuPicBox1.Size = new Size(75, 75);
+            MenuPicBox1.TabIndex = 15;
+            MenuPicBox1.TabStop = false;
+            MenuPicBox1.Click += MenuPicBox1_Click;
+            MenuPicBox1.MouseEnter += MenuPicBox1_MouseEnter;
+            MenuPicBox1.MouseLeave += MenuPicBox1_MouseLeave;
             // 
             // EmployeeMainForm
             // 
@@ -221,10 +210,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1336, 552);
-            Controls.Add(CloseIconBox);
+            Controls.Add(MenuPicBox1);
+            Controls.Add(LineLabel2);
+            Controls.Add(LineLabel1);
             Controls.Add(MenuLabel8);
-            Controls.Add(LogoutIconBox);
-            Controls.Add(SettingsIconBox);
             Controls.Add(MenuLabel7);
             Controls.Add(MenuLabel6);
             Controls.Add(MenuLabel5);
@@ -237,10 +226,9 @@
             Name = "EmployeeMainForm";
             Text = "Form1";
             Load += EmployeeMainForm_Load;
+            Resize += EmployeeMainForm_Resize;
             ((System.ComponentModel.ISupportInitialize)LogoPictureBox).EndInit();
-            ((System.ComponentModel.ISupportInitialize)SettingsIconBox).EndInit();
-            ((System.ComponentModel.ISupportInitialize)LogoutIconBox).EndInit();
-            ((System.ComponentModel.ISupportInitialize)CloseIconBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)MenuPicBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -255,9 +243,9 @@
         private Label MenuLabel5;
         private Label MenuLabel6;
         private Label MenuLabel7;
-        private PictureBox SettingsIconBox;
-        private PictureBox LogoutIconBox;
         private Label MenuLabel8;
-        private PictureBox CloseIconBox;
+        private Label LineLabel1;
+        private Label LineLabel2;
+        private PictureBox MenuPicBox1;
     }
 }

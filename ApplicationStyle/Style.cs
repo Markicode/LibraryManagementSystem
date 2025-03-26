@@ -14,5 +14,6 @@ namespace GlobalApplicationVariables
         public static Font hoverMenuFont = new(Style.fontFamily, 16, FontStyle.Bold);
         public static Font closeButtonFont = new(Style.fontFamily, 24, FontStyle.Regular);
         public static Font hoverCloseButtonFont = new(Style.fontFamily, 24, FontStyle.Bold);
+        public static int menuSpacing = 15;
     }
 }

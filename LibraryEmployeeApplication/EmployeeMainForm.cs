@@ -33,14 +33,15 @@ namespace LibraryEmployeeApplication
         public EmployeeMainForm()
         {
             InitializeComponent();
-            GoFullscreen(true);
+            //GoFullscreen(true);
 
             this.connectionController = new ConnectionController();
             this.clientDataController = new ClientDataController(connectionController);
             this.authController = connectionController.authController;
             this.newsController = new NewsController(clientDataController);
-            
-            
+            this.AdjustLayout();
+
+
 
             this.language = "NL";
             this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5, MenuLabel6, MenuLabel7, MenuLabel8 };
@@ -87,14 +88,9 @@ namespace LibraryEmployeeApplication
                 {menuChoises.ConnectToServer, "Connect to the server"}
             };
 
-            CloseIconBox.Load(AppDirectory.iconImages + @"\ClosebuttonOrange.bmp");
-            SettingsIconBox.Load(AppDirectory.iconImages + @"\SettingsbuttonOrange.bmp");
-            LogoutIconBox.Load(AppDirectory.iconImages + @"\LogoutbuttonOrange.bmp");
-
-            //WelcomeLabel.Visible = false;
-            SettingsIconBox.Enabled = false;
-            LogoutIconBox.Enabled = false;
             this.NewsTablePanel = new TableLayoutPanel();
+
+
 
             foreach (Label label in menuLabels)
             {
@@ -114,6 +110,17 @@ namespace LibraryEmployeeApplication
 
         }
 
+        private void AdjustLayout()
+        {
+            LineLabel1.Width = (this.Width - 50);
+            LineLabel2.Width = (this.Width - 50);
+
+            if (NewsTablePanel != null)
+            {
+                NewsTablePanel.Height = (this.Height - 275);
+                NewsTablePanel.Width = (this.Width - 290);
+            }
+        }
 
         private void GoFullscreen(bool fullscreen)
         {
@@ -134,10 +141,7 @@ namespace LibraryEmployeeApplication
         {
             WelcomeLabel.Text = $"Hallo {user.email}, gebruik het menu om te beginnen.";
             WelcomeLabel.Visible = true;
-            SettingsIconBox.Visible = true;
-            LogoutIconBox.Visible = true;
-            SettingsIconBox.Enabled = true;
-            LogoutIconBox.Enabled = true;
+
         }
 
         private void EnableLogin()
@@ -247,8 +251,20 @@ namespace LibraryEmployeeApplication
                     contentLabels[i].Text = news[i].content;
                     contentLabels[i].Font = Style.textFont;
 
+                    this.AdjustLayout();
+
                 }
             }
+        }
+
+        private void DrawBorders(int x, int y, int width, int height, Color color)
+        {
+            System.Drawing.Pen pen = new System.Drawing.Pen(color);
+            System.Drawing.Graphics formGraphics;
+            formGraphics = this.CreateGraphics();
+            formGraphics.DrawRectangle(pen, new Rectangle(x, y, width, height));
+            pen.Dispose();
+            formGraphics.Dispose();
         }
 
         private void OpenServerConnectionForm()
@@ -322,10 +338,7 @@ namespace LibraryEmployeeApplication
             authController.LogoutUser();
             this.user = null;
             NewsTablePanel.Visible = false;
-            SettingsIconBox.Visible = false;
-            LogoutIconBox.Visible = false;
-            SettingsIconBox.Enabled = false;
-            LogoutIconBox.Enabled = false;
+
 
         }
 
@@ -449,54 +462,29 @@ namespace LibraryEmployeeApplication
             OpenForm(menuLabelAssignment[MenuLabel8]);
         }
 
-        private void SettingsIconBox_MouseEnter(object sender, EventArgs e)
-        {
-            SettingsIconBox.Load(AppDirectory.iconImages + @"\SettingsbuttonPurple.bmp");
-        }
-
-        private void SettingsIconBox_MouseLeave(object sender, EventArgs e)
-        {
-            SettingsIconBox.Load(AppDirectory.iconImages + @"\SettingsbuttonOrange.bmp");
-        }
-
-        private void SettingsIconBox_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void LogoutIconBox_MouseEnter(object sender, EventArgs e)
-        {
-            LogoutIconBox.Load(AppDirectory.iconImages + @"\LogoutbuttonPurple.bmp");
-        }
-
-        private void LogoutIconBox_MouseLeave(object sender, EventArgs e)
-        {
-            LogoutIconBox.Load(AppDirectory.iconImages + @"\LogoutbuttonOrange.bmp");
-        }
-
-        private void LogoutIconBox_Click(object sender, EventArgs e)
-        {
-            this.Logout();
-        }
-
-        private void CloseIconBox_MouseEnter(object sender, EventArgs e)
-        {
-            CloseIconBox.Load(AppDirectory.iconImages + @"\ClosebuttonPurple.bmp");
-        }
-
-        private void CloseIconBox_MouseLeave(object sender, EventArgs e)
-        {
-            CloseIconBox.Load(AppDirectory.iconImages + @"\ClosebuttonOrange.bmp");
-        }
-
-        private void CloseIconBox_Click(object sender, EventArgs e)
-        {
-            Environment.Exit(0);
-        }
-
         private void EmployeeMainForm_Load(object sender, EventArgs e)
         {
             this.OpenServerConnectionForm();
+        }
+
+        private void EmployeeMainForm_Resize(object sender, EventArgs e)
+        {
+            this.AdjustLayout();
+        }
+
+        private void MenuPicBox1_Click(object sender, EventArgs e)
+        {
+            OpenForm(menuLabelAssignment[MenuLabel1]);
+        }
+
+        private void MenuPicBox1_MouseEnter(object sender, EventArgs e)
+        {
+            this.DrawBorders(MenuPicBox1.Location.X-1, MenuPicBox1.Location.Y-1, MenuPicBox1.Width+2, MenuPicBox1.Height+2, Style.purpleColor);
+        }
+
+        private void MenuPicBox1_MouseLeave(object sender, EventArgs e)
+        {
+            this.DrawBorders(MenuPicBox1.Location.X - 1, MenuPicBox1.Location.Y - 1, MenuPicBox1.Width + 2, MenuPicBox1.Height + 2, Color.White);
         }
     }
 }
