@@ -23,7 +23,7 @@ namespace Controllers
         public async Task<List<NewsMessage>> GetAllNewsMessages()
         {
             connectionController.SendMessageToServer(Enumeration.QueryCommands.GetAllNews.ToString(), Enumeration.CommGoal.SendData);
-            connectionController.manualResetEvent.WaitOne();
+            connectionController.manualResetDataSentEvent.WaitOne();
             
             string result = await connectionController.bufferBlock.ReceiveAsync();
             List<NewsMessage> newslist = JsonSerializer.Deserialize<List<NewsMessage>>(result);

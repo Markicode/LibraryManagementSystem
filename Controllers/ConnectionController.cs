@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using GlobalApplicationVariables;
 using Org.BouncyCastle.X509.Store;
 using System.Threading.Tasks.Dataflow;
+using Models;
 
 namespace Controllers
 {
@@ -22,15 +23,16 @@ namespace Controllers
         private string? clientName;
         public CancellationTokenSource connectionCTS;
         public CancellationToken connectionCancelToken;
-        public ManualResetEvent manualResetEvent;
+        public ManualResetEvent manualResetDataSentEvent;
+        public ManualResetEvent manualResetSetUserEvent;
         public BufferBlock<string> bufferBlock;
 
         public delegate void disconnectedDelegate();
         public event disconnectedDelegate disconnected;
         public delegate void connectedDelegate();
         public event connectedDelegate connected;
-        public delegate void emailCheckedDelegate(bool present);
-        public event emailCheckedDelegate emailChecked;
+        //public delegate void userFoundDelegate(User user);
+        //public event userFoundDelegate userFound;
 
         public ConnectionController() 
         {
@@ -38,11 +40,12 @@ namespace Controllers
             this.serverPort = 8086;
             connectionCTS = new CancellationTokenSource();
             connectionCancelToken = connectionCTS.Token;
-            manualResetEvent = new ManualResetEvent(false);
+            manualResetDataSentEvent = new ManualResetEvent(false);
+            manualResetSetUserEvent = new ManualResetEvent(false);
             this.authController = new AuthController(this);
 
             this.bufferBlock = new BufferBlock<string>();
-            emailChecked += authController.SetEmailPresence;
+            //userFound += authController.SetEmailPresence;
 
         }
 
@@ -271,8 +274,9 @@ namespace Controllers
 
                                 switch (commGoal)
                                 {
-                                case Enumeration.CommGoal.EmailCheck:
-                                    if (message == "true")
+                                case Enumeration.CommGoal.Login:
+                                    
+                                    /*if (message == "true")
                                     {
                                         if (this.emailChecked != null)
                                         {
@@ -287,11 +291,36 @@ namespace Controllers
                                             this.emailChecked(false);
                                         }
                                         manualResetEvent.Set();
+                                    }*/
+                                    if(message == "null")
+                                    {
+                                        authController.User = null;
+                                        manualResetSetUserEvent.WaitOne();
+                                        manualResetSetUserEvent.Reset();
+                                        manualResetDataSentEvent.Set();
                                     }
-                                        break;
+                                    else
+                                    {
+                                        try
+                                        {
+                                            User user = JsonSerializer.Deserialize<User>(message);
+                                            authController.User = user;
+                                            manualResetSetUserEvent.WaitOne();
+                                            manualResetSetUserEvent.Reset();
+                                            manualResetDataSentEvent.Set();
+                                        }
+                                        catch
+                                        {
+                                            authController.User = null;
+                                            manualResetSetUserEvent.WaitOne();
+                                            manualResetSetUserEvent.Reset();
+                                            manualResetDataSentEvent.Set();
+                                        }
+                                    }
+                                    break;
                                 case Enumeration.CommGoal.SendData:
                                     bufferBlock.Post(message);
-                                    manualResetEvent.Set();
+                                    manualResetDataSentEvent.Set();
                                     break;
                                 }
                             

@@ -46,8 +46,7 @@ namespace LibraryEmployeeApplication
             this.language = "NL";
             this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5, MenuLabel6, MenuLabel7, MenuLabel8 };
 
-            this.authController.LoggedIn += ShowNews;
-            this.authController.LoggedIn += EnableMenu;
+            this.authController.LoggedIn += WelcomeUser;
             this.authController.LoggedOut += HideMenu;
             this.authController.LoggedOut += HideNews;
             this.connectionController.connected += EnableLogin;
@@ -139,8 +138,11 @@ namespace LibraryEmployeeApplication
 
         public void WelcomeUser(User user)
         {
+            this.user = user;
             WelcomeLabel.Text = $"Hallo {user.email}, gebruik het menu om te beginnen.";
             WelcomeLabel.Visible = true;
+            this.EnableMenu();
+            this.ShowNews();
 
         }
 
@@ -257,12 +259,12 @@ namespace LibraryEmployeeApplication
             }
         }
 
-        private void DrawBorders(int x, int y, int width, int height, Color color)
+        private void DrawControlBorders(Control control, Color color)
         {
             System.Drawing.Pen pen = new System.Drawing.Pen(color);
             System.Drawing.Graphics formGraphics;
             formGraphics = this.CreateGraphics();
-            formGraphics.DrawRectangle(pen, new Rectangle(x, y, width, height));
+            formGraphics.DrawRectangle(pen, new Rectangle(control.Location.X-1, control.Location.Y-1, control.Width+2, control.Height+2));
             pen.Dispose();
             formGraphics.Dispose();
         }
@@ -479,12 +481,12 @@ namespace LibraryEmployeeApplication
 
         private void MenuPicBox1_MouseEnter(object sender, EventArgs e)
         {
-            this.DrawBorders(MenuPicBox1.Location.X-1, MenuPicBox1.Location.Y-1, MenuPicBox1.Width+2, MenuPicBox1.Height+2, Style.purpleColor);
+            this.DrawControlBorders(MenuPicBox1, Style.purpleColor);
         }
 
         private void MenuPicBox1_MouseLeave(object sender, EventArgs e)
         {
-            this.DrawBorders(MenuPicBox1.Location.X - 1, MenuPicBox1.Location.Y - 1, MenuPicBox1.Width + 2, MenuPicBox1.Height + 2, Color.White);
+            this.DrawControlBorders(MenuPicBox1, Color.White);
         }
     }
 }

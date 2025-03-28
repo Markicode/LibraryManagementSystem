@@ -6,16 +6,27 @@ using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Bcpg;
 using System.Security.Cryptography;
 using GlobalApplicationVariables;
+using System.Configuration;
 
 namespace Controllers
 {
     public class AuthController
     {
         private ConnectionController connectionController;
-
-        private bool emailPresent;
         private User defaultUser;
-        public User? user;
+        private User user;
+        public User? User
+        {
+            get
+            {
+                return user;
+            }
+            set
+            {
+                user = value;
+                connectionController.manualResetSetUserEvent.Set();
+            }
+        }
         private const byte VersionId1 = 0x01;
         private const byte DefaultVersionId = VersionId1;
         private sealed record PasswordHasherVersion(HashAlgorithmName Algorithm, int SaltSize, int KeySize, int Iterations);
@@ -24,25 +35,41 @@ namespace Controllers
             [VersionId1] = new PasswordHasherVersion(HashAlgorithmName.SHA256, SaltSize: 256 / 8, KeySize: 256 / 8, Iterations: 600000),
         };
 
-        public delegate void LoggedInDelegate();
+        public delegate void LoggedInDelegate(User user);
         public event LoggedInDelegate LoggedIn;
         public delegate void LoggedOutDelegate();
-        public event LoggedInDelegate LoggedOut;
+        public event LoggedOutDelegate LoggedOut;
 
         public AuthController(ConnectionController connectionController) 
         {
-            this.defaultUser = new User("default@lms.nl", "12345678", "default");
+            this.defaultUser = new User();
             this.connectionController = connectionController;
-            this.emailPresent = false;
         }
 
         public AuthenticationResult AuthenticateUser(string email, string password)
         {
-            this.connectionController.SendMessageToServer(email, Enumeration.CommGoal.EmailCheck);
-            connectionController.manualResetEvent.WaitOne();
-            connectionController.manualResetEvent.Reset();
-
-            if(this.emailPresent)
+            this.connectionController.SendMessageToServer(email, Enumeration.CommGoal.Login);
+            connectionController.manualResetDataSentEvent.WaitOne();
+            connectionController.manualResetDataSentEvent.Reset();
+            
+            if (this.user != null)
+            {
+                if(this.user.role != "employee")
+                {
+                    return AuthenticationResult.Failed;
+                }
+                if (VerifyHashedPassword(user.password, password) == PasswordVerificationResult.Success)
+                {
+                    if (this.LoggedIn != null)
+                    {
+                        this.LoggedIn(user);
+                    }
+                    return AuthenticationResult.Success;
+                }
+                return AuthenticationResult.Failed;
+            }
+            return AuthenticationResult.NotFound;
+            /*if(this.emailPresent)
             {
                 if (this.LoggedIn != null)
                 {
@@ -50,7 +77,7 @@ namespace Controllers
                 }
                 return AuthenticationResult.Success;
             }
-            return AuthenticationResult.NotFound;
+            return AuthenticationResult.NotFound;*/
             /*if (defaultUser.FindUser(email) != null)
             {
                 
@@ -205,10 +232,6 @@ namespace Controllers
             NotFound = 2
         }
 
-        public void SetEmailPresence(bool present)
-        {
-            this.emailPresent = present;
-        }
 
     }
 }

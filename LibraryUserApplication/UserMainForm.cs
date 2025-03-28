@@ -46,8 +46,9 @@ namespace UserApplication
             this.language = "NL";
             this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5, MenuLabel6, MenuLabel7, MenuLabel8 };
 
-            this.authController.LoggedIn += ShowNews;
-            this.authController.LoggedIn += EnableMenu;
+            //this.authController.LoggedIn += ShowNews;
+            //this.authController.LoggedIn += EnableMenu;
+            this.authController.LoggedIn += WelcomeUser;
             this.authController.LoggedOut += HideMenu;
             this.authController.LoggedOut += HideNews;
             this.connectionController.connected += EnableLogin;

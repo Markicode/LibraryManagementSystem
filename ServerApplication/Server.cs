@@ -360,6 +360,7 @@ public class Server
                     string data = Encoding.ASCII.GetString(buffer, 0, byteCount);
                     string[] segments = data.Split(new string[] { "~~~" }, StringSplitOptions.None);
                     // Segments[0] = communication goal, Segments[1] = client name, Segments[2] = message
+                    // TODO: bigger client message handling
                     Console.WriteLine(data);
 
                     Enumeration.CommGoal commGoal = Enumeration.CommGoal.Unknown;
@@ -376,8 +377,8 @@ public class Server
                             string returnData = (string)method.Invoke(serverDataController, null);
                             await this.Send(returnData, Enumeration.CommGoal.SendData, clientToHandle.tcpClient);
                             break;
-                        case Enumeration.CommGoal.EmailCheck:
-                            if (serverDataController.CheckForUser(segments[2]) == true)
+                        case Enumeration.CommGoal.Login:
+                            /*if (serverDataController.CheckForUser(segments[2]) == true)
                             {
                                 Console.WriteLine("true");
                                 await this.Send("true", Enumeration.CommGoal.EmailCheck, clientToHandle.tcpClient);
@@ -387,6 +388,9 @@ public class Server
                                 Console.WriteLine("false");
                                 await this.Send("false", Enumeration.CommGoal.EmailCheck, clientToHandle.tcpClient);
                             }
+                            break;*/
+                            string email = segments[2];
+                            await this.Send(serverDataController.GetUser(email), Enumeration.CommGoal.Login, clientToHandle.tcpClient);
                             break;
                     }
 

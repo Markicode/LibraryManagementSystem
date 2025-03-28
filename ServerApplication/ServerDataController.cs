@@ -18,14 +18,10 @@ namespace ServerApplication
             this.defaultUser = new User();
         }
 
-        public bool CheckForUser(string email)
+        public string GetUser(string email)
         {
-            bool userPresent = false;
-            if (defaultUser.FindUser(email) != null)
-            {
-                userPresent = true;
-            }
-            return userPresent;
+            User? user = defaultUser.FindUser(email);
+            return SerializeObject(user);
         }
 
         public string GetAllNews()

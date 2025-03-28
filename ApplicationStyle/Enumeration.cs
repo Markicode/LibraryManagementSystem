@@ -10,7 +10,7 @@ namespace GlobalApplicationVariables
     {
         public enum CommGoal
         {
-            ServerConnect = 0, EmailCheck = 1, CredentialsCheck = 2, SendData = 3, Unknown = 4
+            ServerConnect = 0, Login = 1, CredentialsCheck = 2, SendData = 3, Unknown = 4
         }
 
         public enum QueryCommands
