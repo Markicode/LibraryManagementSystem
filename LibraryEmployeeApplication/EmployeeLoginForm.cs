@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Models;
 
-namespace LibraryEmployeeApplication
+namespace EmployeeApplication
 {
     public partial class EmployeeLoginForm : Form
     {

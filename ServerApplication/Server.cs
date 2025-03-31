@@ -427,15 +427,15 @@ public class Server
                 byte[] bytesToSend = new byte[4 + messageBytes.Length];
                 messageLengthBytes.CopyTo(bytesToSend, 0);
                 messageBytes.CopyTo(bytesToSend, 4);
-                Console.WriteLine(Encoding.ASCII.GetString(bytesToSend));
+                Console.WriteLine("bericht om te versturen naar client: " + Encoding.ASCII.GetString(bytesToSend));
                 int i = BitConverter.ToInt32(messageLengthBytes, 0);
-                Console.WriteLine(i);
+                Console.WriteLine("message length: " + i);
                 if(BitConverter.IsLittleEndian)
                 {
                     Array.Reverse(messageLengthBytes);
                 }
                 i = BitConverter.ToInt32(messageLengthBytes, 0);
-                Console.WriteLine(i);
+                //Console.WriteLine(i);
                 
                 // Send the message
                 nwStream.Write(bytesToSend, 0, bytesToSend.Length);

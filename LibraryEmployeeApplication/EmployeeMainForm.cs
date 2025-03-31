@@ -1,11 +1,13 @@
 using Controllers;
 using EmployeeApplication;
+using EmployeeApplication.Properties;
 using GlobalApplicationVariables;
 using Models;
 using Mysqlx.Notice;
 
 
-namespace LibraryEmployeeApplication
+//namespace LibraryEmployeeApplication
+namespace EmployeeApplication
 {
     public partial class EmployeeMainForm : Form
     {
@@ -13,6 +15,7 @@ namespace LibraryEmployeeApplication
         private string language;
 
         public User? user { get; set; }
+        private bool userLoggedIn;
         public AuthController authController;
         public NewsController newsController;
         public ConnectionController connectionController;
@@ -23,6 +26,9 @@ namespace LibraryEmployeeApplication
         private Dictionary<menuChoises, string> menuChoisesDutch;
         private Dictionary<menuChoises, string> menuChoisesEnglish;
         private TableLayoutPanel NewsTablePanel;
+
+        private readonly Image loginIcon = Resources.LoginbuttonBMP;
+        private readonly Image logoutIcon = Resources.LogoutbuttonBMP;
 
         // Enumeration used to dynamically adjust the menu to the employees permissions. 
         public enum menuChoises
@@ -41,8 +47,8 @@ namespace LibraryEmployeeApplication
             this.newsController = new NewsController(clientDataController);
             this.AdjustLayout();
 
-
-
+            MenuPicBox1.Image = loginIcon;
+            this.userLoggedIn = false;
             this.language = "NL";
             this.menuLabels = new List<Label>() { MenuLabel1, MenuLabel2, MenuLabel3, MenuLabel4, MenuLabel5, MenuLabel6, MenuLabel7, MenuLabel8 };
 
@@ -141,6 +147,7 @@ namespace LibraryEmployeeApplication
             this.user = user;
             WelcomeLabel.Text = $"Hallo {user.email}, gebruik het menu om te beginnen.";
             WelcomeLabel.Visible = true;
+            this.userLoggedIn = true;
             this.EnableMenu();
             this.ShowNews();
 
@@ -160,6 +167,7 @@ namespace LibraryEmployeeApplication
 
         private void EnableMenu()
         {
+            MenuPicBox1.Image = logoutIcon;
             foreach (Label label in menuLabels)
             {
                 label.Enabled = true;
@@ -340,7 +348,8 @@ namespace LibraryEmployeeApplication
             authController.LogoutUser();
             this.user = null;
             NewsTablePanel.Visible = false;
-
+            this.userLoggedIn = false;
+            MenuPicBox1.Image = loginIcon;
 
         }
 
@@ -476,7 +485,14 @@ namespace LibraryEmployeeApplication
 
         private void MenuPicBox1_Click(object sender, EventArgs e)
         {
-            OpenForm(menuLabelAssignment[MenuLabel1]);
+            if (!userLoggedIn)
+            {
+                OpenForm(menuLabelAssignment[MenuLabel1]);
+            }
+            else
+            {
+                this.Logout();
+            }
         }
 
         private void MenuPicBox1_MouseEnter(object sender, EventArgs e)

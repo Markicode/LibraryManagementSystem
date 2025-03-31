@@ -73,6 +73,16 @@ namespace EmployeeApplication.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap LogoutbuttonBMP {
+            get {
+                object obj = ResourceManager.GetObject("LogoutbuttonBMP", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Woordenschat_logo3BMP {
             get {
                 object obj = ResourceManager.GetObject("Woordenschat-logo3BMP", resourceCulture);

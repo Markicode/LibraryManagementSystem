@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LibraryEmployeeApplication
+namespace EmployeeApplication
 {
     public partial class EmployeeMemberSearchForm : Form
     {

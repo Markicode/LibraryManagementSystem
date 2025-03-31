@@ -24,7 +24,6 @@ namespace Controllers
             set
             {
                 user = value;
-                connectionController.manualResetSetUserEvent.Set();
             }
         }
         private const byte VersionId1 = 0x01;
@@ -100,9 +99,17 @@ namespace Controllers
 
         }
 
+        public void ChangeUser(User? user)
+        {
+            this.user = user;
+            connectionController.manualResetSetUserEvent.Set();
+        }
+
         public bool LogoutUser()
         {
-            this.user = defaultUser;
+            this.ChangeUser(null);
+            connectionController.manualResetSetUserEvent.WaitOne();
+            connectionController.manualResetSetUserEvent.Reset();
             if(this.LoggedOut != null)
             {
                 this.LoggedOut();

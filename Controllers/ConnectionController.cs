@@ -294,7 +294,7 @@ namespace Controllers
                                     }*/
                                     if(message == "null")
                                     {
-                                        authController.User = null;
+                                        authController.ChangeUser(null);
                                         manualResetSetUserEvent.WaitOne();
                                         manualResetSetUserEvent.Reset();
                                         manualResetDataSentEvent.Set();
@@ -304,14 +304,14 @@ namespace Controllers
                                         try
                                         {
                                             User user = JsonSerializer.Deserialize<User>(message);
-                                            authController.User = user;
+                                            authController.ChangeUser(user);
                                             manualResetSetUserEvent.WaitOne();
                                             manualResetSetUserEvent.Reset();
                                             manualResetDataSentEvent.Set();
                                         }
                                         catch
                                         {
-                                            authController.User = null;
+                                            authController.ChangeUser(null);
                                             manualResetSetUserEvent.WaitOne();
                                             manualResetSetUserEvent.Reset();
                                             manualResetDataSentEvent.Set();

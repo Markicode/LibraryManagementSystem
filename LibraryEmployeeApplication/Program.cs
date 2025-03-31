@@ -1,4 +1,4 @@
-namespace LibraryEmployeeApplication
+namespace EmployeeApplication
 {
     internal static class Program
     {

@@ -24,6 +24,7 @@ namespace Controllers
         {
             connectionController.SendMessageToServer(Enumeration.QueryCommands.GetAllNews.ToString(), Enumeration.CommGoal.SendData);
             connectionController.manualResetDataSentEvent.WaitOne();
+            connectionController.manualResetDataSentEvent.Reset();
             
             string result = await connectionController.bufferBlock.ReceiveAsync();
             List<NewsMessage> newslist = JsonSerializer.Deserialize<List<NewsMessage>>(result);

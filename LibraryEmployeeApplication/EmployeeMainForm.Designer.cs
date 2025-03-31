@@ -1,4 +1,4 @@
-﻿namespace LibraryEmployeeApplication
+﻿namespace EmployeeApplication
 {
     partial class EmployeeMainForm
     {
@@ -194,7 +194,7 @@
             // 
             // MenuPicBox1
             // 
-            MenuPicBox1.Image = EmployeeApplication.Properties.Resources.LoginbuttonBMP;
+            MenuPicBox1.Image = EmployeeApplication.Properties.Resources.LogoutbuttonBMP;
             MenuPicBox1.Location = new Point(16, 104);
             MenuPicBox1.Name = "MenuPicBox1";
             MenuPicBox1.Size = new Size(75, 75);

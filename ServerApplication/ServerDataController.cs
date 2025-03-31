@@ -28,7 +28,7 @@ namespace ServerApplication
         {
             NewsMessage news = new NewsMessage();
             List<NewsMessage> newsList = news.GetAllEntries<NewsMessage>();
-            Console.WriteLine(SerializeObject(newsList));
+            //Console.WriteLine(SerializeObject(newsList));
             return SerializeObject(newsList);
         }
         
